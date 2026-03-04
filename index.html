@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatorio Tecnico Catastral</title>
+    <meta name="description"
+        content="Observatorio Predial de Bogotá – sistema de información catastral con cartografía digital, indicadores estadísticos y análisis del mercado inmobiliario.">
+
+    <!-- CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Superposición de carga -->
+    <div id="loading-overlay">
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <p class="loader-text">Cargando Observatorio Predial…</p>
+        </div>
+    </div>
+
+    <!-- Banner hero con degradado animado -->
+    <section id="hero" class="hero">
+        <!-- Partículas decorativas -->
+        <div class="hero-particle" style="width:120px;height:120px;top:20%;left:10%;--duration:7s;--delay:0s;"></div>
+        <div class="hero-particle" style="width:80px;height:80px;top:60%;left:70%;--duration:5s;--delay:1s;"></div>
+        <div class="hero-particle" style="width:60px;height:60px;top:30%;left:85%;--duration:6s;--delay:2s;"></div>
+        <div class="hero-particle" style="width:150px;height:150px;top:70%;left:25%;--duration:8s;--delay:0.5s;"></div>
+        <div class="hero-content">
+            <h1>Censo inmobiliario</h1>
+            <p class="hero-subtitle">Bogotá D.C.</p>
+            <div class="sp">
+                <a href="#map-about" class="sparkle-button" id="explore-btn">
+                    <span class="spark"></span>
+                    <span class="backdrop"></span>
+                    <svg class="sparkle" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0416C17.4984 10.5826 18.1674 10.9770 18.902 11.188L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9584 13.9577C16.4174 14.4984 16.023 15.1674 15.812 15.902L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9584C12.5016 13.4174 11.8326 13.023 11.098 12.812L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0416 10.0423C13.5826 9.50162 13.977 8.83262 14.188 8.098L14.187 8.096Z" />
+                        <path
+                            d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.715 17.741C8.12153 17.5927 7.57946 17.2858 7.14686 16.8532C6.71426 16.4206 6.40739 15.8785 6.259 15.285L6 14.25Z" />
+                        <path
+                            d="M6.5 4L6.303 4.5915C6.1034 5.40566 5.40566 6.1034 4.5765 6.303L4 6.5L4.5765 6.697C5.40566 6.8966 6.1034 7.59434 6.303 8.4235L6.5 9L6.697 8.4085C6.8966 7.59434 7.59434 6.8966 8.4235 6.697L9 6.5L8.4085 6.303C7.59434 6.1034 6.8966 5.40566 6.697 4.5765L6.5 4Z" />
+                    </svg>
+                    <span class="text">Explorar Mapa</span>
+                </a>
+                <div class="particle-pen" id="particle-pen"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de estadísticas con contadores animados -->
+    <section id="stats" class="stats-section">
+        <div class="stats-container">
+            <div class="stat-card reveal-scale" data-delay="0">
+                <span class="stat-card-label">Avalúo Total</span>
+                <span class="stat-card-value" id="stat-avaluo" data-counter="120000000000" data-prefix="$"
+                    data-format="currency">$0</span>
+                <span class="stat-trend up">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M7 17l5-5 5 5" />
+                    </svg>
+                    +12.4%
+                </span>
+            </div>
+            <div class="stat-card reveal-scale" data-delay="150">
+                <span class="stat-card-label">Predios Nuevos</span>
+                <span class="stat-card-value" id="stat-nuevos" data-counter="18420" data-format="number">0</span>
+                <span class="stat-trend up">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M7 17l5-5 5 5" />
+                    </svg>
+                    +8.7%
+                </span>
+            </div>
+            <div class="stat-card reveal-scale" data-delay="300">
+                <span class="stat-card-label">Total Predios</span>
+                <span class="stat-card-value accent" id="stat-total" data-counter="1580000"
+                    data-format="number">0</span>
+                <span class="stat-trend up">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M7 17l5-5 5 5" />
+                    </svg>
+                    +3.2%
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección del mapa + Quiénes somos -->
+    <section id="map-about" class="map-about-section">
+        <div class="map-wrapper">
+            <div id="map"></div>
+            <!-- Tooltip personalizado que sigue al mouse -->
+            <div id="map-tooltip" class="map-tooltip"></div>
+            <!-- Panel de información del sector seleccionado -->
+            <div id="info-panel" class="info-panel hidden">
+                <button id="close-panel" class="close-btn" aria-label="Cerrar panel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+                <div class="panel-header">
+                    <h2 id="panel-title">—</h2>
+                    <span class="panel-badge" id="panel-code">—</span>
+                </div>
+                <div class="panel-body">
+                    <div class="detail-row">
+                        <span class="detail-label">Código</span>
+                        <span class="detail-value" id="detail-code">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Tipo</span>
+                        <span class="detail-value" id="detail-type">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Movimiento ID</span>
+                        <span class="detail-value" id="detail-movement">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Perímetro</span>
+                        <span class="detail-value" id="detail-perimeter">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Área</span>
+                        <span class="detail-value" id="detail-area">—</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Buscador flotante centrado sobre el mapa -->
+            <div class="map-search">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Buscar sector o código…" autocomplete="off">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+            </div>
+            <!-- Segmentadores Rural / Urbano -->
+            <div class="map-filters" id="map-filters">
+                <span class="filters-title">Filtros</span>
+                <label class="filter-toggle">
+                    <input type="checkbox" id="filter-urbano" checked>
+                    <span class="toggle-slider urbano"></span>
+                    <span class="toggle-label">
+                        <span class="toggle-dot urbano-dot"></span>
+                        Urbano
+                    </span>
+                </label>
+                <label class="filter-toggle">
+                    <input type="checkbox" id="filter-rural" checked>
+                    <span class="toggle-slider rural"></span>
+                    <span class="toggle-label">
+                        <span class="toggle-dot rural-dot"></span>
+                        Rural
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="about-wrapper">
+            <h2>Quiénes somos</h2>
+            <p>El <strong>Observatorio Predial de Bogotá</strong> es un sistema de información que integra cartografía
+                digital, indicadores estadísticos y análisis del mercado inmobiliario.</p>
+            <p>A través de herramientas geográficas facilitamos la toma de decisiones en planeación urbana, inversión,
+                valorización del suelo y dinámica predial en la ciudad.</p>
+        </div>
+    </section>
+
+    <!-- Tarjetas de servicios -->
+    <section id="services" class="services-section">
+        <div class="services-container">
+            <div class="service-card reveal-scale" data-delay="0">
+                <div class="service-card-blob"></div>
+                <div class="service-card-bg">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            <path d="M9 14l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <h3>Consulta Predial</h3>
+                    <p>Consulta la información catastral de cualquier predio en Bogotá de forma rápida y precisa.</p>
+                    <a href="#map-about" class="service-btn">Ingresar</a>
+                </div>
+            </div>
+            <div class="service-card reveal-scale" data-delay="150">
+                <div class="service-card-blob"></div>
+                <div class="service-card-bg">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" />
+                        </svg>
+                    </div>
+                    <h3>Dinámica Inmobiliaria</h3>
+                    <p>Analiza tendencias del mercado inmobiliario, valorización y precios por zonas de la ciudad.</p>
+                    <a href="#map-about" class="service-btn">Ingresar</a>
+                </div>
+            </div>
+            <div class="service-card reveal-scale" data-delay="300">
+                <div class="service-card-blob"></div>
+                <div class="service-card-bg">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3>Reportes Estadísticos</h3>
+                    <p>Genera reportes con datos actualizados sobre la dinámica predial de cada localidad.</p>
+                    <a href="#map-about" class="service-btn">Ingresar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de gráficas dinámicas -->
+    <section id="charts" class="charts-section">
+        <div class="charts-header reveal">
+            <h2>Dinámica del Mercado Inmobiliario</h2>
+            <p>Análisis del comportamiento de arriendos y ventas en Bogotá D.C.</p>
+        </div>
+
+        <!-- Fila 1: Barras + Pastel -->
+        <div class="charts-row">
+            <div class="chart-card reveal-scale" data-delay="0">
+                <div class="chart-card-header">
+                    <h3>Arriendo Promedio por Localidad</h3>
+                    <span class="chart-badge">2025-2026</span>
+                </div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="chart-bar"></canvas>
+                </div>
+            </div>
+            <div class="chart-card reveal-scale" data-delay="200">
+                <div class="chart-card-header">
+                    <h3>Distribución por Tipo de Inmueble</h3>
+                    <span class="chart-badge">Arriendos</span>
+                </div>
+                <div class="chart-canvas-wrap">
+                    <canvas id="chart-pie"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila 2: Comparación anual -->
+        <div class="charts-row charts-row-full">
+            <div class="chart-card chart-card-wide reveal-scale" data-delay="100">
+                <div class="chart-card-header">
+                    <h3>Comparación Anual: Arriendos vs Ventas</h3>
+                    <span class="chart-badge">2019 – 2026</span>
+                </div>
+                <div class="chart-canvas-wrap chart-canvas-wide">
+                    <canvas id="chart-line"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Tipos de Propiedad – Tarjetas interactivas -->
+    <section id="property-types" class="property-section">
+        <div class="property-header reveal">
+            <h2>Tipos de Propiedad en Colombia</h2>
+            <p>Conoce las diferencias clave entre los regímenes de propiedad</p>
+        </div>
+        <div class="property-container">
+            <!-- Tarjeta 1: Propiedad Horizontal -->
+            <div class="property-card reveal-scale" data-delay="0">
+                <div class="property-card-blob"></div>
+                <div class="property-card-inner">
+                    <div class="property-card-front">
+                        <span class="property-emoji">🏢</span>
+                        <h3>Propiedad Horizontal</h3>
+                        <p>Régimen donde un edificio o conjunto se divide en propiedades privadas y zonas comunes.</p>
+                        <span class="flip-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 1l4 4-4 4" />
+                                <path d="M3 11V9a4 4 0 014-4h14" />
+                                <path d="M7 23l-4-4 4-4" />
+                                <path d="M21 13v2a4 4 0 01-4 4H3" />
+                            </svg>
+                            Clic para más info
+                        </span>
+                    </div>
+                    <div class="property-card-back">
+                        <span class="property-emoji-sm">🏢</span>
+                        <h4>Claves</h4>
+                        <p class="property-law">Regulada por la <strong>Ley 675 de 2001</strong></p>
+                        <ul class="property-keys">
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                Hay zonas comunes
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                Se paga administración
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                Existe reglamento y asamblea
+                            </li>
+                        </ul>
+                        <span class="flip-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 1l4 4-4 4" />
+                                <path d="M3 11V9a4 4 0 014-4h14" />
+                                <path d="M7 23l-4-4 4-4" />
+                                <path d="M21 13v2a4 4 0 01-4 4H3" />
+                            </svg>
+                            Clic para volver
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta 2: Propiedad No Horizontal -->
+            <div class="property-card reveal-scale" data-delay="200">
+                <div class="property-card-blob property-card-blob--green"></div>
+                <div class="property-card-inner">
+                    <div class="property-card-front">
+                        <span class="property-emoji">🏠</span>
+                        <h3>Propiedad No Horizontal</h3>
+                        <p>Inmueble independiente que no comparte zonas comunes ni está bajo reglamento de copropiedad.
+                        </p>
+                        <span class="flip-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 1l4 4-4 4" />
+                                <path d="M3 11V9a4 4 0 014-4h14" />
+                                <path d="M7 23l-4-4 4-4" />
+                                <path d="M21 13v2a4 4 0 01-4 4H3" />
+                            </svg>
+                            Clic para más info
+                        </span>
+                    </div>
+                    <div class="property-card-back">
+                        <span class="property-emoji-sm">🏠</span>
+                        <h4>Claves</h4>
+                        <ul class="property-keys">
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                No hay administración
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                El dueño es propietario del terreno y la construcción
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                No hay asamblea
+                            </li>
+                        </ul>
+                        <span class="flip-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 1l4 4-4 4" />
+                                <path d="M3 11V9a4 4 0 014-4h14" />
+                                <path d="M7 23l-4-4 4-4" />
+                                <path d="M21 13v2a4 4 0 01-4 4H3" />
+                            </svg>
+                            Clic para volver
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="footer reveal">
+        <p>&copy; 2026 Observatorio Predial de Bogotá D.C.</p>
+    </footer>
+
+    <!-- JS de Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+    <!-- Datos GeoJSON (en línea para evitar CORS en file://) -->
+    <script src="data.js"></script>
+    <!-- JS de la aplicación -->
+    <script src="app.js"></script>
+</body>
+
+</html>
