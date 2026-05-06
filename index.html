@@ -2423,10 +2423,6 @@
         </section>
 
 
-        <!-- Pie de página -->
-        <footer class="footer reveal">
-            <p>&copy; 2026 Observatorio Predial de Bogotá D.C.</p>
-        </footer>
 
         <!-- JS de Leaflet -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -2535,9 +2531,14 @@
 
                     function formatValue(val) {
                         if (format === 'currency') {
-                            // Formato simplificado para grandes cifras
+                            if (val >= 1e12) {
+                                return prefix + (val / 1e12).toFixed(1).replace('.', ',') + ' B';
+                            }
                             if (val >= 1e9) {
-                                return prefix + (val / 1e9).toFixed(0) + '.000.000.000';
+                                return prefix + (val / 1e9).toFixed(0).toLocaleString('es-CO') + ' MM';
+                            }
+                            if (val >= 1e6) {
+                                return prefix + (val / 1e6).toFixed(0).toLocaleString('es-CO') + ' M';
                             }
                             return prefix + val.toLocaleString('es-CO');
                         }
@@ -2704,14 +2705,13 @@
                     center: BOGOTA_CENTER,
                     zoom: INITIAL_ZOOM,
                     zoomControl: true,
-                    attributionControl: true
+                    attributionControl: false
                 });
 
-                // Capa de mosaicos oscuros (CartoDB Dark Matter – estilo futurista)
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 19
+                // Capa base Catastro Bogotá (ArcGIS MapServer)
+                L.tileLayer('https://serviciosgis.catastrobogota.gov.co/arcgis/rest/services/Mapa_Referencia/mapa_base_3857/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 19,
+                    crossOrigin: true
                 }).addTo(map);
 
                 /* ---------- ELEMENTOS ---------- */
