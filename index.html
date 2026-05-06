@@ -2976,6 +2976,17 @@
 
                         // Forzar a Leaflet a recalcular dimensiones del contenedor
                         map.invalidateSize();
+
+                        if (typeof CENSUS_DATA !== 'undefined') {
+                            var lastYear = Object.keys(CENSUS_DATA).reduce(function (a, b) { return a > b ? a : b; });
+                            var field = 'PREDIOS_' + lastYear.slice(-2);
+                            var total = (CENSUS_DATA[lastYear] || []).reduce(function (acc, row) {
+                                return acc + (+row[field] || 0);
+                            }, 0);
+                            var statEl = document.getElementById('stat-total');
+                            if (statEl && total > 0) statEl.dataset.counter = Math.round(total);
+                        }
+
                         // Iniciar todos los sistemas de animación
                         initScrollReveal();
                         initParallax();
