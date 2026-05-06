@@ -2462,8 +2462,6 @@
 
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-        <!-- Datos censo todos los años -->
-        <script src="census_data.js"></script>
 
         <!-- Datos GeoJSON (en linea) -->
         <script>
@@ -2977,15 +2975,16 @@
                         // Forzar a Leaflet a recalcular dimensiones del contenedor
                         map.invalidateSize();
 
-                        if (typeof CENSUS_DATA !== 'undefined') {
-                            var lastYear = Object.keys(CENSUS_DATA).reduce(function (a, b) { return a > b ? a : b; });
-                            var field = 'PREDIOS_' + lastYear.slice(-2);
-                            var total = (CENSUS_DATA[lastYear] || []).reduce(function (acc, row) {
-                                return acc + (+row[field] || 0);
-                            }, 0);
-                            var statEl = document.getElementById('stat-total');
-                            if (statEl && total > 0) statEl.dataset.counter = Math.round(total);
-                        }
+                        fetch('datos_2026.json')
+                            .then(function (r) { return r.json(); })
+                            .then(function (rows) {
+                                var total = rows.reduce(function (acc, row) {
+                                    return acc + (+(row['PREDIOS_26']) || 0);
+                                }, 0);
+                                var statEl = document.getElementById('stat-total');
+                                if (statEl && total > 0) statEl.dataset.counter = Math.round(total);
+                            })
+                            .catch(function () {});
 
                         // Iniciar todos los sistemas de animación
                         initScrollReveal();
@@ -3154,7 +3153,6 @@
                             'rgba(149, 165, 166, 1)'
                         ];
 
-                        // Grupos que se muestran individualmente; el resto se agrupa en "Otros servicios"
                         var mainGroups = ['RESIDENCIAL', 'OTROS', 'COMERCIO', 'OFICINAS', 'BODEGAS'];
                         var labelMap = {
                             'RESIDENCIAL': 'Residencial',
@@ -3164,46 +3162,12 @@
                             'BODEGAS': 'Bodegas'
                         };
 
-                        function calcPorcentajes(year) {
-                            var yy = year.toString().slice(-2);
-                            var fieldKey = 'PREDIOS_' + yy;
-                            var data = (typeof CENSUS_DATA !== 'undefined' && CENSUS_DATA[year]) ? CENSUS_DATA[year] : [];
-                            var totals = {};
-                            var grand = 0;
-                            data.forEach(function (item) {
-                                var g = item.GRUPO_ECONOMICO;
-                                var v = item[fieldKey] || 0;
-                                totals[g] = (totals[g] || 0) + v;
-                                grand += v;
-                            });
-                            if (grand === 0) return { labels: [], values: [] };
-                            var labels = [];
-                            var values = [];
-                            var otrosSum = 0;
-                            mainGroups.forEach(function (g) {
-                                labels.push(labelMap[g]);
-                                values.push(parseFloat(((totals[g] || 0) / grand * 100).toFixed(2)));
-                            });
-                            // Todos los demás grupos se suman en "Otros servicios"
-                            Object.keys(totals).forEach(function (g) {
-                                if (mainGroups.indexOf(g) === -1) otrosSum += totals[g];
-                            });
-                            labels.push('Otros servicios');
-                            values.push(parseFloat((otrosSum / grand * 100).toFixed(2)));
-                            return { labels: labels, values: values };
-                        }
-
-                        var initYear = document.getElementById('pie-year-select')
-                            ? document.getElementById('pie-year-select').value
-                            : '2025';
-                        var init = calcPorcentajes(initYear);
-
                         var pieChart = new Chart(ctx, {
                             type: 'doughnut',
                             data: {
-                                labels: init.labels,
+                                labels: [],
                                 datasets: [{
-                                    data: init.values,
+                                    data: [],
                                     backgroundColor: colores,
                                     borderColor: bordecolores,
                                     borderWidth: 2,
@@ -3244,13 +3208,49 @@
                             }
                         });
 
+                        function loadPieData(year) {
+                            var yy = year.toString().slice(-2);
+                            var fieldKey = 'PREDIOS_' + yy;
+                            fetch('datos_' + year + '.json')
+                                .then(function (r) { return r.json(); })
+                                .then(function (data) {
+                                    var totals = {};
+                                    var grand = 0;
+                                    data.forEach(function (item) {
+                                        var g = item.GRUPO_ECONOMICO;
+                                        var v = +(item[fieldKey]) || 0;
+                                        totals[g] = (totals[g] || 0) + v;
+                                        grand += v;
+                                    });
+                                    if (grand === 0) return;
+                                    var labels = [];
+                                    var values = [];
+                                    var otrosSum = 0;
+                                    mainGroups.forEach(function (g) {
+                                        labels.push(labelMap[g]);
+                                        values.push(parseFloat(((totals[g] || 0) / grand * 100).toFixed(2)));
+                                    });
+                                    Object.keys(totals).forEach(function (g) {
+                                        if (mainGroups.indexOf(g) === -1) otrosSum += totals[g];
+                                    });
+                                    labels.push('Otros servicios');
+                                    values.push(parseFloat((otrosSum / grand * 100).toFixed(2)));
+                                    pieChart.data.labels = labels;
+                                    pieChart.data.datasets[0].data = values;
+                                    pieChart.update();
+                                })
+                                .catch(function (e) { console.error('Pie chart – error cargando datos:', e); });
+                        }
+
+                        var initYear = document.getElementById('pie-year-select')
+                            ? document.getElementById('pie-year-select').value
+                            : '2025';
+                        loadPieData(initYear);
+
                         var yearSel = document.getElementById('pie-year-select');
                         if (yearSel) {
                             yearSel.addEventListener('change', function () {
-                                var result = calcPorcentajes(this.value);
-                                pieChart.data.labels = result.labels;
-                                pieChart.data.datasets[0].data = result.values;
-                                pieChart.update();
+                                loadPieData(this.value);
                             });
                         }
                     })();
@@ -3514,16 +3514,7 @@
                                         type: 'linear',
                                         position: 'right',
                                         grid: { drawOnChartArea: false },
-                                        title: {
-                                            display: true,
-                                            text: 'Área construida urbana y rural  2016 - 2026 (metros cuadrados)',
-                                            font: { size: 11, weight: '600' }
-                                        },
-                                        ticks: {
-                                            callback: function (v) {
-                                                return v.toLocaleString('es-CO');
-                                            }
-                                        }
+                                        ticks: { display: false }
                                     }
                                 }
                             }
