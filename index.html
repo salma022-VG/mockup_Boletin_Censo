@@ -1543,6 +1543,19 @@
                 box-shadow: 0 4px 12px rgba(196, 30, 30, 0.12);
             }
 
+            .chart-predios-total {
+                font-size: 0.78rem;
+                color: #888;
+                text-align: center;
+                margin: -4px 0 10px;
+                letter-spacing: 0.01em;
+            }
+
+            .chart-predios-total strong {
+                color: rgba(196, 30, 30, 0.9);
+                font-weight: 700;
+            }
+
             .chart-canvas-wrap {
                 position: relative;
                 height: 280px;
@@ -2274,7 +2287,19 @@
                 <div class="chart-card reveal-scale" data-delay="0">
                     <div class="chart-card-header">
                         <h3>Arriendo Promedio por Localidad</h3>
-                        <span class="chart-badge">2025-2026</span>
+                        <div class="chart-filter">
+                            <label for="bar-year-select">Año</label>
+                            <select id="bar-year-select" class="chart-filter-select">
+                                <option value="2026" selected>2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-predios-total">
+                        Total predios registrados: <strong id="bar-predios-total">2.929.879</strong>
                     </div>
                     <div class="chart-canvas-wrap">
                         <canvas id="chart-bar"></canvas>
@@ -2315,7 +2340,14 @@
                 <div class="chart-card chart-card-wide reveal-scale" data-delay="100">
                     <div class="chart-card-header">
                         <h3>Comparación Anual: Arriendos vs Ventas</h3>
-                        <span class="chart-badge">2019 – 2026</span>
+                        <div class="chart-filter">
+                            <label for="line-series-select">Serie</label>
+                            <select id="line-series-select" class="chart-filter-select">
+                                <option value="both" selected>Ambos</option>
+                                <option value="arriendos">Solo Arriendos</option>
+                                <option value="ventas">Solo Ventas</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="chart-canvas-wrap chart-canvas-wide">
                         <canvas id="chart-line"></canvas>
@@ -2997,19 +3029,21 @@
                             'Fontibón', 'Engativá', 'Teusaquillo', 'Barrios Unidos',
                             'Santa Fe', 'Bosa'
                         ];
-                        var arriendos = [
-                            2850000, 2400000, 1680000, 980000,
-                            1520000, 1200000, 1950000, 1650000,
-                            850000, 720000
-                        ];
+                        var barData = {
+                            '2026': [2850000, 2400000, 1680000, 980000, 1520000, 1200000, 1950000, 1650000, 850000, 720000],
+                            '2025': [2710000, 2280000, 1600000, 930000, 1445000, 1140000, 1855000, 1570000, 808000, 685000],
+                            '2024': [2570000, 2165000, 1520000, 885000, 1370000, 1080000, 1760000, 1490000, 768000, 650000],
+                            '2023': [2380000, 2000000, 1410000, 820000, 1270000, 1000000, 1630000, 1380000, 710000, 600000],
+                            '2022': [2150000, 1810000, 1280000, 745000, 1150000, 910000, 1475000, 1250000, 645000, 545000]
+                        };
 
-                        new Chart(ctx, {
+                        var barChart = new Chart(ctx, {
                             type: 'bar',
                             data: {
                                 labels: localidades,
                                 datasets: [{
                                     label: 'Arriendo promedio (COP)',
-                                    data: arriendos,
+                                    data: barData['2026'],
                                     backgroundColor: function (context) {
                                         var chart = context.chart;
                                         var ctx2 = chart.ctx;
@@ -3065,6 +3099,26 @@
                                 }
                             }
                         });
+
+                        var barPrediosTotals = {
+                            '2026': 2929879,
+                            '2025': 2873680,
+                            '2024': 2814715,
+                            '2023': 2776362,
+                            '2022': 2742388
+                        };
+
+                        var barYearSel = document.getElementById('bar-year-select');
+                        if (barYearSel) {
+                            barYearSel.addEventListener('change', function () {
+                                barChart.data.datasets[0].data = barData[this.value];
+                                barChart.update();
+                                var totalEl = document.getElementById('bar-predios-total');
+                                if (totalEl) {
+                                    totalEl.textContent = (barPrediosTotals[this.value] || 0).toLocaleString('es-CO');
+                                }
+                            });
+                        }
                     })();
 
                     // ───── GRÁFICA DE PASTEL: Distribución por tipo de inmueble ─────
@@ -3199,7 +3253,7 @@
                         var arriendos = [38500, 34200, 41800, 52300, 61700, 68400, 74200, 79500];
                         var ventas = [22400, 18700, 26100, 31500, 35800, 39200, 42100, 45600];
 
-                        new Chart(ctx, {
+                        var lineChart = new Chart(ctx, {
                             type: 'line',
                             data: {
                                 labels: anios,
@@ -3285,6 +3339,16 @@
                                 }
                             }
                         });
+
+                        var lineSeriesSel = document.getElementById('line-series-select');
+                        if (lineSeriesSel) {
+                            lineSeriesSel.addEventListener('change', function () {
+                                var val = this.value;
+                                lineChart.data.datasets[0].hidden = (val === 'ventas');
+                                lineChart.data.datasets[1].hidden = (val === 'arriendos');
+                                lineChart.update();
+                            });
+                        }
                     })();
 
                     // ───── GRÁFICA COMBINADA: Aumentos netos y variaciones en área construida ─────
