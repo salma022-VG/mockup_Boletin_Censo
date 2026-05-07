@@ -1430,6 +1430,191 @@
             padding: 60px 24px 80px;
         }
 
+        /* ─── HALLAZGOS SECTION ─────────────────────────────── */
+        .hallazgos-section { background: #fff; }
+
+        .hallazgos-kpis {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto 48px;
+            justify-content: center;
+        }
+        .hkpi-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--bg-light);
+            border: 1px solid rgba(0,0,0,0.07);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            min-width: 180px;
+            flex: 1 1 180px;
+            max-width: 220px;
+            transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+        }
+        .hkpi-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-3px); }
+        .hkpi-icon { font-size: 2rem; line-height: 1; }
+        .hkpi-body { display: flex; flex-direction: column; }
+        .hkpi-val { font-size: 1.35rem; font-weight: 700; color: var(--color-red); line-height: 1.2; }
+        .hkpi-lbl { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; line-height: 1.3; }
+        .kpis-final-section {
+            background: var(--bg-light);
+            padding: 48px 24px 64px;
+            border-top: 1px solid rgba(0,0,0,0.07);
+        }
+        .kpis-final-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hallazgos-dist-wrap {
+            max-width: 1200px;
+            margin: 0 auto 28px;
+        }
+        .hallazgos-dist-card .hallazgos-dist-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+        }
+        .hallazgos-dist-card .hgrupos-list {
+            flex: 1;
+            padding: 14px 16px 4px;
+        }
+        .hallazgos-dist-nota {
+            width: 260px;
+            flex-shrink: 0;
+            border-left: 1px solid rgba(0,0,0,0.07);
+            padding: 14px 16px;
+            margin: 0;
+            align-self: stretch;
+            display: flex;
+            align-items: center;
+        }
+        @media (max-width: 900px) {
+            .hallazgos-dist-card .hallazgos-dist-inner { flex-direction: column; }
+            .hallazgos-dist-nota { width: auto; border-left: none; border-top: 1px solid rgba(0,0,0,0.07); }
+        }
+
+        .hallazgos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        @media (max-width: 900px) { .hallazgos-grid { grid-template-columns: 1fr; } }
+
+
+        .hallazgos-card {
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(0,0,0,0.07);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+        .hallazgos-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+        .hallazgos-card-header h3 { font-size: 1rem; font-weight: 600; color: var(--text-dark); }
+        .hallazgos-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: var(--color-red);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .hallazgos-table {
+            width: 130%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        .hallazgos-table thead tr { background: rgba(196,30,30,0.07); }
+        .hallazgos-table th {
+            text-align: left;
+            padding: 9px 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .hallazgos-table td { padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .hallazgos-table tbody tr:hover { background: rgba(196,30,30,0.04); }
+        .hallazgos-table tr.tr-muted td { color: var(--text-muted); }
+
+        .hallazgos-nota {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            padding: 10px 14px 12px;
+            line-height: 1.5;
+        }
+        .hallazgos-scroll-wrap {
+             max-height: 600px;  /* ajusta aquí */
+            overflow-y: auto;   /* aparece scroll si se pasa */
+        }
+
+        /* Barras de grupos económicos */
+        .hgrupos-list { padding: 14px 16px 4px; }
+        .hg-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .hg-label { font-size: 0.78rem; color: var(--text-dark); min-width: 140px; max-width: 160px; }
+        .hg-bar-wrap { flex: 1; background: rgba(0,0,0,0.07); border-radius: 4px; height: 10px; overflow: hidden; }
+        .hg-bar { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .hg-pct { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); min-width: 42px; text-align: right; }
+
+        /* Timeline liderazgo */
+        .hlider-timeline {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 0;
+            padding: 32px 32px 24px;
+        }
+        .hlider-group { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+        .hlider-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 7px 18px;
+            border-radius: 20px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+        .hlider-group.usaquen .hlider-label { background: rgba(245,166,35,0.18); color: #a07010; }
+        .hlider-group.suba    .hlider-label { background: rgba(196,30,30,0.12);  color: var(--color-red); }
+        .hlider-años { display: flex; gap: 10px; flex-wrap: wrap; }
+        .hlider-años span {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+        .hlider-años small { display: block; font-weight: 500; font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
+        .hlider-group.usaquen .hlider-años span { background: rgba(245,166,35,0.13); }
+        .hlider-group.suba    .hlider-años span { background: rgba(196,30,30,0.09); }
+        .hlider-arrow {
+            font-size: 2rem;
+            color: var(--text-muted);
+            align-self: center;
+            padding: 0 28px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        /* ─── FIN HALLAZGOS ─────────────────────────────────── */
+
         .charts-header {
             text-align: center;
             margin-bottom: 40px;
@@ -2186,37 +2371,37 @@
         <div class="stats-container">
             <div class="stats-row-primary">
                 <div class="stat-card reveal-scale" data-delay="0">
-                    <span class="stat-card-label">Avalúo Total</span>
-                    <span class="stat-card-value" id="stat-avaluo" data-counter="120000000000" data-prefix="$"
+                    <span class="stat-card-label">Avalúo Total 2026</span>
+                    <span class="stat-card-value" id="stat-avaluo" data-counter="938250000000000" data-prefix="$"
                         data-format="currency">$0</span>
                     <span class="stat-trend up">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +12.4%
+                        +235% vs 2012
                     </span>
                 </div>
 
                 <div class="stat-card reveal-scale" data-delay="150">
-                    <span class="stat-card-label">Predios Nuevos</span>
-                    <span class="stat-card-value" id="stat-nuevos" data-counter="18420" data-format="number">0</span>
+                    <span class="stat-card-label">Predios Nuevos 2026</span>
+                    <span class="stat-card-value" id="stat-nuevos" data-counter="56199" data-format="number">0</span>
                     <span class="stat-trend up">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +8.7%
+                        +2.0% vs 2025
                     </span>
                 </div>
 
                 <div class="stat-card reveal-scale" data-delay="300">
-                    <span class="stat-card-label">Total Predios</span>
-                    <span class="stat-card-value accent" id="stat-total" data-counter="1580000"
+                    <span class="stat-card-label">Total Predios 2026</span>
+                    <span class="stat-card-value accent" id="stat-total" data-counter="2929879"
                         data-format="number">0</span>
                     <span class="stat-trend up">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +3.2%
+                        +29% vs 2012
                     </span>
                 </div>
 
@@ -2354,12 +2539,16 @@
             <!-- Segmentadores Rural / Urbano (se movieron junto a las tarjetas de estadísticas) -->
         </div>
         <div class="about-wrapper">
-            <h2>¿Que es un censo inmobiliario</h2>
-            <p>El <strong>censo inmobiliario</strong> es un proceso de recopilación y registro sistemático de
-                información sobre los predios, edificaciones y usos del suelo en una zona determinada. Su objetivo es
-                identificar y actualizar datos como ubicación, características físicas, uso y estado de los inmuebles
-                para apoyar la planificación urbana, la gestión territorial y la toma de decisiones en ciudades como
-                Bogotá.
+            <h2>¿Qué es el Catastro Distrital?</h2>
+            <p>El <strong>catastro distrital</strong> es el inventario oficial de los bienes inmuebles de Bogotá D.C. Registra
+                la ubicación, características físicas, uso del suelo y valor de cada predio para apoyar la planificación
+                urbana, la equidad tributaria y la toma de decisiones territoriales.</p>
+            <p style="margin-top:12px;">Entre <strong>2012 y 2026</strong> el catastro incorporó más de
+                <strong>660.000 nuevos predios</strong>, alcanzando un total de <strong>2.929.879 unidades</strong>.
+                El avalúo catastral total creció de <strong>$280 billones</strong> a <strong>$938 billones COP</strong>,
+                un aumento del <strong>235 %</strong> en términos nominales, impulsado por la expansión residencial
+                de localidades como Suba y Engativá, y por las actualizaciones masivas de valores unitarios
+                aplicadas a partir de 2022.</p>
         </div>
     </section>
 
@@ -2443,67 +2632,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Fila 2: Comparación anual -->
-        <div class="charts-row charts-row-full">
-            <div class="chart-card chart-card-wide reveal-scale" data-delay="100">
-                <div class="chart-card-header">
-                    <h3>Comparación Anual: Arriendos vs Ventas</h3>
-                    <div class="chart-filter">
-                        <label for="line-series-select">Serie</label>
-                        <select id="line-series-select" class="chart-filter-select">
-                            <option value="both" selected>Ambos</option>
-                            <option value="arriendos">Solo Arriendos</option>
-                            <option value="ventas">Solo Ventas</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="chart-canvas-wrap chart-canvas-wide">
-                    <canvas id="chart-line"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fila 3: Aumentos netos y variaciones en área construida -->
-        <div class="charts-row charts-row-full">
-            <div class="chart-card chart-card-wide reveal-scale" data-delay="200">
-                <div class="chart-card-header">
-                    <h3>Área construida urbana y rural 2016 - 2026 (metros cuadrados)</h3>
-                    <div class="chart-filter">
-                        <label for="localidad-select">Localidad</label>
-                        <select id="localidad-select" class="chart-filter-select">
-                            <option value="Bogotá D.C.">Bogotá D.C.</option>
-                            <option value="Usaquén">Usaquén</option>
-                            <option value="Chapinero">Chapinero</option>
-                            <option value="Santa Fe">Santa Fe</option>
-                            <option value="San Cristóbal">San Cristóbal</option>
-                            <option value="Usme">Usme</option>
-                            <option value="Tunjuelito">Tunjuelito</option>
-                            <option value="Bosa">Bosa</option>
-                            <option value="Kennedy">Kennedy</option>
-                            <option value="Fontibón">Fontibón</option>
-                            <option value="Engativá">Engativá</option>
-                            <option value="Suba">Suba</option>
-                            <option value="Barrios Unidos">Barrios Unidos</option>
-                            <option value="Teusaquillo">Teusaquillo</option>
-                            <option value="Los Mártires">Los Mártires</option>
-                            <option value="Antonio Nariño">Antonio Nariño</option>
-                            <option value="Puente Aranda">Puente Aranda</option>
-                            <option value="La Candelaria">La Candelaria</option>
-                            <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
-                            <option value="Ciudad Bolívar">Ciudad Bolívar</option>
-                            <option value="Sumapaz">Sumapaz</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="chart-canvas-wrap chart-canvas-wide">
-                    <canvas id="chart-area-variation"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de gráfica de localidades con datos JSON -->
     <section id="locality-chart" class="locality-chart-section">
         <div class="locality-chart-header reveal">
             <h2>Información por Localidades</h2>
@@ -2562,6 +2690,238 @@
             </div>
         </div>
     </section>
+
+        <!-- Fila 3: Aumentos netos y variaciones en área construida -->
+        <div class="charts-row charts-row-full">
+            <div class="chart-card chart-card-wide reveal-scale" data-delay="200">
+                <div class="chart-card-header">
+                    <h3>Área construida urbana y rural 2016 - 2026 (metros cuadrados)</h3>
+                    <div class="chart-filter">
+                        <label for="localidad-select">Localidad</label>
+                        <select id="localidad-select" class="chart-filter-select">
+                            <option value="Bogotá D.C.">Bogotá D.C.</option>
+                            <option value="Usaquén">Usaquén</option>
+                            <option value="Chapinero">Chapinero</option>
+                            <option value="Santa Fe">Santa Fe</option>
+                            <option value="San Cristóbal">San Cristóbal</option>
+                            <option value="Usme">Usme</option>
+                            <option value="Tunjuelito">Tunjuelito</option>
+                            <option value="Bosa">Bosa</option>
+                            <option value="Kennedy">Kennedy</option>
+                            <option value="Fontibón">Fontibón</option>
+                            <option value="Engativá">Engativá</option>
+                            <option value="Suba">Suba</option>
+                            <option value="Barrios Unidos">Barrios Unidos</option>
+                            <option value="Teusaquillo">Teusaquillo</option>
+                            <option value="Los Mártires">Los Mártires</option>
+                            <option value="Antonio Nariño">Antonio Nariño</option>
+                            <option value="Puente Aranda">Puente Aranda</option>
+                            <option value="La Candelaria">La Candelaria</option>
+                            <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
+                            <option value="Ciudad Bolívar">Ciudad Bolívar</option>
+                            <option value="Sumapaz">Sumapaz</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chart-canvas-wrap chart-canvas-wide">
+                    <canvas id="chart-area-variation"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SECCIÓN: HALLAZGOS DEL CATASTRO 2012–2026
+         ══════════════════════════════════════════════════════ -->
+    <section id="hallazgos" class="charts-section hallazgos-section">
+        <div class="charts-header reveal">
+            <h2>Hallazgos del Catastro Distrital</h2>
+            <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2012–2026)</p>
+        </div>
+
+        <!-- Distribución por uso del suelo: ancho completo -->
+        <div class="hallazgos-dist-wrap reveal-scale">
+            <div class="hallazgos-card hallazgos-dist-card">
+                <div class="hallazgos-card-header">
+                    <h3>Distribución por uso del suelo</h3>
+                    <span class="hallazgos-badge">2026</span>
+                </div>
+                <div class="hallazgos-dist-inner">
+                    <div class="hgrupos-list">
+                        <div class="hg-row">
+                            <span class="hg-label">Residencial</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:59.4%;background:#c41e1e;"></div></div>
+                            <span class="hg-pct">59,4 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Otros</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:12.7%;background:#e06020;"></div></div>
+                            <span class="hg-pct">12,7 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Oficinas</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:9.2%;background:#f5a623;"></div></div>
+                            <span class="hg-pct">9,2 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Comercio</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:7.0%;background:#3b82f6;"></div></div>
+                            <span class="hg-pct">7,0 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Bodegas</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:5.8%;background:#6366f1;"></div></div>
+                            <span class="hg-pct">5,8 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Universidades / Colegios</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:3.3%;background:#10b981;"></div></div>
+                            <span class="hg-pct">3,3 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Industria</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:1.3%;background:#64748b;"></div></div>
+                            <span class="hg-pct">1,3 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Hoteles</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:0.7%;background:#f59e0b;"></div></div>
+                            <span class="hg-pct">0,7 %</span>
+                        </div>
+                        <div class="hg-row">
+                            <span class="hg-label">Clínicas / Hospitales</span>
+                            <div class="hg-bar-wrap"><div class="hg-bar" style="width:0.6%;background:#ec4899;"></div></div>
+                            <span class="hg-pct">0,6 %</span>
+                        </div>
+                    </div>
+                    <p class="hallazgos-nota hallazgos-dist-nota">Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios.
+                        Oficinas genera el 9,2 % del avalúo con solo el 2,5 % de los predios.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dos columnas simétricas: ranking + avalúo promedio -->
+        <div class="hallazgos-grid reveal-scale">
+
+            <!-- Columna 1: Ranking localidades 2026 -->
+            <div class="hallazgos-card">
+                <div class="hallazgos-card-header">
+                    <h3>Ranking de localidades por avalúo</h3>
+                    <span class="hallazgos-badge">2026</span>
+                </div>
+                <div class="hallazgos-scroll-wrap">
+                <table class="hallazgos-table">
+                    <thead>
+                        <tr><th>#</th><th>Localidad</th><th>Avalúo</th><th>% total</th><th>Predios</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td><strong>Suba</strong></td><td>$146,6 B</td><td>15,6 %</td><td>529.488</td></tr>
+                        <tr><td>2</td><td>Usaquén</td><td>$136,5 B</td><td>14,5 %</td><td>392.157</td></tr>
+                        <tr><td>3</td><td>Chapinero</td><td>$95,8 B</td><td>10,2 %</td><td>190.907</td></tr>
+                        <tr><td>4</td><td>Kennedy</td><td>$79,8 B</td><td>8,5 %</td><td>311.568</td></tr>
+                        <tr><td>5</td><td>Engativá</td><td>$78,1 B</td><td>8,3 %</td><td>241.842</td></tr>
+                        <tr><td>6</td><td>Fontibón</td><td>$76,8 B</td><td>8,2 %</td><td>196.808</td></tr>
+                        <tr><td>7</td><td>Teusaquillo</td><td>$50,0 B</td><td>5,3 %</td><td>94.604</td></tr>
+                        <tr><td>8</td><td>Puente Aranda</td><td>$44,9 B</td><td>4,8 %</td><td>83.703</td></tr>
+                        <tr><td>9</td><td>Bosa</td><td>$34,5 B</td><td>3,7 %</td><td>178.371</td></tr>
+                        <tr><td>10</td><td>Barrios Unidos</td><td>$32,3 B</td><td>3,4 %</td><td>64.048</td></tr>
+                        <tr class="tr-muted"><td>11</td><td>Ciudad Bolívar</td><td>$28,9 B</td><td>3,1 %</td><td>164.393</td></tr>
+                        <tr class="tr-muted"><td>12</td><td>Santa Fe</td><td>$25,8 B</td><td>2,8 %</td><td>75.514</td></tr>
+                        <tr class="tr-muted"><td>13</td><td>Rafael Uribe</td><td>$20,8 B</td><td>2,2 %</td><td>88.570</td></tr>
+                        <tr class="tr-muted"><td>14</td><td>Los Mártires</td><td>$20,4 B</td><td>2,2 %</td><td>45.082</td></tr>
+                        <tr class="tr-muted"><td>15</td><td>San Cristóbal</td><td>$17,8 B</td><td>1,9 %</td><td>95.701</td></tr>
+                        <tr class="tr-muted"><td>16</td><td>Tunjuelito</td><td>$13,8 B</td><td>1,5 %</td><td>34.384</td></tr>
+                        <tr class="tr-muted"><td>17</td><td>Usme</td><td>$13,4 B</td><td>1,4 %</td><td>99.149</td></tr>
+                        <tr class="tr-muted"><td>18</td><td>Antonio Nariño</td><td>$12,8 B</td><td>1,4 %</td><td>26.177</td></tr>
+                        <tr class="tr-muted"><td>19</td><td>La Candelaria</td><td>$8,8 B</td><td>0,9 %</td><td>15.610</td></tr>
+                        <tr class="tr-muted"><td>20</td><td>Sumapaz</td><td>$0,3 B</td><td>0,0 %</td><td>1.803</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="hallazgos-nota">Las 20 localidades de Bogotá D.C. · B = billones de pesos colombianos corrientes · Total: $938,3 B</p>
+            </div>
+
+            <!-- Columna 2: Avalúo promedio por predio -->
+            <div class="hallazgos-card">
+                <div class="hallazgos-card-header">
+                    <h3>Avalúo promedio por predio</h3>
+                    <span class="hallazgos-badge">2026</span>
+                </div>
+                <div class="hallazgos-scroll-wrap">
+                <table class="hallazgos-table">
+                    <thead><tr><th>#</th><th>Localidad</th><th>Avg / predio</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td><strong>La Candelaria</strong></td><td>$565,7 M</td></tr>
+                        <tr><td>2</td><td>Puente Aranda</td><td>$536,7 M</td></tr>
+                        <tr><td>3</td><td>Teusaquillo</td><td>$528,8 M</td></tr>
+                        <tr><td>4</td><td>Barrios Unidos</td><td>$504,6 M</td></tr>
+                        <tr><td>5</td><td>Chapinero</td><td>$501,9 M</td></tr>
+                        <tr><td>6</td><td>Antonio Nariño</td><td>$488,9 M</td></tr>
+                        <tr><td>7</td><td>Los Mártires</td><td>$452,5 M</td></tr>
+                        <tr><td>8</td><td>Tunjuelito</td><td>$401,6 M</td></tr>
+                        <tr><td>9</td><td>Fontibón</td><td>$390,2 M</td></tr>
+                        <tr><td>10</td><td>Usaquén</td><td>$348,1 M</td></tr>
+                        <tr class="tr-muted"><td>11</td><td>Santa Fe</td><td>$341,7 M</td></tr>
+                        <tr class="tr-muted"><td>12</td><td>Engativá</td><td>$322,9 M</td></tr>
+                        <tr class="tr-muted"><td>13</td><td>Suba</td><td>$276,9 M</td></tr>
+                        <tr class="tr-muted"><td>14</td><td>Kennedy</td><td>$256,1 M</td></tr>
+                        <tr class="tr-muted"><td>15</td><td>Rafael Uribe</td><td>$234,9 M</td></tr>
+                        <tr class="tr-muted"><td>16</td><td>Bosa</td><td>$193,4 M</td></tr>
+                        <tr class="tr-muted"><td>17</td><td>San Cristóbal</td><td>$186,0 M</td></tr>
+                        <tr class="tr-muted"><td>18</td><td>Ciudad Bolívar</td><td>$176,1 M</td></tr>
+                        <tr class="tr-muted"><td>19</td><td>Sumapaz</td><td>$166,4 M</td></tr>
+                        <tr class="tr-muted"><td>20</td><td>Usme</td><td>$135,1 M</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="hallazgos-nota">M = millones COP por predio · La Candelaria lidera pese a tener solo 15.610 predios, por concentración de uso institucional y comercial de alto valor en el centro histórico.</p>
+            </div>
+
+        </div><!-- /hallazgos-grid -->
+
+        <!-- Línea de tiempo del liderazgo -->
+        <div class="hallazgos-liderazgo reveal" style="margin-top:40px;">
+            <div class="hallazgos-card" style="max-width:1200px;margin:0 auto;">
+                <div class="hallazgos-card-header">
+                    <h3>Localidad con mayor avalúo por año</h3>
+                    <span class="hallazgos-badge" style="background:#1a1a1a;">2012–2026</span>
+                </div>
+                <div class="hlider-timeline">
+                    <div class="hlider-group usaquen">
+                        <div class="hlider-label">Usaquén (2012–2021)</div>
+                        <div class="hlider-años">
+                            <span>2012<br><small>$46,3 B</small></span>
+                            <span>2013<br><small>$59,7 B</small></span>
+                            <span>2014<br><small>$66,9 B</small></span>
+                            <span>2015<br><small>$77,6 B</small></span>
+                            <span>2016<br><small>$84,8 B</small></span>
+                            <span>2017<br><small>$88,8 B</small></span>
+                            <span>2018<br><small>$97,3 B</small></span>
+                            <span>2019<br><small>$102,0 B</small></span>
+                            <span>2020<br><small>$107,3 B</small></span>
+                            <span>2021<br><small>$108,2 B</small></span>
+                        </div>
+                    </div>
+                    <div class="hlider-arrow">→</div>
+                    <div class="hlider-group suba">
+                        <div class="hlider-label">Suba (2022–2026)</div>
+                        <div class="hlider-años">
+                            <span>2022<br><small>$113,1 B</small></span>
+                            <span>2023<br><small>$122,1 B</small></span>
+                            <span>2024<br><small>$127,7 B</small></span>
+                            <span>2025<br><small>$143,6 B</small></span>
+                            <span>2026<br><small>$146,6 B</small></span>
+                        </div>
+                    </div>
+                </div>
+                <p class="hallazgos-nota" style="text-align:center;">A partir de 2022, Suba supera a Usaquén impulsada por su
+                    intenso desarrollo residencial y comercial en el norte de Bogotá.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Sección de gráfica de localidades con datos JSON -->
 
 
 
@@ -4120,6 +4480,58 @@
         })();
 
     </script>
+
+
+
+    <section class="kpis-final-section">
+        <div class="kpis-final-inner">
+        <div class="hallazgos-kpis reveal">
+            <div class="hkpi-card">
+                <div class="hkpi-icon">📈</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">+235 %</span>
+                    <span class="hkpi-lbl">Crecimiento avalúo<br>2012 → 2026</span>
+                </div>
+            </div>
+            <div class="hkpi-card">
+                <div class="hkpi-icon">🏘️</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">2.929.879</span>
+                    <span class="hkpi-lbl">Predios registrados<br>en 2026</span>
+                </div>
+            </div>
+            <div class="hkpi-card">
+                <div class="hkpi-icon">🏗️</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">31.104 ha</span>
+                    <span class="hkpi-lbl">Área construida<br>total 2026</span>
+                </div>
+            </div>
+            <div class="hkpi-card">
+                <div class="hkpi-icon">💰</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">$938,25 B</span>
+                    <span class="hkpi-lbl">Avalúo total 2026<br>(pesos corrientes)</span>
+                </div>
+            </div>
+            <div class="hkpi-card">
+                <div class="hkpi-icon">📅</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">2025</span>
+                    <span class="hkpi-lbl">Mayor incremento anual<br>+$96 B COP en un año</span>
+                </div>
+            </div>
+            <div class="hkpi-card">
+                <div class="hkpi-icon">🔄</div>
+                <div class="hkpi-body">
+                    <span class="hkpi-val">2022</span>
+                    <span class="hkpi-lbl">Suba desplaza a Usaquén<br>como localidad líder</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
 </body>
 
 </html>
