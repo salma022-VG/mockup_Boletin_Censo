@@ -2626,26 +2626,72 @@
         <!-- Fila 1: Barras + Pastel -->
         <div class="charts-row">
             <div class="chart-card reveal-scale" data-delay="0">
-                <div class="chart-card-header">
-                    <h3>Conteo de predios</h3>
+                <div class="chart-card-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                    <h3 style="width:100%;margin:0;">Predios urbanos y rurales 2016–2026</h3>
                     <div class="chart-filter">
-                        <label for="bar-year-select">Año</label>
-                        <select id="bar-year-select" class="chart-filter-select">
-                            <option value="2026" selected>2026</option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
+                        <label for="predios-year-select">Año</label>
+                        <select id="predios-year-select" class="chart-filter-select">
+                            <option value="10" selected>2026</option>
+                            <option value="9">2025</option>
+                            <option value="8">2024</option>
+                            <option value="7">2023</option>
+                            <option value="6">2022</option>
+                            <option value="5">2021</option>
+                            <option value="4">2020</option>
+                            <option value="3">2019</option>
+                            <option value="2">2018</option>
+                            <option value="1">2017</option>
+                            <option value="0">2016</option>
+                        </select>
+                        <label for="predios-loc-select">Localidad</label>
+                        <select id="predios-loc-select" class="chart-filter-select">
+                            <option value="Usaquén">Usaquén</option>
+                            <option value="Chapinero">Chapinero</option>
+                            <option value="Santa Fe">Santa Fe</option>
+                            <option value="San Cristóbal">San Cristóbal</option>
+                            <option value="Usme">Usme</option>
+                            <option value="Tunjuelito">Tunjuelito</option>
+                            <option value="Bosa">Bosa</option>
+                            <option value="Kennedy">Kennedy</option>
+                            <option value="Fontibón">Fontibón</option>
+                            <option value="Engativá">Engativá</option>
+                            <option value="Suba">Suba</option>
+                            <option value="Barrios Unidos">Barrios Unidos</option>
+                            <option value="Teusaquillo">Teusaquillo</option>
+                            <option value="Los Mártires">Los Mártires</option>
+                            <option value="Antonio Nariño">Antonio Nariño</option>
+                            <option value="Puente Aranda">Puente Aranda</option>
+                            <option value="La Candelaria">La Candelaria</option>
+                            <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
+                            <option value="Ciudad Bolívar">Ciudad Bolívar</option>
+                            <option value="Sumapaz">Sumapaz</option>
+                            <option value="Bogotá D.C." selected>Bogotá D.C.</option>
                         </select>
                     </div>
+                </div>
+                <div id="predios-stats-bar" style="display:flex;gap:24px;padding:4px 16px 10px;font-size:12px;font-weight:600;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">
+                    <span style="display:flex;align-items:center;gap:6px;">
+                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(52,152,219,0.8);flex-shrink:0;"></span>
+                        <span style="color:#555;">Urbano:</span>
+                        <span id="predios-stat-urb" style="color:rgba(52,152,219,1);">–</span>
+                    </span>
+                    <span style="display:flex;align-items:center;gap:6px;">
+                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(46,204,113,0.8);flex-shrink:0;"></span>
+                        <span style="color:#555;">Rural:</span>
+                        <span id="predios-stat-rur" style="color:rgba(46,204,113,1);">–</span>
+                    </span>
+                    <span style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+                        <span style="color:#888;">Total:</span>
+                        <span id="predios-stat-total" style="color:#333;font-weight:700;">–</span>
+                    </span>
                 </div>
                 <div class="chart-canvas-wrap">
                     <canvas id="chart-bar"></canvas>
                 </div>
             </div>
             <div class="chart-card reveal-scale" data-delay="200">
-                <div class="chart-card-header">
-                    <h3>Distribución por Tipo de Inmueble</h3>
+                <div class="chart-card-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                    <h3 style="width:100%;margin:0;">Distribución por uso predominante</h3>
                     <div class="chart-filter">
                         <label for="pie-year-select">Año</label>
                         <select id="pie-year-select" class="chart-filter-select">
@@ -3589,57 +3635,207 @@
                 Chart.defaults.font.size = 11;
                 Chart.defaults.color = '#777';
 
-                // ───── GRÁFICA DE BARRAS: Arriendo promedio por localidad ─────
+                // ───── GRÁFICA CONTEO DE PREDIOS: Urbano + Rural + Variación anual ─────
                 (function () {
                     var ctx = document.getElementById('chart-bar');
                     if (!ctx) return;
 
-                    var localidades = [
-                        'Chapinero', 'Usaquén', 'Suba', 'Kennedy',
-                        'Fontibón', 'Engativá', 'Teusaquillo', 'Barrios Unidos',
-                        'Santa Fe', 'Bosa'
-                    ];
-                    var barData = {
-                        '2026': [2850000, 2400000, 1680000, 980000, 1520000, 1200000, 1950000, 1650000, 850000, 720000],
-                        '2025': [2710000, 2280000, 1600000, 930000, 1445000, 1140000, 1855000, 1570000, 808000, 685000],
-                        '2024': [2570000, 2165000, 1520000, 885000, 1370000, 1080000, 1760000, 1490000, 768000, 650000],
-                        '2023': [2380000, 2000000, 1410000, 820000, 1270000, 1000000, 1630000, 1380000, 710000, 600000],
-                        '2022': [2150000, 1810000, 1280000, 745000, 1150000, 910000, 1475000, 1250000, 645000, 545000]
-                    };
+                    var AÑOS_PRED = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+                    var CERO11 = [0,0,0,0,0,0,0,0,0,0,0];
+                    var NULL11 = [null,null,null,null,null,null,null,null,null,null,null];
 
-                    var barChart = new Chart(ctx, {
+                    function buildPrediosSeries(nombre) {
+                        if (nombre === 'Bogotá D.C.') {
+                            return {
+                                urbano:     [2451827,2509438,2549879,2585706,2623404,2647194,2683061,2716774,2754849,2813797,2869895],
+                                rural:      [29879,33852,37347,57960,58482,59119,59327,59588,59866,59883,59984],
+                                variaciones:[null,3.4,2.5,2.5,2.5,1.9,2.2,2.5,1.7,2.2,1.4]
+                            };
+                        }
+                        if (nombre === 'Usaquén') {
+                            return {
+                                urbano:     [334042,344491,351401,358834,364634,366752,371734,375301,381014,386040,389841],
+                                rural:      [2017,2012,2152,2278,2355,2352,2375,2388,2428,2374,2316],
+                                variaciones:[null,3.1,2.0,2.1,1.6,0.6,1.4,1.0,1.5,1.3,1.0]
+                            };
+                        }
+                        if (nombre === 'Chapinero') {
+                            return {
+                                urbano:     [166912,170451,169804,171699,173631,175541,177748,178998,181875,183909,187193],
+                                rural:      [1131,1132,3611,3659,3684,3692,3707,3723,3727,3736,3714],
+                                variaciones:[null,2.1,1.1,1.1,1.1,1.1,1.2,0.7,1.6,1.1,1.7]
+                            };
+                        }
+                        if (nombre === 'Santa Fe') {
+                            return {
+                                urbano:     [59908,62139,63615,64626,65403,67197,67883,69228,70397,72215,74635],
+                                rural:      [781,781,777,872,869,870,871,876,869,874,879],
+                                variaciones:[null,3.7,2.3,1.7,1.2,2.7,1.0,2.0,1.6,2.6,3.3]
+                            };
+                        }
+                        if (nombre === 'San Cristóbal') {
+                            return {
+                                urbano:     [82519,83916,85789,87158,88287,89056,89511,91659,91986,92749,93877],
+                                rural:      [2085,2090,823,2027,2027,2026,2029,2034,2033,1844,1824],
+                                variaciones:[null,1.7,0.7,3.0,1.3,0.9,0.5,2.4,0.3,0.6,1.2]
+                            };
+                        }
+                        if (nombre === 'Usme') {
+                            return {
+                                urbano:     [81341,84364,85320,87434,88325,89660,89971,90307,91077,93332,94441],
+                                rural:      [3756,3782,4299,4425,4405,4435,4500,4523,4575,4654,4708],
+                                variaciones:[null,3.6,1.7,2.5,0.9,1.5,0.4,0.4,0.9,2.4,1.2]
+                            };
+                        }
+                        if (nombre === 'Tunjuelito') {
+                            return {
+                                urbano:     [33232,33427,33550,33660,33735,33735,33883,33938,34036,34164,34384],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,0.6,0.4,0.3,0.2,0.0,0.4,0.2,0.3,0.4,0.6]
+                            };
+                        }
+                        if (nombre === 'Bosa') {
+                            return {
+                                urbano:     [139143,141716,144593,142861,144276,145532,146394,147132,150015,152908,154545],
+                                rural:      [7872,10401,11982,23016,23157,23702,23714,23756,23732,23791,23826],
+                                variaciones:[null,3.5,2.9,5.9,0.9,1.1,0.5,0.5,1.7,1.7,0.9]
+                            };
+                        }
+                        if (nombre === 'Kennedy') {
+                            return {
+                                urbano:     [269581,273330,277345,272381,275390,279061,282775,285492,287794,292460,299836],
+                                rural:      [4066,4102,4035,11755,11755,11754,11754,11754,11751,11734,11732],
+                                variaciones:[null,1.4,1.4,1.0,1.1,1.3,1.3,0.9,0.8,1.6,2.4]
+                            };
+                        }
+                        if (nombre === 'Fontibón') {
+                            return {
+                                urbano:     [145011,148198,150856,154126,157730,159221,164717,169044,177500,186094,196501],
+                                rural:      [154,175,223,267,276,282,286,288,290,294,307],
+                                variaciones:[null,2.2,1.8,2.2,2.3,0.9,3.4,2.6,5.0,4.8,5.6]
+                            };
+                        }
+                        if (nombre === 'Engativá') {
+                            return {
+                                urbano:     [206307,210626,216691,219909,223262,225140,229896,234376,237175,239221,241829],
+                                rural:      [7,8,6,12,12,12,12,12,13,13,13],
+                                variaciones:[null,2.1,2.9,1.5,1.5,0.8,2.1,1.9,1.2,0.9,1.1]
+                            };
+                        }
+                        if (nombre === 'Suba') {
+                            return {
+                                urbano:     [447594,462319,470348,486279,492143,495448,499379,506247,510200,518957,526737],
+                                rural:      [2616,2626,2654,2686,2782,2784,2787,2806,2814,2787,2751],
+                                variaciones:[null,3.3,1.7,3.4,1.2,0.7,0.8,1.4,0.8,1.7,1.5]
+                            };
+                        }
+                        if (nombre === 'Barrios Unidos') {
+                            return {
+                                urbano:     [55229,56107,56428,56869,58049,59852,60114,60751,61434,62485,64048],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,1.6,0.6,0.8,2.1,3.1,0.4,1.1,1.1,1.7,2.5]
+                            };
+                        }
+                        if (nombre === 'Teusaquillo') {
+                            return {
+                                urbano:     [82313,83637,84476,85820,86970,87710,89417,90306,91269,93023,94604],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,1.6,1.0,1.6,1.3,0.9,1.9,1.0,1.1,1.9,1.7]
+                            };
+                        }
+                        if (nombre === 'Los Mártires') {
+                            return {
+                                urbano:     [33847,34298,34846,35604,37094,37215,37374,38006,39201,43160,45082],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,1.3,1.6,2.2,4.2,0.3,0.4,1.7,3.1,10.1,4.5]
+                            };
+                        }
+                        if (nombre === 'Antonio Nariño') {
+                            return {
+                                urbano:     [21686,21885,22580,22640,23084,23389,23890,24246,24711,25331,26177],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,0.9,3.2,0.3,2.0,1.3,2.1,1.5,1.9,2.5,3.3]
+                            };
+                        }
+                        if (nombre === 'Puente Aranda') {
+                            return {
+                                urbano:     [67380,68934,69455,70889,71881,72123,73280,73652,75085,80694,83703],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,2.3,0.8,2.1,1.4,0.3,1.6,0.5,1.9,7.5,3.7]
+                            };
+                        }
+                        if (nombre === 'La Candelaria') {
+                            return {
+                                urbano:     [14066,14304,14323,14399,14451,14482,15079,15269,15265,15329,15610],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,1.7,0.1,0.5,0.4,0.2,4.1,1.3,0.0,0.4,1.8]
+                            };
+                        }
+                        if (nombre === 'Rafael Uribe Uribe') {
+                            return {
+                                urbano:     [75722,76376,77072,77705,80063,80636,81301,82109,83503,87674,88570],
+                                rural:      CERO11.slice(),
+                                variaciones:[null,0.9,0.9,0.8,3.0,0.7,0.8,1.0,1.7,5.0,1.0]
+                            };
+                        }
+                        if (nombre === 'Ciudad Bolívar') {
+                            return {
+                                urbano:     [135994,138920,141387,142813,144996,145444,148715,150713,151312,154052,158282],
+                                rural:      [3647,5046,5083,5261,5458,5507,5535,5620,5827,5976,6111],
+                                variaciones:[null,3.1,1.7,1.1,1.6,0.3,2.2,1.4,0.5,1.8,2.7]
+                            };
+                        }
+                        if (nombre === 'Sumapaz') {
+                            return {
+                                urbano:     CERO11.slice(),
+                                rural:      [1747,1697,1702,1702,1702,1703,1757,1808,1807,1806,1803],
+                                variaciones:[null,-2.9,0.3,0.0,0.0,0.1,3.2,2.9,-0.1,-0.1,-0.2]
+                            };
+                        }
+                        return { urbano: CERO11.slice(), rural: CERO11.slice(), variaciones: NULL11.slice() };
+                    }
+
+                    var s0 = buildPrediosSeries('Bogotá D.C.');
+
+                    var prediosChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: localidades,
-                            datasets: [{
-                                label: 'Arriendo promedio (COP)',
-                                data: barData['2026'],
-                                backgroundColor: function (context) {
-                                    var chart = context.chart;
-                                    var ctx2 = chart.ctx;
-                                    var area = chart.chartArea;
-                                    if (!area) return red;
-                                    var gradient = ctx2.createLinearGradient(0, area.bottom, 0, area.top);
-                                    gradient.addColorStop(0, 'rgba(196, 30, 30, 0.6)');
-                                    gradient.addColorStop(1, 'rgba(245, 166, 35, 0.85)');
-                                    return gradient;
+                            labels: AÑOS_PRED,
+                            datasets: [
+                                {
+                                    label: 'Urbano',
+                                    data: s0.urbano,
+                                    backgroundColor: 'rgba(52,152,219,0.72)',
+                                    borderColor: 'rgba(52,152,219,1)',
+                                    borderWidth: 1,
+                                    borderRadius: 3,
+                                    stack: 'predios',
+                                    yAxisID: 'yPredios',
+                                    order: 2
                                 },
-                                borderColor: red,
-                                borderWidth: 1,
-                                borderRadius: 6,
-                                borderSkipped: false,
-                                hoverBackgroundColor: red
-                            }]
+                                {
+                                    label: 'Rural',
+                                    data: s0.rural,
+                                    backgroundColor: 'rgba(46,204,113,0.72)',
+                                    borderColor: 'rgba(46,204,113,1)',
+                                    borderWidth: 1,
+                                    borderRadius: 3,
+                                    stack: 'predios',
+                                    yAxisID: 'yPredios',
+                                    order: 2
+                                },
+                            ]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            animation: {
-                                duration: 1200,
-                                easing: 'easeOutQuart'
-                            },
+                            animation: { duration: 800, easing: 'easeOutQuart' },
                             plugins: {
-                                legend: { display: false },
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                    labels: { font: { size: 10 }, padding: 10 }
+                                },
                                 tooltip: {
                                     backgroundColor: 'rgba(30,30,30,0.92)',
                                     titleFont: { weight: '600' },
@@ -3647,34 +3843,76 @@
                                     cornerRadius: 8,
                                     callbacks: {
                                         label: function (ctx) {
-                                            return '$ ' + ctx.raw.toLocaleString('es-CO');
+                                            return ctx.dataset.label + ': ' + ctx.raw.toLocaleString('es-CO');
                                         }
                                     }
                                 }
                             },
                             scales: {
                                 x: {
-                                    grid: { display: false },
-                                    ticks: { maxRotation: 45, minRotation: 30, font: { size: 10 } }
+                                    offset: true,
+                                    grid: { color: 'rgba(0,0,0,0.04)' },
+                                    ticks: { font: { size: 10, weight: '600' }, color: '#555', maxRotation: 45, minRotation: 45 }
                                 },
-                                y: {
+                                yPredios: {
+                                    type: 'linear',
+                                    position: 'left',
                                     beginAtZero: true,
+                                    stacked: true,
+                                    title: { display: true, text: 'Número de predios', font: { size: 11, weight: '600' }, color: '#555' },
                                     grid: { color: 'rgba(0,0,0,0.04)' },
                                     ticks: {
+                                        color: '#555',
+                                        font: { size: 10 },
+                                        maxTicksLimit: 6,
                                         callback: function (v) {
-                                            return '$' + (v / 1000000).toFixed(1) + 'M';
+                                            return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(0)+'K' : v;
                                         }
                                     }
-                                }
+                                },
                             }
                         }
                     });
 
-                    var barYearSel = document.getElementById('bar-year-select');
-                    if (barYearSel) {
-                        barYearSel.addEventListener('change', function () {
-                            barChart.data.datasets[0].data = barData[this.value];
-                            barChart.update();
+                    var currentPrediosSeries = s0;
+
+                    function updatePrediosStats(s, idx) {
+                        var i = (idx !== undefined) ? idx : 10;
+                        var urb = s.urbano[i];
+                        var rur = s.rural[i];
+                        var tot = urb + rur;
+                        var fmt = function(n){ return n > 0 ? n.toLocaleString('es-CO') : '–'; };
+                        var elU = document.getElementById('predios-stat-urb');
+                        var elR = document.getElementById('predios-stat-rur');
+                        var elT = document.getElementById('predios-stat-total');
+                        if (elU) elU.textContent = fmt(urb);
+                        if (elR) elR.textContent = fmt(rur);
+                        if (elT) elT.textContent = tot > 0 ? tot.toLocaleString('es-CO') : '–';
+                    }
+
+                    function getSelectedYearIdx() {
+                        var sel = document.getElementById('predios-year-select');
+                        return sel ? parseInt(sel.value) : 10;
+                    }
+
+                    updatePrediosStats(s0, 10);
+
+                    var prediosYearSel = document.getElementById('predios-year-select');
+                    if (prediosYearSel) {
+                        prediosYearSel.addEventListener('change', function () {
+                            updatePrediosStats(currentPrediosSeries, parseInt(this.value));
+                        });
+                    }
+
+                    var prediosLocSel = document.getElementById('predios-loc-select');
+                    if (prediosLocSel) {
+                        prediosLocSel.addEventListener('change', function () {
+                            var s = buildPrediosSeries(this.value);
+                            currentPrediosSeries = s;
+                            prediosChart.data.datasets[0].data = s.urbano;
+                            prediosChart.data.datasets[1].data = s.rural;
+                            prediosChart.update();
+                            updatePrediosStats(s, getSelectedYearIdx());
                         });
                     }
                 })();
@@ -3927,12 +4165,12 @@
                     }
                 })();
 
-                // ───── GRÁFICA: Área construida por año y por localidad ─────
+                // ───── GRÁFICA: Área construida por año y por localidad valores (actualizar anualmente) ─────
                 (function () {
                     var ctx = document.getElementById('chart-area-variation');
                     if (!ctx) return;
 
-                    var AÑOS = ['2017-2016','2018-2017','2019-2018','2020-2019','2021-2020','2022-2021','2023-2022','2024-2023','2025-2024','2026-2025'];
+                    var AÑOS = ['2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
 
                     // Paleta consistente y accesible
                     var C_POS   = 'rgba(196, 30, 30, 0.82)';
@@ -4035,6 +4273,149 @@
                                 areaBosa.push(acumBosa);
                             }
                             return { area: areaBosa, netos: netosBosa, variaciones: variacBosa };
+                        }
+                        if (nombre === 'Kennedy') {
+                            var netosKen  = [390.65, 509.61, 467.65, 552.99, 104.36, 403.57, 530.59, 360.54, 307.29, 488.18];
+                            var variacKen = [1.3, 1.7, 1.5, 1.8, 0.3, 1.3, 1.7, 1.1, 0.9, 1.5];
+                            var areaKen = [];
+                            var acumKen = 30050;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumKen = +(acumKen + netosKen[j]).toFixed(3);
+                                areaKen.push(acumKen);
+                            }
+                            return { area: areaKen, netos: netosKen, variaciones: variacKen };
+                        }
+                        if (nombre === 'Fontibón') {
+                            var netosFon  = [218.40, 269.14, 421.47, 291.27, 23.95, 245.49, 347.98, 262.72, 274.35, 414.12];
+                            var variacFon = [1.1, 1.3, 2.1, 1.4, 0.1, 1.2, 1.6, 1.2, 1.3, 1.9];
+                            var areaFon = [];
+                            var acumFon = 19855;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumFon = +(acumFon + netosFon[j]).toFixed(3);
+                                areaFon.push(acumFon);
+                            }
+                            return { area: areaFon, netos: netosFon, variaciones: variacFon };
+                        }
+                        if (nombre === 'Suba') {
+                            var netosSuba  = [1240.66, 441.48, 455.71, 565.84, -24.82, 784.90, 358.19, 335.67, 372.23, 664.73];
+                            var variacSuba = [3.3, 1.1, 1.2, 1.4, -0.1, 2.0, 0.9, 0.8, -0.9, 1.6];
+                            var areaSuba = [];
+                            var acumSuba = 37596;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumSuba = +(acumSuba + netosSuba[j]).toFixed(3);
+                                areaSuba.push(acumSuba);
+                            }
+                            return { area: areaSuba, netos: netosSuba, variaciones: variacSuba };
+                        }
+                        if (nombre === 'Barrios Unidos') {
+                            var netosBU  = [53.63, 144.81, 173.57, 156.88, -41.08, 40.40, 7.83, 50.21, 12.95, 242.16];
+                            var variacBU = [0.6, 1.6, 1.9, 1.7, -0.4, 0.4, 0.1, 0.5, 0.1, 2.5];
+                            var areaBU = [];
+                            var acumBU = 8938;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumBU = +(acumBU + netosBU[j]).toFixed(3);
+                                areaBU.push(acumBU);
+                            }
+                            return { area: areaBU, netos: netosBU, variaciones: variacBU };
+                        }
+                        if (nombre === 'Teusaquillo') {
+                            var netosTeu  = [87.89, 61.60, 89.26, 161.18, -6.18, 89.33, 11.47, 10.33, 38.15, 79.09];
+                            var variacTeu = [0.9, 0.6, 0.9, 1.6, -0.1, 0.9, 0.1, 0.1, 0.4, 0.8];
+                            var areaTeu = [];
+                            var acumTeu = 9765;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumTeu = +(acumTeu + netosTeu[j]).toFixed(3);
+                                areaTeu.push(acumTeu);
+                            }
+                            return { area: areaTeu, netos: netosTeu, variaciones: variacTeu };
+                        }
+                        if (nombre === 'Los Mártires') {
+                            var netosLM  = [55.95, 38.42, 62.39, 26.71, 19.31, 14.09, 42.87, 38.41, 110.87, 195.63];
+                            var variacLM = [0.9, 0.6, 1.0, 0.4, 0.3, 0.2, 0.7, 0.6, 1.7, 3.0];
+                            var areaLM = [];
+                            var acumLM = 6217;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumLM = +(acumLM + netosLM[j]).toFixed(3);
+                                areaLM.push(acumLM);
+                            }
+                            return { area: areaLM, netos: netosLM, variaciones: variacLM };
+                        }
+                        if (nombre === 'Antonio Nariño') {
+                            var netosAN  = [44.48, 39.26, 14.38, 63.17, -2.85, 25.51, 40.06, 6.69, 72.56, 71.81];
+                            var variacAN = [1.0, 0.9, 0.3, 1.4, 0.0, 0.5, 0.8, 0.1, 1.5, 1.5];
+                            var areaAN = [];
+                            var acumAN = 4448;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumAN = +(acumAN + netosAN[j]).toFixed(3);
+                                areaAN.push(acumAN);
+                            }
+                            return { area: areaAN, netos: netosAN, variaciones: variacAN };
+                        }
+                        if (nombre === 'Puente Aranda') {
+                            var netosPA  = [221.05, 143.45, 102.65, 307.98, 16.95, 103.46, -16.58, 76.72, 250.67, 250.57];
+                            var variacPA = [1.5, 1.0, 0.7, 2.0, 0.1, 0.7, -0.1, 0.5, 1.6, 1.6];
+                            var areaPA = [];
+                            var acumPA = 14737;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumPA = +(acumPA + netosPA[j]).toFixed(3);
+                                areaPA.push(acumPA);
+                            }
+                            return { area: areaPA, netos: netosPA, variaciones: variacPA };
+                        }
+                        if (nombre === 'La Candelaria') {
+                            var netosLC  = [79.47, 3.30, 13.34, 25.80, -1.10, 14.63, 5.68, 3.40, 16.54, 20.07];
+                            var variacLC = [3.3, 0.1, 0.5, 1.0, 0.0, 0.6, 0.2, 0.1, 0.6, 0.8];
+                            var areaLC = [];
+                            var acumLC = 2408;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumLC = +(acumLC + netosLC[j]).toFixed(3);
+                                areaLC.push(acumLC);
+                            }
+                            return { area: areaLC, netos: netosLC, variaciones: variacLC };
+                        }
+                        if (nombre === 'Rafael Uribe Uribe') {
+                            var netosRU  = [95.19, 85.28, 146.52, 194.99, 18.37, 253.26, 58.47, 298.81, 238.75, 183.05];
+                            var variacRU = [0.8, 0.7, 1.3, 1.7, 0.2, 2.1, 0.5, 2.5, 1.9, 1.4];
+                            var areaRU = [];
+                            var acumRU = 11899;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumRU = +(acumRU + netosRU[j]).toFixed(3);
+                                areaRU.push(acumRU);
+                            }
+                            return { area: areaRU, netos: netosRU, variaciones: variacRU };
+                        }
+                        if (nombre === 'Ciudad Bolívar') {
+                            var netosCB  = [402.01, 526.70, 337.63, 401.67, 16.14, 587.47, 243.50, 373.63, 342.70, 373.10];
+                            var variacCB = [2.8, 3.6, 2.2, 2.6, 0.1, 3.7, 1.5, 2.2, 2.0, 2.1];
+                            var areaCB = [];
+                            var acumCB = 14357;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumCB = +(acumCB + netosCB[j]).toFixed(3);
+                                areaCB.push(acumCB);
+                            }
+                            return { area: areaCB, netos: netosCB, variaciones: variacCB };
+                        }
+                        if (nombre === 'Sumapaz') {
+                            var netosSP  = [-8.73, 2.10, -0.15, 0.14, 0.03, 44.38, 1.94, 0.10, -0.10, -0.63];
+                            var variacSP = [-8.8, 2.3, -0.2, 0.2, 0.0, 48.0, 1.4, 0.1, -0.1, -0.5];
+                            var areaSP = [];
+                            var acumSP = 99;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumSP = +(acumSP + netosSP[j]).toFixed(3);
+                                areaSP.push(acumSP);
+                            }
+                            return { area: areaSP, netos: netosSP, variaciones: variacSP };
+                        }
+                        if (nombre === 'Bogotá D.C.') {
+                            var netosBog  = [4339.16, 4836.97, 4100.57, 4713.64, 240.18, 4349.69, 2867.20, 3215.12, 3334.61, 4929.42];
+                            var variacBog = [1.6, 1.8, 1.5, 1.7, 0.1, 1.6, 1.1, 1.2, 1.2, 1.8];
+                            var areaBog = [];
+                            var acumBog = 269336;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumBog = +(acumBog + netosBog[j]).toFixed(3);
+                                areaBog.push(acumBog);
+                            }
+                            return { area: areaBog, netos: netosBog, variaciones: variacBog };
                         }
                         var seed = 0;
                         for (var i = 0; i < nombre.length; i++) seed += nombre.charCodeAt(i);
