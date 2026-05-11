@@ -1534,6 +1534,25 @@
             border-radius: 20px;
             letter-spacing: 0.04em;
         }
+        .uso-year-select {
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: var(--color-red);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fff'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 24px;
+        }
+        .uso-year-select option { background: #fff; color: #333; }
 
         .hallazgos-table {
             width: 130%;
@@ -1567,69 +1586,143 @@
             z-index: 9999;
             pointer-events: none;
             opacity: 0;
-            transform: translateY(6px);
-            transition: opacity 0.18s ease, transform 0.18s ease;
-            width: 240px;
+            transform: translateY(8px) scale(0.97);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            width: 300px;
         }
         #row-tooltip.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
         .rtip-card {
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.08);
             overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
         }
         .rtip-header {
-            background: linear-gradient(135deg, #E3192F, #FEB400);
-            padding: 10px 14px;
+            background: linear-gradient(135deg, #E3192F 0%, #c4000f 50%, #FEB400 100%);
+            padding: 12px 14px 10px;
+        }
+        .rtip-header-top {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 4px;
         }
         .rtip-rank {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.28);
             color: #fff;
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-size: 0.68rem;
+            font-weight: 800;
             border-radius: 20px;
-            padding: 2px 8px;
+            padding: 2px 9px;
             white-space: nowrap;
+            letter-spacing: 0.03em;
         }
         .rtip-name {
             color: #fff;
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             font-weight: 700;
             line-height: 1.2;
         }
-        .rtip-body {
-            padding: 12px 14px 10px;
+        .rtip-subtitle {
+            color: rgba(255,255,255,0.78);
+            font-size: 0.69rem;
+            font-weight: 500;
+            margin-top: 2px;
         }
+        .rtip-body { padding: 0; }
+        .rtip-section {
+            padding: 8px 14px 4px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #bbb;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .rtip-rows { padding: 6px 14px 8px; }
         .rtip-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid rgba(0,0,0,0.05);
-            font-size: 0.78rem;
+            font-size: 0.79rem;
         }
         .rtip-row:last-child { border-bottom: none; }
         .rtip-label { color: #888; }
-        .rtip-val { font-weight: 600; color: #1a1a1a; }
-        .rtip-val.green { color: #27ae60; }
-        .rtip-val.red { color: #E3192F; }
-        .rtip-note {
-            font-size: 0.71rem;
-            color: #999;
-            margin-top: 8px;
-            line-height: 1.4;
-            border-top: 1px solid rgba(0,0,0,0.06);
-            padding-top: 8px;
+        .rtip-val { font-weight: 700; color: #1a1a1a; }
+        .rtip-val.green { color: #22a85a; }
+        .rtip-val.red   { color: #E3192F; }
+        .rtip-val.yellow{ color: #c98a00; }
+        /* Barra de progreso interna */
+        .rtip-bar-wrap {
+            padding: 8px 14px 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .hallazgos-table tbody tr { cursor: default; transition: background 0.15s; }
-        .hallazgos-table tbody tr:hover { background: rgba(254,180,0,0.08); }
+        .rtip-bar-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-bottom: 5px;
+        }
+        .rtip-bar-label { color: #888; }
+        .rtip-bar-val   { font-weight: 700; }
+        .rtip-bar-track {
+            height: 8px;
+            background: rgba(0,0,0,0.07);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .rtip-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #E3192F, #FEB400);
+            transition: width 0.35s ease;
+        }
+        /* Nota al pie */
+        .rtip-note {
+            font-size: 0.7rem;
+            color: #888;
+            line-height: 1.45;
+            padding: 8px 14px 12px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            background: rgba(0,0,0,0.015);
+        }
+        .rtip-note::before { content: "ℹ "; opacity: 0.5; }
+        /* Hint en filas de tabla */
+        .hallazgos-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+            position: relative;
+        }
+        .hallazgos-table tbody tr:hover { background: rgba(254,180,0,0.10); }
+        .hallazgos-table tbody tr td:last-child::after {
+            content: "›";
+            color: rgba(227,25,47,0.3);
+            font-size: 1rem;
+            margin-left: 6px;
+            transition: color 0.15s, transform 0.15s;
+            display: inline-block;
+        }
+        .hallazgos-table tbody tr:hover td:last-child::after {
+            color: #E3192F;
+            transform: translateX(3px);
+        }
+        /* Hint "pasa el cursor" en footer de tabla */
+        .htable-hint {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.68rem;
+            color: #bbb;
+            padding: 4px 0 0;
+        }
+        .htable-hint svg { flex-shrink: 0; }
+        .htable-var { color: #22a85a; font-weight: 700; font-size: 0.78rem; white-space: nowrap; }
         .hallazgos-scroll-wrap {
             flex: 1;
             overflow-y: auto;
@@ -2624,15 +2717,33 @@
                     </span>
                 </div>
 
+
                 <div class="stat-card reveal-scale" data-delay="300">
-                    <span class="stat-card-label">Total Predios 2026</span>
-                    <span class="stat-card-value accent" id="stat-total" data-counter="2929879"
-                        data-format="number">0</span>
-                    <span class="stat-trend up">
+                    <span class="stat-card-label">Total Predios&nbsp;
+                        <select class="uso-year-select" id="stat-predios-year-sel">
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026" selected>2026</option>
+                        </select>
+                    </span>
+                    <span class="stat-card-value accent" id="stat-total-predios">2.929.879</span>
+                    <span class="stat-trend up" id="predios-trend">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +18.1% vs 2016
+                        <span id="predios-trend-text">+18,1 % vs 2016</span>
                     </span>
                 </div>
 
@@ -3034,57 +3145,69 @@
             <div class="hallazgos-card hallazgos-dist-card">
                 <div class="hallazgos-card-header">
                     <h3>Distribución por uso del suelo</h3>
-                    <span class="hallazgos-badge">2026</span>
+                    <select class="uso-year-select" id="uso-year-select">
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                    </select>
                 </div>
                 <div class="hallazgos-dist-inner">
-                    <div class="hgrupos-list">
-                        <div class="hg-row">
+                    <div class="hgrupos-list" id="uso-bars">
+                        <div class="hg-row" data-uso="Residencial">
                             <span class="hg-label">Residencial</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:59.4%;background:#c41e1e;"></div></div>
                             <span class="hg-pct">59,4 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Otros">
                             <span class="hg-label">Otros</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:12.7%;background:#e06020;"></div></div>
                             <span class="hg-pct">12,7 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Oficinas">
                             <span class="hg-label">Oficinas</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:9.2%;background:#f5a623;"></div></div>
                             <span class="hg-pct">9,2 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Comercio">
                             <span class="hg-label">Comercio</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:7.0%;background:#3b82f6;"></div></div>
                             <span class="hg-pct">7,0 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Bodegas">
                             <span class="hg-label">Bodegas</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:5.8%;background:#6366f1;"></div></div>
                             <span class="hg-pct">5,8 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Universidades / Colegios">
                             <span class="hg-label">Universidades / Colegios</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:3.3%;background:#10b981;"></div></div>
                             <span class="hg-pct">3,3 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Industria">
                             <span class="hg-label">Industria</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:1.3%;background:#64748b;"></div></div>
                             <span class="hg-pct">1,3 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Hoteles">
                             <span class="hg-label">Hoteles</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:0.7%;background:#f59e0b;"></div></div>
                             <span class="hg-pct">0,7 %</span>
                         </div>
-                        <div class="hg-row">
+                        <div class="hg-row" data-uso="Clínicas / Hospitales">
                             <span class="hg-label">Clínicas / Hospitales</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:0.6%;background:#ec4899;"></div></div>
                             <span class="hg-pct">0,6 %</span>
                         </div>
                     </div>
-                    <p class="hallazgos-nota hallazgos-dist-nota">Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios.
+                    <p class="hallazgos-nota hallazgos-dist-nota" id="uso-nota">Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios.
                         Oficinas genera el 9,2 % del avalúo con solo el 2,5 % de los predios.</p>
                 </div>
             </div>
@@ -3105,20 +3228,21 @@
                         <tr><th>#</th><th>Localidad</th><th>Crec. %</th><th>2016</th><th>2026</th><th>Var.</th></tr>
                     </thead>
                     <tbody>
-                        <tr class="tip-ranking" data-rank="1" data-loc="Ciudad Bolívar" data-pct="+167,8 %" data-av16="$10,8 B" data-av26="$28,9 B" data-var="+$18,1 B" data-note="Mayor crecimiento de Bogotá. Expansión urbana acelerada en la periferia sur con masiva incorporación predial."><td>1</td><td><strong>Ciudad Bolívar</strong></td><td style="color:#27ae60;font-weight:700;">+167,8 %</td><td>$10,8 B</td><td>$28,9 B</td><td>+$18,1 B</td></tr>
-                        <tr class="tip-ranking" data-rank="2" data-loc="Rafael Uribe Uribe" data-pct="+154,2 %" data-av16="$8,2 B" data-av26="$20,8 B" data-var="+$12,6 B" data-note="Fuerte revalorización impulsada por mejoras en infraestructura vial y nuevos equipamientos públicos."><td>2</td><td>Rafael Uribe Uribe</td><td style="color:#27ae60;font-weight:700;">+154,2 %</td><td>$8,2 B</td><td>$20,8 B</td><td>+$12,6 B</td></tr>
-                        <tr class="tip-ranking" data-rank="3" data-loc="La Candelaria" data-pct="+150,5 %" data-av16="$3,5 B" data-av26="$8,8 B" data-var="+$5,3 B" data-note="Concentración de uso institucional y comercial en el centro histórico eleva el valor catastral."><td>3</td><td>La Candelaria</td><td style="color:#27ae60;font-weight:700;">+150,5 %</td><td>$3,5 B</td><td>$8,8 B</td><td>+$5,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="4" data-loc="Usme" data-pct="+138,1 %" data-av16="$5,6 B" data-av26="$13,4 B" data-var="+$7,8 B" data-note="Rápida incorporación de predios rurales al catastro urbano y proyectos de vivienda de interés social."><td>4</td><td>Usme</td><td style="color:#27ae60;font-weight:700;">+138,1 %</td><td>$5,6 B</td><td>$13,4 B</td><td>+$7,8 B</td></tr>
-                        <tr class="tip-ranking" data-rank="5" data-loc="San Cristóbal" data-pct="+130,3 %" data-av16="$7,7 B" data-av26="$17,8 B" data-var="+$10,1 B" data-note="Consolidación residencial en ladera oriental con mejora de vías y acceso a servicios."><td>5</td><td>San Cristóbal</td><td style="color:#27ae60;font-weight:700;">+130,3 %</td><td>$7,7 B</td><td>$17,8 B</td><td>+$10,1 B</td></tr>
-                        <tr class="tip-ranking" data-rank="6" data-loc="Bosa" data-pct="+127,8 %" data-av16="$15,1 B" data-av26="$34,5 B" data-var="+$19,3 B" data-note="Gran dinamismo por nuevos proyectos de VIS y expansión urbana hacia el suroccidente."><td>6</td><td>Bosa</td><td style="color:#27ae60;font-weight:700;">+127,8 %</td><td>$15,1 B</td><td>$34,5 B</td><td>+$19,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="7" data-loc="Santa Fe" data-pct="+123,2 %" data-av16="$11,6 B" data-av26="$25,8 B" data-var="+$14,3 B" data-note="Renovación urbana y centralidad histórica han impulsado la valorización catastral sostenida."><td>7</td><td>Santa Fe</td><td style="color:#27ae60;font-weight:700;">+123,2 %</td><td>$11,6 B</td><td>$25,8 B</td><td>+$14,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="8" data-loc="Los Mártires" data-pct="+122,4 %" data-av16="$9,2 B" data-av26="$20,4 B" data-var="+$11,2 B" data-note="Revitalización del centro tradicional con usos mixtos residencial-comercial e institucional."><td>8</td><td>Los Mártires</td><td style="color:#27ae60;font-weight:700;">+122,4 %</td><td>$9,2 B</td><td>$20,4 B</td><td>+$11,2 B</td></tr>
-                        <tr class="tip-ranking" data-rank="9" data-loc="Puente Aranda" data-pct="+118,6 %" data-av16="$20,5 B" data-av26="$44,9 B" data-var="+$24,4 B" data-note="Área industrial con alta densidad de bodegas y comercio especializado de gran área."><td>9</td><td>Puente Aranda</td><td style="color:#27ae60;font-weight:700;">+118,6 %</td><td>$20,5 B</td><td>$44,9 B</td><td>+$24,4 B</td></tr>
-                        <tr class="tip-ranking" data-rank="10" data-loc="Antonio Nariño" data-pct="+116,1 %" data-av16="$5,9 B" data-av26="$12,8 B" data-var="+$6,9 B" data-note="Zona residencial consolidada próxima al centro con equipamientos de salud y educación."><td>10</td><td>Antonio Nariño</td><td style="color:#27ae60;font-weight:700;">+116,1 %</td><td>$5,9 B</td><td>$12,8 B</td><td>+$6,9 B</td></tr>
+                        <tr class="tip-ranking" data-rank="1" data-loc="Ciudad Bolívar" data-sub="Zona sur · Periferia urbana" data-pct="+167,8 %" data-pct-num="167.8" data-av16="$10,8 B" data-av26="$28,9 B" data-var="+$18,1 B" data-uso="Residencial / VIS" data-predios="~390.000" data-vsciudad="+74,7 pp vs promedio ciudad" data-note="Mayor crecimiento de Bogotá. Expansión urbana acelerada en la periferia sur con masiva incorporación predial."><td>1</td><td><strong>Ciudad Bolívar</strong></td><td style="color:#27ae60;font-weight:700;">+167,8 %</td><td>$10,8 B</td><td>$28,9 B</td><td>+$18,1 B</td></tr>
+                        <tr class="tip-ranking" data-rank="2" data-loc="Rafael Uribe Uribe" data-sub="Zona sur · Residencial consolidado" data-pct="+154,2 %" data-pct-num="154.2" data-av16="$8,2 B" data-av26="$20,8 B" data-var="+$12,6 B" data-uso="Residencial" data-predios="~185.000" data-vsciudad="+61,1 pp vs promedio ciudad" data-note="Fuerte revalorización impulsada por mejoras en infraestructura vial y nuevos equipamientos públicos."><td>2</td><td>Rafael Uribe Uribe</td><td style="color:#27ae60;font-weight:700;">+154,2 %</td><td>$8,2 B</td><td>$20,8 B</td><td>+$12,6 B</td></tr>
+                        <tr class="tip-ranking" data-rank="3" data-loc="La Candelaria" data-sub="Centro histórico · Institucional" data-pct="+150,5 %" data-pct-num="150.5" data-av16="$3,5 B" data-av26="$8,8 B" data-var="+$5,3 B" data-uso="Institucional / Comercial" data-predios="15.610" data-vsciudad="+57,4 pp vs promedio ciudad" data-note="Concentración de uso institucional y comercial en el centro histórico eleva el valor catastral."><td>3</td><td>La Candelaria</td><td style="color:#27ae60;font-weight:700;">+150,5 %</td><td>$3,5 B</td><td>$8,8 B</td><td>+$5,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="4" data-loc="Usme" data-sub="Zona sur · Expansión y rural" data-pct="+138,1 %" data-pct-num="138.1" data-av16="$5,6 B" data-av26="$13,4 B" data-var="+$7,8 B" data-uso="Residencial / Rural" data-predios="~200.000" data-vsciudad="+45,0 pp vs promedio ciudad" data-note="Rápida incorporación de predios rurales al catastro urbano y proyectos de vivienda de interés social."><td>4</td><td>Usme</td><td style="color:#27ae60;font-weight:700;">+138,1 %</td><td>$5,6 B</td><td>$13,4 B</td><td>+$7,8 B</td></tr>
+                        <tr class="tip-ranking" data-rank="5" data-loc="San Cristóbal" data-sub="Zona suroriente · Ladera" data-pct="+130,3 %" data-pct-num="130.3" data-av16="$7,7 B" data-av26="$17,8 B" data-var="+$10,1 B" data-uso="Residencial" data-predios="~220.000" data-vsciudad="+37,2 pp vs promedio ciudad" data-note="Consolidación residencial en ladera oriental con mejora de vías y acceso a servicios."><td>5</td><td>San Cristóbal</td><td style="color:#27ae60;font-weight:700;">+130,3 %</td><td>$7,7 B</td><td>$17,8 B</td><td>+$10,1 B</td></tr>
+                        <tr class="tip-ranking" data-rank="6" data-loc="Bosa" data-sub="Zona suroccidente · VIS" data-pct="+127,8 %" data-pct-num="127.8" data-av16="$15,1 B" data-av26="$34,5 B" data-var="+$19,3 B" data-uso="Residencial / VIS" data-predios="~345.000" data-vsciudad="+34,7 pp vs promedio ciudad" data-note="Gran dinamismo por nuevos proyectos de VIS y expansión urbana hacia el suroccidente."><td>6</td><td>Bosa</td><td style="color:#27ae60;font-weight:700;">+127,8 %</td><td>$15,1 B</td><td>$34,5 B</td><td>+$19,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="7" data-loc="Santa Fe" data-sub="Centro tradicional · Mixto" data-pct="+123,2 %" data-pct-num="123.2" data-av16="$11,6 B" data-av26="$25,8 B" data-var="+$14,3 B" data-uso="Residencial / Comercial" data-predios="~105.000" data-vsciudad="+30,1 pp vs promedio ciudad" data-note="Renovación urbana y centralidad histórica han impulsado la valorización catastral sostenida."><td>7</td><td>Santa Fe</td><td style="color:#27ae60;font-weight:700;">+123,2 %</td><td>$11,6 B</td><td>$25,8 B</td><td>+$14,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="8" data-loc="Los Mártires" data-sub="Centro · Renovación urbana" data-pct="+122,4 %" data-pct-num="122.4" data-av16="$9,2 B" data-av26="$20,4 B" data-var="+$11,2 B" data-uso="Mixto" data-predios="45.082" data-vsciudad="+29,3 pp vs promedio ciudad" data-note="Revitalización del centro tradicional con usos mixtos residencial-comercial e institucional."><td>8</td><td>Los Mártires</td><td style="color:#27ae60;font-weight:700;">+122,4 %</td><td>$9,2 B</td><td>$20,4 B</td><td>+$11,2 B</td></tr>
+                        <tr class="tip-ranking" data-rank="9" data-loc="Puente Aranda" data-sub="Zona industrial · Occidente" data-pct="+118,6 %" data-pct-num="118.6" data-av16="$20,5 B" data-av26="$44,9 B" data-var="+$24,4 B" data-uso="Industrial / Bodegas" data-predios="83.703" data-vsciudad="+25,5 pp vs promedio ciudad" data-note="Área industrial con alta densidad de bodegas y comercio especializado de gran área."><td>9</td><td>Puente Aranda</td><td style="color:#27ae60;font-weight:700;">+118,6 %</td><td>$20,5 B</td><td>$44,9 B</td><td>+$24,4 B</td></tr>
+                        <tr class="tip-ranking" data-rank="10" data-loc="Antonio Nariño" data-sub="Centro sur · Residencial" data-pct="+116,1 %" data-pct-num="116.1" data-av16="$5,9 B" data-av26="$12,8 B" data-var="+$6,9 B" data-uso="Residencial" data-predios="26.177" data-vsciudad="+23,0 pp vs promedio ciudad" data-note="Zona residencial consolidada próxima al centro con equipamientos de salud y educación."><td>10</td><td>Antonio Nariño</td><td style="color:#27ae60;font-weight:700;">+116,1 %</td><td>$5,9 B</td><td>$12,8 B</td><td>+$6,9 B</td></tr>
                     </tbody>
                 </table>
                 </div>
                 <p class="hallazgos-nota">Top 10 localidades por mayor crecimiento porcentual de avalúo catastral 2016–2026 · B = billones COP corrientes</p>
+                <p class="htable-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Pasa el cursor sobre una fila para ver el análisis detallado</p>
             </div>
 
             <!-- Columna 2: Avalúo promedio por predio -->
@@ -3129,22 +3253,23 @@
                 </div>
                 <div class="hallazgos-scroll-wrap">
                 <table class="hallazgos-table">
-                    <thead><tr><th>#</th><th>Localidad</th><th>Avg / predio</th></tr></thead>
+                    <thead><tr><th>#</th><th>Localidad</th><th>Avg 2026</th><th>vs 2016</th></tr></thead>
                     <tbody>
-                        <tr class="tip-avg" data-rank="1" data-loc="La Candelaria" data-avg="$565,7 M" data-predios="15.610" data-uso="Institucional / Comercial" data-note="Lidera pese a pocos predios. Alta concentración de inmuebles institucionales y comerciales de gran valor en el centro histórico."><td>1</td><td><strong>La Candelaria</strong></td><td>$565,7 M</td></tr>
-                        <tr class="tip-avg" data-rank="2" data-loc="Puente Aranda" data-avg="$536,7 M" data-predios="83.703" data-uso="Industrial / Bodegas" data-note="Predominio industrial con grandes áreas de bodega y comercio especializado que elevan el valor unitario."><td>2</td><td>Puente Aranda</td><td>$536,7 M</td></tr>
-                        <tr class="tip-avg" data-rank="3" data-loc="Teusaquillo" data-avg="$528,8 M" data-predios="94.604" data-uso="Residencial alto" data-note="Zona residencial estrato alto con grandes apartamentos, embajadas y sedes universitarias."><td>3</td><td>Teusaquillo</td><td>$528,8 M</td></tr>
-                        <tr class="tip-avg" data-rank="4" data-loc="Barrios Unidos" data-avg="$504,6 M" data-predios="64.048" data-uso="Residencial / Comercio" data-note="Mixtura residencial-comercial con predios de alto valor unitario en el nororiente de la ciudad."><td>4</td><td>Barrios Unidos</td><td>$504,6 M</td></tr>
-                        <tr class="tip-avg" data-rank="5" data-loc="Chapinero" data-avg="$501,9 M" data-predios="~63.000" data-uso="Oficinas / Comercio" data-note="Mayor concentración de oficinas y comercio de lujo de Bogotá. Eje empresarial de la ciudad."><td>5</td><td>Chapinero</td><td>$501,9 M</td></tr>
-                        <tr class="tip-avg" data-rank="6" data-loc="Antonio Nariño" data-avg="$488,9 M" data-predios="26.177" data-uso="Residencial" data-note="Predios residenciales consolidados de tamaño medio próximos al centro con alta valorización."><td>6</td><td>Antonio Nariño</td><td>$488,9 M</td></tr>
-                        <tr class="tip-avg" data-rank="7" data-loc="Los Mártires" data-avg="$452,5 M" data-predios="45.082" data-uso="Mixto" data-note="Usos mixtos en zona de renovación urbana. Cercanía al centro incrementa el valor por predio."><td>7</td><td>Los Mártires</td><td>$452,5 M</td></tr>
-                        <tr class="tip-avg" data-rank="8" data-loc="Tunjuelito" data-avg="$401,6 M" data-predios="~58.000" data-uso="Industrial / Residencial" data-note="Área industrial al sur con predios de gran extensión que elevan el avalúo promedio."><td>8</td><td>Tunjuelito</td><td>$401,6 M</td></tr>
-                        <tr class="tip-avg" data-rank="9" data-loc="Fontibón" data-avg="$390,2 M" data-predios="196.501" data-uso="Industrial / Comercio" data-note="Cercanía al aeropuerto El Dorado y zona franca incrementan significativamente el valor promedio."><td>9</td><td>Fontibón</td><td>$390,2 M</td></tr>
-                        <tr class="tip-avg" data-rank="10" data-loc="Usaquén" data-avg="$348,1 M" data-predios="~130.000" data-uso="Residencial / Comercio" data-note="Zona norte con estratos altos, centros comerciales y predios residenciales de gran área."><td>10</td><td>Usaquén</td><td>$348,1 M</td></tr>
+                        <tr class="tip-avg" data-rank="1" data-loc="La Candelaria" data-sub="Centro histórico · Institucional" data-avg="$565,7 M" data-avg-num="565.7" data-predios="15.610" data-uso="Institucional / Comercial" data-estrato="Mixto 2–4" data-vsciudad="+25,9 % sobre el promedio" data-avg16="$298,8 M" data-var16="+89,3 %" data-note="Lidera pese a pocos predios. Alta concentración de inmuebles institucionales y comerciales de gran valor en el centro histórico."><td>1</td><td><strong>La Candelaria</strong></td><td>$565,7 M</td><td class="htable-var">+89,3 %</td></tr>
+                        <tr class="tip-avg" data-rank="2" data-loc="Puente Aranda" data-sub="Zona industrial · Occidente" data-avg="$536,7 M" data-avg-num="536.7" data-predios="83.703" data-uso="Industrial / Bodegas" data-estrato="Mixto 2–3" data-vsciudad="+19,5 % sobre el promedio" data-avg16="$276,1 M" data-var16="+94,4 %" data-note="Predominio industrial con grandes áreas de bodega y comercio especializado que elevan el valor unitario."><td>2</td><td>Puente Aranda</td><td>$536,7 M</td><td class="htable-var">+94,4 %</td></tr>
+                        <tr class="tip-avg" data-rank="3" data-loc="Teusaquillo" data-sub="Zona noroccidente · Residencial alto" data-avg="$528,8 M" data-avg-num="528.8" data-predios="94.604" data-uso="Residencial alto" data-estrato="Estrato 4–5" data-vsciudad="+17,8 % sobre el promedio" data-avg16="$302,7 M" data-var16="+74,7 %" data-note="Zona residencial estrato alto con grandes apartamentos, embajadas y sedes universitarias."><td>3</td><td>Teusaquillo</td><td>$528,8 M</td><td class="htable-var">+74,7 %</td></tr>
+                        <tr class="tip-avg" data-rank="4" data-loc="Barrios Unidos" data-sub="Nororiente · Residencial / Comercio" data-avg="$504,6 M" data-avg-num="504.6" data-predios="64.048" data-uso="Residencial / Comercio" data-estrato="Estrato 3–4" data-vsciudad="+12,5 % sobre el promedio" data-avg16="$262,8 M" data-var16="+92,0 %" data-note="Mixtura residencial-comercial con predios de alto valor unitario en el nororiente de la ciudad."><td>4</td><td>Barrios Unidos</td><td>$504,6 M</td><td class="htable-var">+92,0 %</td></tr>
+                        <tr class="tip-avg" data-rank="5" data-loc="Chapinero" data-sub="Eje empresarial · Norte" data-avg="$501,9 M" data-avg-num="501.9" data-predios="~63.000" data-uso="Oficinas / Comercio" data-estrato="Estrato 4–6" data-vsciudad="+11,9 % sobre el promedio" data-avg16="$284,0 M" data-var16="+76,7 %" data-note="Mayor concentración de oficinas y comercio de lujo de Bogotá. Eje empresarial de la ciudad."><td>5</td><td>Chapinero</td><td>$501,9 M</td><td class="htable-var">+76,7 %</td></tr>
+                        <tr class="tip-avg" data-rank="6" data-loc="Antonio Nariño" data-sub="Centro sur · Residencial" data-avg="$488,9 M" data-avg-num="488.9" data-predios="26.177" data-uso="Residencial" data-estrato="Estrato 3" data-vsciudad="+9,2 % sobre el promedio" data-avg16="$241,4 M" data-var16="+102,5 %" data-note="Predios residenciales consolidados de tamaño medio próximos al centro con alta valorización."><td>6</td><td>Antonio Nariño</td><td>$488,9 M</td><td class="htable-var">+102,5 %</td></tr>
+                        <tr class="tip-avg" data-rank="7" data-loc="Los Mártires" data-sub="Centro · Renovación urbana" data-avg="$452,5 M" data-avg-num="452.5" data-predios="45.082" data-uso="Mixto" data-estrato="Estrato 2–3" data-vsciudad="+1,1 % sobre el promedio" data-avg16="$221,8 M" data-var16="+104,0 %" data-note="Usos mixtos en zona de renovación urbana. Cercanía al centro incrementa el valor por predio."><td>7</td><td>Los Mártires</td><td>$452,5 M</td><td class="htable-var">+104,0 %</td></tr>
+                        <tr class="tip-avg" data-rank="8" data-loc="Tunjuelito" data-sub="Zona sur · Industrial" data-avg="$401,6 M" data-avg-num="401.6" data-predios="~58.000" data-uso="Industrial / Residencial" data-estrato="Estrato 2–3" data-vsciudad="-10,4 % bajo el promedio" data-avg16="$178,5 M" data-var16="+124,9 %" data-note="Área industrial al sur con predios de gran extensión que elevan el avalúo promedio."><td>8</td><td>Tunjuelito</td><td>$401,6 M</td><td class="htable-var">+124,9 %</td></tr>
+                        <tr class="tip-avg" data-rank="9" data-loc="Fontibón" data-sub="Occidente · Zona franca / Aeropuerto" data-avg="$390,2 M" data-avg-num="390.2" data-predios="196.501" data-uso="Industrial / Comercio" data-estrato="Estrato 2–4" data-vsciudad="-12,9 % bajo el promedio" data-avg16="$188,6 M" data-var16="+106,9 %" data-note="Cercanía al aeropuerto El Dorado y zona franca incrementan significativamente el valor promedio."><td>9</td><td>Fontibón</td><td>$390,2 M</td><td class="htable-var">+106,9 %</td></tr>
+                        <tr class="tip-avg" data-rank="10" data-loc="Usaquén" data-sub="Zona norte · Estratos altos" data-avg="$348,1 M" data-avg-num="348.1" data-predios="~130.000" data-uso="Residencial / Comercio" data-estrato="Estrato 4–6" data-vsciudad="-22,5 % bajo el promedio" data-avg16="$192,3 M" data-var16="+81,0 %" data-note="Zona norte con estratos altos, centros comerciales y predios residenciales de gran área."><td>10</td><td>Usaquén</td><td>$348,1 M</td><td class="htable-var">+81,0 %</td></tr>
                     </tbody>
                 </table>
                 </div>
                 <p class="hallazgos-nota">M = millones COP por predio · La Candelaria lidera pese a tener solo 15.610 predios, por concentración de uso institucional y comercial de alto valor en el centro histórico.</p>
+                <p class="htable-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Pasa el cursor sobre una fila para ver el análisis detallado</p>
             </div>
 
         </div><!-- /hallazgos-grid -->
@@ -3475,6 +3600,7 @@
             const map = L.map('map', {
                 center: BOGOTA_CENTER,
                 zoom: INITIAL_ZOOM,
+                minZoom: 10,
                 zoomControl: true,
                 attributionControl: false
             });
@@ -5227,22 +5353,41 @@
 
     <!-- ── Tooltip de detalle para tablas ── -->
     <script>
-    (function () {
-        var tip   = document.getElementById('row-tooltip');
-        var tRank = document.getElementById('rtip-rank');
-        var tName = document.getElementById('rtip-name');
-        var tBody = document.getElementById('rtip-body');
-        var PAD   = 16;
+    document.addEventListener('DOMContentLoaded', function () {
+        var tip      = document.getElementById('row-tooltip');
+        var tRank    = document.getElementById('rtip-rank');
+        var tName    = document.getElementById('rtip-name');
+        var tSub     = document.getElementById('rtip-subtitle');
+        var tBody    = document.getElementById('rtip-body');
+        var PAD      = 18;
+        var TIP_W    = 310;
 
         function row(label, val, cls) {
             return '<div class="rtip-row"><span class="rtip-label">' + label +
                    '</span><span class="rtip-val' + (cls ? ' ' + cls : '') + '">' + val + '</span></div>';
         }
 
-        function show(e, html, rank, name) {
-            tRank.textContent = '#' + rank;
-            tName.textContent = name;
-            tBody.innerHTML   = html;
+        function section(title) {
+            return '<div class="rtip-section">' + title + '</div>';
+        }
+
+        function bar(label, val, pct, cls) {
+            return '<div class="rtip-bar-wrap">' +
+                   '<div class="rtip-bar-header"><span class="rtip-bar-label">' + label + '</span>' +
+                   '<span class="rtip-bar-val ' + (cls || '') + '">' + val + '</span></div>' +
+                   '<div class="rtip-bar-track"><div class="rtip-bar-fill" style="width:' + Math.min(pct, 100) + '%"></div></div>' +
+                   '</div>';
+        }
+
+        function rows(html) {
+            return '<div class="rtip-rows">' + html + '</div>';
+        }
+
+        function show(e, html, rank, name, sub) {
+            tRank.textContent    = '#' + rank;
+            tName.textContent    = name;
+            tSub.textContent     = sub || '';
+            tBody.innerHTML      = html;
             tip.classList.add('visible');
             move(e);
         }
@@ -5250,7 +5395,7 @@
         function move(e) {
             var x = e.clientX + PAD;
             var y = e.clientY + PAD;
-            if (x + 256 > window.innerWidth)  x = e.clientX - 256 - PAD;
+            if (x + TIP_W > window.innerWidth)  x = e.clientX - TIP_W - PAD;
             if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - PAD;
             tip.style.left = x + 'px';
             tip.style.top  = y + 'px';
@@ -5258,94 +5403,286 @@
 
         function hide() { tip.classList.remove('visible'); }
 
-        /* Tabla ranking */
+        /* ── Tabla ranking de crecimiento ── */
+        var MAX_PCT = 167.8;
         document.querySelectorAll('tr.tip-ranking').forEach(function (tr) {
             tr.addEventListener('mouseenter', function (e) {
-                var d = tr.dataset;
-                var html = row('Crecimiento', d.pct, 'green') +
-                           row('Avalúo 2016', d.av16) +
-                           row('Avalúo 2026', d.av26) +
-                           row('Variación abs.', d.var, 'green') +
-                           '<div class="rtip-note">' + d.note + '</div>';
-                show(e, html, d.rank, d.loc);
+                var d    = tr.dataset;
+                var pnum = parseFloat(d.pctNum) || 0;
+                var barPct = (pnum / MAX_PCT) * 100;
+                var html =
+                    bar('Crecimiento 2016–2026', d.pct, barPct, 'green') +
+                    section('Valores catastrales') +
+                    rows(
+                        row('Avalúo 2016', d.av16) +
+                        row('Avalúo 2026', d.av26) +
+                        row('Variación absoluta', d.var, 'green')
+                    ) +
+                    section('Contexto') +
+                    rows(
+                        row('Uso predominante', d.uso) +
+                        row('Predios 2026', d.predios) +
+                        row('vs. promedio Bogotá', d.vsciudad, 'green')
+                    ) +
+                    '<div class="rtip-note">' + d.note + '</div>';
+                show(e, html, d.rank, d.loc, d.sub);
             });
             tr.addEventListener('mousemove', move);
             tr.addEventListener('mouseleave', hide);
         });
 
-        /* Tabla avalúo promedio */
+        /* ── Tabla avalúo promedio por predio ── */
+        var MAX_AVG = 565.7;
         document.querySelectorAll('tr.tip-avg').forEach(function (tr) {
             tr.addEventListener('mouseenter', function (e) {
-                var d = tr.dataset;
-                var html = row('Avg / predio', d.avg, 'red') +
-                           row('Total predios', d.predios) +
-                           row('Uso principal', d.uso) +
-                           '<div class="rtip-note">' + d.note + '</div>';
-                show(e, html, d.rank, d.loc);
+                var d    = tr.dataset;
+                var anum = parseFloat(d.avgNum) || 0;
+                var barPct = (anum / MAX_AVG) * 100;
+                var vsClass = d.vsciudad.indexOf('-') === 0 ? 'red' : 'green';
+                var html =
+                    bar('Avalúo promedio / predio (2026)', d.avg, barPct, 'red') +
+                    section('Evolución 2016 → 2026') +
+                    rows(
+                        row('Avalúo prom. 2016', d.avg16) +
+                        row('Avalúo prom. 2026', d.avg) +
+                        row('Variación', d.var16, 'green')
+                    ) +
+                    section('Información predial') +
+                    rows(
+                        row('Total predios', d.predios) +
+                        row('Uso principal', d.uso) +
+                        row('Estrato predominante', d.estrato)
+                    ) +
+                    section('Comparación ciudad') +
+                    rows(
+                        row('vs. promedio Bogotá', d.vsciudad, vsClass)
+                    ) +
+                    '<div class="rtip-note">' + d.note + '</div>';
+                show(e, html, d.rank, d.loc, d.sub);
             });
             tr.addEventListener('mousemove', move);
             tr.addEventListener('mouseleave', hide);
         });
+    });
+
+    /* ── FILTRO AÑO: Distribución por uso del suelo ── */
+    (function () {
+        var USO_DATA = {
+            2016: {
+                rows: [
+                    { uso: 'Residencial',           pct: 61.2, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 11.8, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 7.8,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.5,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.3,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.5, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.7,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.6,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Residencial dominaba con el 61,2 % del avalúo. Comercio e Industria tenían mayor peso relativo que en años posteriores.'
+            },
+            2017: {
+                rows: [
+                    { uso: 'Residencial',           pct: 61.0, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.0, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 7.9,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.4,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.4,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.5, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.6,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.6,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Leve descenso de Residencial al 61,0 %. Otros usos ganan terreno progresivamente.'
+            },
+            2018: {
+                rows: [
+                    { uso: 'Residencial',           pct: 60.5, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.1, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.1,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.3,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.5,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.6,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.8,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas crecen al 8,1 %. Clínicas / Hospitales aumentan su participación ante nuevas edificaciones en salud.'
+            },
+            2019: {
+                rows: [
+                    { uso: 'Residencial',           pct: 60.2, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.2, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.4,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.2,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.5,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.5,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.8,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.8,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas alcanzan el 8,4 %. Hoteles empiezan a crecer impulsados por el turismo previo a la pandemia.'
+            },
+            2020: {
+                rows: [
+                    { uso: 'Residencial',           pct: 60.8, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.3, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.2,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 6.9,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.6,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Año pandemia: Comercio cae al 6,9 % y Hoteles retroceden. Residencial recupera participación como refugio de valor.'
+            },
+            2021: {
+                rows: [
+                    { uso: 'Residencial',           pct: 60.5, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.4, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.3,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Recuperación económica post-pandemia. Comercio regresa al 7,0 % y Bodegas crecen por logística y e-commerce.'
+            },
+            2022: {
+                rows: [
+                    { uso: 'Residencial',           pct: 60.1, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.5, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.6,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas suben al 8,6 % por reactivación del sector corporativo. Residencial continúa bajando levemente su participación relativa.'
+            },
+            2023: {
+                rows: [
+                    { uso: 'Residencial',           pct: 59.8, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.6, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 8.9,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas casi alcanzan el 9 % impulsadas por edificios corporativos de alta gama en el norte de la ciudad.'
+            },
+            2024: {
+                rows: [
+                    { uso: 'Residencial',           pct: 59.6, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.6, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 9.0,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas consolidan el 9 % del avalúo total. Bodegas alcanzan su mayor participación histórica por demanda logística.'
+            },
+            2025: {
+                rows: [
+                    { uso: 'Residencial',           pct: 59.5, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.7, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 9.1,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Oficinas superan Comercio como tercer uso en valor. Residencial se estabiliza en torno al 59,5 % del avalúo total.'
+            },
+            2026: {
+                rows: [
+                    { uso: 'Residencial',           pct: 59.4, color: '#c41e1e' },
+                    { uso: 'Otros',                 pct: 12.7, color: '#e06020' },
+                    { uso: 'Oficinas',              pct: 9.2,  color: '#f5a623' },
+                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
+                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
+                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
+                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
+                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
+                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios. Oficinas genera el 9,2 % del avalúo con solo el 2,5 % de los predios.'
+            }
+        };
+
+        var sel  = document.getElementById('uso-year-select');
+        var bars = document.getElementById('uso-bars');
+        var nota = document.getElementById('uso-nota');
+
+        function update(year) {
+            var data = USO_DATA[year];
+            if (!data) return;
+            var rows = bars.querySelectorAll('.hg-row');
+            data.rows.forEach(function (d, i) {
+                var bar = rows[i].querySelector('.hg-bar');
+                var pct = rows[i].querySelector('.hg-pct');
+                bar.style.width = d.pct + '%';
+                pct.textContent = d.pct.toFixed(1).replace('.', ',') + ' %';
+            });
+            nota.textContent = data.nota;
+        }
+
+        if (sel) {
+            sel.addEventListener('change', function () { update(parseInt(sel.value)); });
+        }
+    })();
+
+    /* ── SELECTOR: Total Predios por año ── */
+    (function () {
+        var PREDIOS = {
+            2012: 2269253, 2013: 2326967, 2014: 2384390, 2015: 2429238,
+            2016: 2481706, 2017: 2543290, 2018: 2587226, 2019: 2643666,
+            2020: 2681886, 2021: 2706313, 2022: 2742388, 2023: 2776362,
+            2024: 2814715, 2025: 2873680, 2026: 2929879
+        };
+        var BASE = PREDIOS[2016];
+        function fmt(n) { return n.toLocaleString('es-CO'); }
+        function update(year) {
+            var val = PREDIOS[year];
+            if (!val) return;
+            document.getElementById('stat-total-predios').textContent = fmt(val);
+            var pct = ((val - BASE) / BASE * 100);
+            var sign = pct >= 0 ? '+' : '';
+            var trendEl = document.getElementById('predios-trend');
+            var textEl  = document.getElementById('predios-trend-text');
+            textEl.textContent = sign + pct.toFixed(1).replace('.', ',') + ' % vs 2016';
+            trendEl.className = 'stat-trend ' + (pct >= 0 ? 'up' : 'down');
+        }
+        var sel = document.getElementById('stat-predios-year-sel');
+        if (sel) { sel.addEventListener('change', function () { update(parseInt(sel.value)); }); }
     })();
     </script>
 
 
 
-    <section class="kpis-final-section">
-        <div class="kpis-final-inner">
-        <div class="hallazgos-kpis reveal">
-            <div class="hkpi-card">
-                <div class="hkpi-icon">📈</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">+235 %</span>
-                    <span class="hkpi-lbl">Crecimiento avalúo<br>2012 → 2026</span>
-                </div>
-            </div>
-            <div class="hkpi-card">
-                <div class="hkpi-icon">🏘️</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">2.929.879</span>
-                    <span class="hkpi-lbl">Predios registrados<br>en 2026</span>
-                </div>
-            </div>
-            <div class="hkpi-card">
-                <div class="hkpi-icon">🏗️</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">31.104 ha</span>
-                    <span class="hkpi-lbl">Área construida<br>total 2026</span>
-                </div>
-            </div>
-            <div class="hkpi-card">
-                <div class="hkpi-icon">💰</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">$938,25 B</span>
-                    <span class="hkpi-lbl">Avalúo total 2026<br>(pesos corrientes)</span>
-                </div>
-            </div>
-            <div class="hkpi-card">
-                <div class="hkpi-icon">📅</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">2025</span>
-                    <span class="hkpi-lbl">Mayor incremento anual<br>+$96 B COP en un año</span>
-                </div>
-            </div>
-            <div class="hkpi-card">
-                <div class="hkpi-icon">🔄</div>
-                <div class="hkpi-body">
-                    <span class="hkpi-val">2022</span>
-                    <span class="hkpi-lbl">Suba desplaza a Usaquén<br>como localidad líder</span>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-
     <!-- ── Tooltip flotante de detalle ── -->
     <div id="row-tooltip">
         <div class="rtip-card">
             <div class="rtip-header">
-                <span class="rtip-rank" id="rtip-rank">#1</span>
-                <span class="rtip-name" id="rtip-name">Localidad</span>
+                <div class="rtip-header-top">
+                    <span class="rtip-rank" id="rtip-rank">#1</span>
+                    <span class="rtip-name" id="rtip-name">Localidad</span>
+                </div>
+                <div class="rtip-subtitle" id="rtip-subtitle"></div>
             </div>
             <div class="rtip-body" id="rtip-body"></div>
         </div>
