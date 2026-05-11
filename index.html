@@ -24,11 +24,11 @@
    TOKENS DE DISEÑO
    ======================================== */
         :root {
-            --color-red: #c41e1e;
-            --color-red-dark: #a01818;
-            --color-red-light: #e63232;
-            --color-yellow: #f5a623;
-            --color-yellow-light: #fcc844;
+            --color-red: #E3192F;
+            --color-red-dark: #b81425;
+            --color-red-light: #f03348;
+            --color-yellow: #FEB400;
+            --color-yellow-light: #ffc733;
             --bg-light: #f4f4f4;
             --bg-white: #ffffff;
             --text-dark: #1a1a1a;
@@ -1503,7 +1503,7 @@
             gap: 28px;
             max-width: 1200px;
             margin: 0 auto;
-            align-items: start;
+            align-items: stretch;
         }
         @media (max-width: 900px) { .hallazgos-grid { grid-template-columns: 1fr; } }
 
@@ -1514,6 +1514,8 @@
             border: 1px solid rgba(0,0,0,0.07);
             overflow: hidden;
             box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
         }
         .hallazgos-card-header {
             display: flex;
@@ -1558,9 +1560,79 @@
             padding: 10px 14px 12px;
             line-height: 1.5;
         }
+
+        /* ── Tooltip tarjeta de detalle ── */
+        #row-tooltip {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            width: 240px;
+        }
+        #row-tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .rtip-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .rtip-header {
+            background: linear-gradient(135deg, #E3192F, #FEB400);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .rtip-rank {
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 2px 8px;
+            white-space: nowrap;
+        }
+        .rtip-name {
+            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .rtip-body {
+            padding: 12px 14px 10px;
+        }
+        .rtip-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.78rem;
+        }
+        .rtip-row:last-child { border-bottom: none; }
+        .rtip-label { color: #888; }
+        .rtip-val { font-weight: 600; color: #1a1a1a; }
+        .rtip-val.green { color: #27ae60; }
+        .rtip-val.red { color: #E3192F; }
+        .rtip-note {
+            font-size: 0.71rem;
+            color: #999;
+            margin-top: 8px;
+            line-height: 1.4;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding-top: 8px;
+        }
+        .hallazgos-table tbody tr { cursor: default; transition: background 0.15s; }
+        .hallazgos-table tbody tr:hover { background: rgba(254,180,0,0.08); }
         .hallazgos-scroll-wrap {
-             max-height: 600px;  /* ajusta aquí */
-            overflow-y: auto;   /* aparece scroll si se pasa */
+            flex: 1;
+            overflow-y: auto;
         }
 
         /* Barras de grupos económicos */
@@ -2386,6 +2458,101 @@
         #stars { opacity: 0; }
         #toggle:checked + svg #stars { opacity: 1; }
 
+        /* ── Botón de descarga ── */
+        .download-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding: 48px 24px 56px;
+            background: var(--bg-white);
+        }
+
+        .download-section p {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .Download-button {
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 12px 20px;
+            color: white;
+            background: linear-gradient(144deg, #E3192F, #c4000f 50%, #FEB400);
+            border: none;
+            box-shadow: 0 0.7em 1.5em -0.5em rgba(227, 25, 47, 0.45);
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .Download-button svg {
+            margin-right: 8px;
+            width: 25px;
+        }
+
+        .Download-button:hover {
+            box-shadow: 0 0.5em 1.5em -0.5em #FEB400;
+            border-top-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        .Download-button:active {
+            box-shadow: 0 0.3em 1em -0.5em #FEB400;
+        }
+
+        .Download-button::before {
+            content: "";
+            width: 4px;
+            height: 40%;
+            background-color: white;
+            position: absolute;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            left: 0;
+            transition: all 0.2s;
+        }
+
+        .Download-button::after {
+            content: "";
+            width: 4px;
+            height: 40%;
+            background-color: white;
+            position: absolute;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            right: 0;
+            transition: all 0.2s;
+        }
+
+        .Download-button:hover::before,
+        .Download-button:hover::after {
+            height: 60%;
+        }
+
+        .Download-button:hover::before {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            transform: translate(5px, -15px) rotate(45deg);
+        }
+
+        .Download-button:hover::after {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            transform: translate(-5px, 15px) rotate(45deg);
+        }
+
     </style>
 </head>
 
@@ -2442,7 +2609,7 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +235% vs 2012
+                        +93.1% vs 2016
                     </span>
                 </div>
 
@@ -2465,7 +2632,7 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M7 17l5-5 5 5" />
                         </svg>
-                        +29% vs 2012
+                        +18.1% vs 2016
                     </span>
                 </div>
 
@@ -2671,14 +2838,14 @@
                 </div>
                 <div id="predios-stats-bar" style="display:flex;gap:24px;padding:4px 16px 10px;font-size:12px;font-weight:600;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">
                     <span style="display:flex;align-items:center;gap:6px;">
-                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(52,152,219,0.8);flex-shrink:0;"></span>
+                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(254,180,0,0.82);flex-shrink:0;"></span>
                         <span style="color:#555;">Urbano:</span>
-                        <span id="predios-stat-urb" style="color:rgba(52,152,219,1);">–</span>
+                        <span id="predios-stat-urb" style="color:rgba(254,180,0,0.82);flex-shrink:0;">–</span>
                     </span>
                     <span style="display:flex;align-items:center;gap:6px;">
-                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(46,204,113,0.8);flex-shrink:0;"></span>
+                        <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(227,25,47,0.82);flex-shrink:0;"></span>
                         <span style="color:#555;">Rural:</span>
-                        <span id="predios-stat-rur" style="color:rgba(46,204,113,1);">–</span>
+                        <span id="predios-stat-rur" style="color:rgba(227,25,47,1);">–</span>
                     </span>
                     <span style="display:flex;align-items:center;gap:6px;margin-left:auto;">
                         <span style="color:#888;">Total:</span>
@@ -2706,10 +2873,6 @@
                             <option value="2018">2018</option>
                             <option value="2017">2017</option>
                             <option value="2016">2016</option>
-                            <option value="2015">2015</option>
-                            <option value="2014">2014</option>
-                            <option value="2013">2013</option>
-                            <option value="2012">2012</option>
                         </select>
                         <label for="pie-loc-select">Localidad</label>
                         <select id="pie-loc-select" class="chart-filter-select">
@@ -2764,10 +2927,6 @@
                     <option value="2018">2018</option>
                     <option value="2017">2017</option>
                     <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
                 </select>
             </div>
             <div class="locality-filter-group">
@@ -2934,42 +3093,32 @@
         <!-- Dos columnas simétricas: ranking + avalúo promedio -->
         <div class="hallazgos-grid reveal-scale">
 
-            <!-- Columna 1: Ranking localidades 2026 -->
+            <!-- Columna 1: Ranking localidades por crecimiento -->
             <div class="hallazgos-card">
                 <div class="hallazgos-card-header">
-                    <h3>Ranking de localidades por avalúo</h3>
-                    <span class="hallazgos-badge">2026</span>
+                    <h3>Ranking de localidades por crecimiento de avalúo</h3>
+                    <span class="hallazgos-badge">2016–2026</span>
                 </div>
                 <div class="hallazgos-scroll-wrap">
                 <table class="hallazgos-table">
                     <thead>
-                        <tr><th>#</th><th>Localidad</th><th>Avalúo</th><th>% total</th><th>Predios</th></tr>
+                        <tr><th>#</th><th>Localidad</th><th>Crec. %</th><th>2016</th><th>2026</th><th>Var.</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>1</td><td><strong>Suba</strong></td><td>$146,6 B</td><td>15,6 %</td><td>529.488</td></tr>
-                        <tr><td>2</td><td>Usaquén</td><td>$136,5 B</td><td>14,5 %</td><td>392.157</td></tr>
-                        <tr><td>3</td><td>Chapinero</td><td>$95,8 B</td><td>10,2 %</td><td>190.907</td></tr>
-                        <tr><td>4</td><td>Kennedy</td><td>$79,8 B</td><td>8,5 %</td><td>311.568</td></tr>
-                        <tr><td>5</td><td>Engativá</td><td>$78,1 B</td><td>8,3 %</td><td>241.842</td></tr>
-                        <tr><td>6</td><td>Fontibón</td><td>$76,8 B</td><td>8,2 %</td><td>196.808</td></tr>
-                        <tr><td>7</td><td>Teusaquillo</td><td>$50,0 B</td><td>5,3 %</td><td>94.604</td></tr>
-                        <tr><td>8</td><td>Puente Aranda</td><td>$44,9 B</td><td>4,8 %</td><td>83.703</td></tr>
-                        <tr><td>9</td><td>Bosa</td><td>$34,5 B</td><td>3,7 %</td><td>178.371</td></tr>
-                        <tr><td>10</td><td>Barrios Unidos</td><td>$32,3 B</td><td>3,4 %</td><td>64.048</td></tr>
-                        <tr class="tr-muted"><td>11</td><td>Ciudad Bolívar</td><td>$28,9 B</td><td>3,1 %</td><td>164.393</td></tr>
-                        <tr class="tr-muted"><td>12</td><td>Santa Fe</td><td>$25,8 B</td><td>2,8 %</td><td>75.514</td></tr>
-                        <tr class="tr-muted"><td>13</td><td>Rafael Uribe</td><td>$20,8 B</td><td>2,2 %</td><td>88.570</td></tr>
-                        <tr class="tr-muted"><td>14</td><td>Los Mártires</td><td>$20,4 B</td><td>2,2 %</td><td>45.082</td></tr>
-                        <tr class="tr-muted"><td>15</td><td>San Cristóbal</td><td>$17,8 B</td><td>1,9 %</td><td>95.701</td></tr>
-                        <tr class="tr-muted"><td>16</td><td>Tunjuelito</td><td>$13,8 B</td><td>1,5 %</td><td>34.384</td></tr>
-                        <tr class="tr-muted"><td>17</td><td>Usme</td><td>$13,4 B</td><td>1,4 %</td><td>99.149</td></tr>
-                        <tr class="tr-muted"><td>18</td><td>Antonio Nariño</td><td>$12,8 B</td><td>1,4 %</td><td>26.177</td></tr>
-                        <tr class="tr-muted"><td>19</td><td>La Candelaria</td><td>$8,8 B</td><td>0,9 %</td><td>15.610</td></tr>
-                        <tr class="tr-muted"><td>20</td><td>Sumapaz</td><td>$0,3 B</td><td>0,0 %</td><td>1.803</td></tr>
+                        <tr class="tip-ranking" data-rank="1" data-loc="Ciudad Bolívar" data-pct="+167,8 %" data-av16="$10,8 B" data-av26="$28,9 B" data-var="+$18,1 B" data-note="Mayor crecimiento de Bogotá. Expansión urbana acelerada en la periferia sur con masiva incorporación predial."><td>1</td><td><strong>Ciudad Bolívar</strong></td><td style="color:#27ae60;font-weight:700;">+167,8 %</td><td>$10,8 B</td><td>$28,9 B</td><td>+$18,1 B</td></tr>
+                        <tr class="tip-ranking" data-rank="2" data-loc="Rafael Uribe Uribe" data-pct="+154,2 %" data-av16="$8,2 B" data-av26="$20,8 B" data-var="+$12,6 B" data-note="Fuerte revalorización impulsada por mejoras en infraestructura vial y nuevos equipamientos públicos."><td>2</td><td>Rafael Uribe Uribe</td><td style="color:#27ae60;font-weight:700;">+154,2 %</td><td>$8,2 B</td><td>$20,8 B</td><td>+$12,6 B</td></tr>
+                        <tr class="tip-ranking" data-rank="3" data-loc="La Candelaria" data-pct="+150,5 %" data-av16="$3,5 B" data-av26="$8,8 B" data-var="+$5,3 B" data-note="Concentración de uso institucional y comercial en el centro histórico eleva el valor catastral."><td>3</td><td>La Candelaria</td><td style="color:#27ae60;font-weight:700;">+150,5 %</td><td>$3,5 B</td><td>$8,8 B</td><td>+$5,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="4" data-loc="Usme" data-pct="+138,1 %" data-av16="$5,6 B" data-av26="$13,4 B" data-var="+$7,8 B" data-note="Rápida incorporación de predios rurales al catastro urbano y proyectos de vivienda de interés social."><td>4</td><td>Usme</td><td style="color:#27ae60;font-weight:700;">+138,1 %</td><td>$5,6 B</td><td>$13,4 B</td><td>+$7,8 B</td></tr>
+                        <tr class="tip-ranking" data-rank="5" data-loc="San Cristóbal" data-pct="+130,3 %" data-av16="$7,7 B" data-av26="$17,8 B" data-var="+$10,1 B" data-note="Consolidación residencial en ladera oriental con mejora de vías y acceso a servicios."><td>5</td><td>San Cristóbal</td><td style="color:#27ae60;font-weight:700;">+130,3 %</td><td>$7,7 B</td><td>$17,8 B</td><td>+$10,1 B</td></tr>
+                        <tr class="tip-ranking" data-rank="6" data-loc="Bosa" data-pct="+127,8 %" data-av16="$15,1 B" data-av26="$34,5 B" data-var="+$19,3 B" data-note="Gran dinamismo por nuevos proyectos de VIS y expansión urbana hacia el suroccidente."><td>6</td><td>Bosa</td><td style="color:#27ae60;font-weight:700;">+127,8 %</td><td>$15,1 B</td><td>$34,5 B</td><td>+$19,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="7" data-loc="Santa Fe" data-pct="+123,2 %" data-av16="$11,6 B" data-av26="$25,8 B" data-var="+$14,3 B" data-note="Renovación urbana y centralidad histórica han impulsado la valorización catastral sostenida."><td>7</td><td>Santa Fe</td><td style="color:#27ae60;font-weight:700;">+123,2 %</td><td>$11,6 B</td><td>$25,8 B</td><td>+$14,3 B</td></tr>
+                        <tr class="tip-ranking" data-rank="8" data-loc="Los Mártires" data-pct="+122,4 %" data-av16="$9,2 B" data-av26="$20,4 B" data-var="+$11,2 B" data-note="Revitalización del centro tradicional con usos mixtos residencial-comercial e institucional."><td>8</td><td>Los Mártires</td><td style="color:#27ae60;font-weight:700;">+122,4 %</td><td>$9,2 B</td><td>$20,4 B</td><td>+$11,2 B</td></tr>
+                        <tr class="tip-ranking" data-rank="9" data-loc="Puente Aranda" data-pct="+118,6 %" data-av16="$20,5 B" data-av26="$44,9 B" data-var="+$24,4 B" data-note="Área industrial con alta densidad de bodegas y comercio especializado de gran área."><td>9</td><td>Puente Aranda</td><td style="color:#27ae60;font-weight:700;">+118,6 %</td><td>$20,5 B</td><td>$44,9 B</td><td>+$24,4 B</td></tr>
+                        <tr class="tip-ranking" data-rank="10" data-loc="Antonio Nariño" data-pct="+116,1 %" data-av16="$5,9 B" data-av26="$12,8 B" data-var="+$6,9 B" data-note="Zona residencial consolidada próxima al centro con equipamientos de salud y educación."><td>10</td><td>Antonio Nariño</td><td style="color:#27ae60;font-weight:700;">+116,1 %</td><td>$5,9 B</td><td>$12,8 B</td><td>+$6,9 B</td></tr>
                     </tbody>
                 </table>
                 </div>
-                <p class="hallazgos-nota">Las 20 localidades de Bogotá D.C. · B = billones de pesos colombianos corrientes · Total: $938,3 B</p>
+                <p class="hallazgos-nota">Top 10 localidades por mayor crecimiento porcentual de avalúo catastral 2016–2026 · B = billones COP corrientes</p>
             </div>
 
             <!-- Columna 2: Avalúo promedio por predio -->
@@ -2982,26 +3131,16 @@
                 <table class="hallazgos-table">
                     <thead><tr><th>#</th><th>Localidad</th><th>Avg / predio</th></tr></thead>
                     <tbody>
-                        <tr><td>1</td><td><strong>La Candelaria</strong></td><td>$565,7 M</td></tr>
-                        <tr><td>2</td><td>Puente Aranda</td><td>$536,7 M</td></tr>
-                        <tr><td>3</td><td>Teusaquillo</td><td>$528,8 M</td></tr>
-                        <tr><td>4</td><td>Barrios Unidos</td><td>$504,6 M</td></tr>
-                        <tr><td>5</td><td>Chapinero</td><td>$501,9 M</td></tr>
-                        <tr><td>6</td><td>Antonio Nariño</td><td>$488,9 M</td></tr>
-                        <tr><td>7</td><td>Los Mártires</td><td>$452,5 M</td></tr>
-                        <tr><td>8</td><td>Tunjuelito</td><td>$401,6 M</td></tr>
-                        <tr><td>9</td><td>Fontibón</td><td>$390,2 M</td></tr>
-                        <tr><td>10</td><td>Usaquén</td><td>$348,1 M</td></tr>
-                        <tr class="tr-muted"><td>11</td><td>Santa Fe</td><td>$341,7 M</td></tr>
-                        <tr class="tr-muted"><td>12</td><td>Engativá</td><td>$322,9 M</td></tr>
-                        <tr class="tr-muted"><td>13</td><td>Suba</td><td>$276,9 M</td></tr>
-                        <tr class="tr-muted"><td>14</td><td>Kennedy</td><td>$256,1 M</td></tr>
-                        <tr class="tr-muted"><td>15</td><td>Rafael Uribe</td><td>$234,9 M</td></tr>
-                        <tr class="tr-muted"><td>16</td><td>Bosa</td><td>$193,4 M</td></tr>
-                        <tr class="tr-muted"><td>17</td><td>San Cristóbal</td><td>$186,0 M</td></tr>
-                        <tr class="tr-muted"><td>18</td><td>Ciudad Bolívar</td><td>$176,1 M</td></tr>
-                        <tr class="tr-muted"><td>19</td><td>Sumapaz</td><td>$166,4 M</td></tr>
-                        <tr class="tr-muted"><td>20</td><td>Usme</td><td>$135,1 M</td></tr>
+                        <tr class="tip-avg" data-rank="1" data-loc="La Candelaria" data-avg="$565,7 M" data-predios="15.610" data-uso="Institucional / Comercial" data-note="Lidera pese a pocos predios. Alta concentración de inmuebles institucionales y comerciales de gran valor en el centro histórico."><td>1</td><td><strong>La Candelaria</strong></td><td>$565,7 M</td></tr>
+                        <tr class="tip-avg" data-rank="2" data-loc="Puente Aranda" data-avg="$536,7 M" data-predios="83.703" data-uso="Industrial / Bodegas" data-note="Predominio industrial con grandes áreas de bodega y comercio especializado que elevan el valor unitario."><td>2</td><td>Puente Aranda</td><td>$536,7 M</td></tr>
+                        <tr class="tip-avg" data-rank="3" data-loc="Teusaquillo" data-avg="$528,8 M" data-predios="94.604" data-uso="Residencial alto" data-note="Zona residencial estrato alto con grandes apartamentos, embajadas y sedes universitarias."><td>3</td><td>Teusaquillo</td><td>$528,8 M</td></tr>
+                        <tr class="tip-avg" data-rank="4" data-loc="Barrios Unidos" data-avg="$504,6 M" data-predios="64.048" data-uso="Residencial / Comercio" data-note="Mixtura residencial-comercial con predios de alto valor unitario en el nororiente de la ciudad."><td>4</td><td>Barrios Unidos</td><td>$504,6 M</td></tr>
+                        <tr class="tip-avg" data-rank="5" data-loc="Chapinero" data-avg="$501,9 M" data-predios="~63.000" data-uso="Oficinas / Comercio" data-note="Mayor concentración de oficinas y comercio de lujo de Bogotá. Eje empresarial de la ciudad."><td>5</td><td>Chapinero</td><td>$501,9 M</td></tr>
+                        <tr class="tip-avg" data-rank="6" data-loc="Antonio Nariño" data-avg="$488,9 M" data-predios="26.177" data-uso="Residencial" data-note="Predios residenciales consolidados de tamaño medio próximos al centro con alta valorización."><td>6</td><td>Antonio Nariño</td><td>$488,9 M</td></tr>
+                        <tr class="tip-avg" data-rank="7" data-loc="Los Mártires" data-avg="$452,5 M" data-predios="45.082" data-uso="Mixto" data-note="Usos mixtos en zona de renovación urbana. Cercanía al centro incrementa el valor por predio."><td>7</td><td>Los Mártires</td><td>$452,5 M</td></tr>
+                        <tr class="tip-avg" data-rank="8" data-loc="Tunjuelito" data-avg="$401,6 M" data-predios="~58.000" data-uso="Industrial / Residencial" data-note="Área industrial al sur con predios de gran extensión que elevan el avalúo promedio."><td>8</td><td>Tunjuelito</td><td>$401,6 M</td></tr>
+                        <tr class="tip-avg" data-rank="9" data-loc="Fontibón" data-avg="$390,2 M" data-predios="196.501" data-uso="Industrial / Comercio" data-note="Cercanía al aeropuerto El Dorado y zona franca incrementan significativamente el valor promedio."><td>9</td><td>Fontibón</td><td>$390,2 M</td></tr>
+                        <tr class="tip-avg" data-rank="10" data-loc="Usaquén" data-avg="$348,1 M" data-predios="~130.000" data-uso="Residencial / Comercio" data-note="Zona norte con estratos altos, centros comerciales y predios residenciales de gran área."><td>10</td><td>Usaquén</td><td>$348,1 M</td></tr>
                     </tbody>
                 </table>
                 </div>
@@ -3626,10 +3765,10 @@
                 if (typeof Chart === 'undefined') return;
 
                 var fontFamily = "'Inter', sans-serif";
-                var red = 'rgba(196, 30, 30, 1)';
-                var redLight = 'rgba(196, 30, 30, 0.15)';
-                var yellow = 'rgba(245, 166, 35, 1)';
-                var yellowLight = 'rgba(245, 166, 35, 0.15)';
+                var red = 'rgba(227, 25, 47, 1)';
+                var redLight = 'rgba(227, 25, 47, 0.15)';
+                var yellow = 'rgba(254, 180, 0, 1)';
+                var yellowLight = 'rgba(254, 180, 0, 0.15)';
 
                 Chart.defaults.font.family = fontFamily;
                 Chart.defaults.font.size = 11;
@@ -3805,8 +3944,8 @@
                                 {
                                     label: 'Urbano',
                                     data: s0.urbano,
-                                    backgroundColor: 'rgba(52,152,219,0.72)',
-                                    borderColor: 'rgba(52,152,219,1)',
+                                    backgroundColor: 'rgba(254,180,0,0.82)',
+                                    borderColor: 'rgba(254,180,0,1)',
                                     borderWidth: 1,
                                     borderRadius: 3,
                                     stack: 'predios',
@@ -3816,8 +3955,8 @@
                                 {
                                     label: 'Rural',
                                     data: s0.rural,
-                                    backgroundColor: 'rgba(46,204,113,0.72)',
-                                    borderColor: 'rgba(46,204,113,1)',
+                                    backgroundColor: 'rgba(227,25,47,0.82)',
+                                    borderColor: 'rgba(227,25,47,1)',
                                     borderWidth: 1,
                                     borderRadius: 3,
                                     stack: 'predios',
@@ -3923,20 +4062,20 @@
                     if (!ctx) return;
 
                     var colores = [
-                        'rgba(196, 30, 30, 0.85)',
-                        'rgba(245, 166, 35, 0.85)',
-                        'rgba(52, 152, 219, 0.85)',
-                        'rgba(46, 204, 113, 0.85)',
-                        'rgba(155, 89, 182, 0.85)',
-                        'rgba(149, 165, 166, 0.85)'
+                        'rgba(254, 180, 0, 0.88)',    /* Amarillo Bogotá */
+                        'rgba(227, 25, 47, 0.88)',    /* Rojo Bogotá */
+                        'rgba(0, 48, 135, 0.88)',     /* Azul oscuro Distrito */
+                        'rgba(0, 112, 205, 0.88)',    /* Azul medio Distrito */
+                        'rgba(0, 166, 81, 0.88)',     /* Verde Distrito */
+                        'rgba(109, 46, 140, 0.88)'    /* Morado Distrito */
                     ];
                     var bordecolores = [
-                        'rgba(196, 30, 30, 1)',
-                        'rgba(245, 166, 35, 1)',
-                        'rgba(52, 152, 219, 1)',
-                        'rgba(46, 204, 113, 1)',
-                        'rgba(155, 89, 182, 1)',
-                        'rgba(149, 165, 166, 1)'
+                        'rgba(254, 180, 0, 1)',
+                        'rgba(227, 25, 47, 1)',
+                        'rgba(0, 48, 135, 1)',
+                        'rgba(0, 112, 205, 1)',
+                        'rgba(0, 166, 81, 1)',
+                        'rgba(109, 46, 140, 1)'
                     ];
 
                     // Grupos que se muestran individualmente; el resto se agrupa en "Otros servicios"
@@ -4173,12 +4312,12 @@
                     var AÑOS = ['2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
 
                     // Paleta consistente y accesible
-                    var C_POS   = 'rgba(196, 30, 30, 0.82)';
-                    var C_POS_B = 'rgba(196, 30, 30, 1)';
-                    var C_NEG   = 'rgba(220, 80, 80, 0.62)';
-                    var C_NEG_B = 'rgba(220, 80, 80, 1)';
-                    var C_HOV   = 'rgba(245, 166, 35, 0.88)';
-                    var C_LINE  = 'rgba(245, 166, 35, 1)';
+                    var C_POS   = 'rgba(227, 25, 47, 0.82)';
+                    var C_POS_B = 'rgba(227, 25, 47, 1)';
+                    var C_NEG   = 'rgba(227, 25, 47, 0.45)';
+                    var C_NEG_B = 'rgba(227, 25, 47, 0.70)';
+                    var C_HOV   = 'rgba(254, 180, 0, 0.88)';
+                    var C_LINE  = 'rgba(254, 180, 0, 1)';
 
                     // Datos base referencia Usaquén (peso 0.148)
                     var netosBase  = [0, 348.22, 884.15, 292.64, 404.37, -18.82, 200.79, 297.19, 271.27, 189.47, 227.92];
@@ -4472,7 +4611,7 @@
                                     variaciones: s0.variaciones,
                                     yAxisID: 'yNetos',
                                     borderColor: C_LINE,
-                                    backgroundColor: 'rgba(245,166,35,0.07)',
+                                    backgroundColor: 'rgba(254,180,0,0.07)',
                                     fill: false,
                                     tension: 0.35,
                                     borderWidth: 2.5,
@@ -4651,26 +4790,26 @@
 
                     // Colores para barras por localidad
                     var barColors = [
-                        'rgba(196, 30, 30, 0.8)',
-                        'rgba(245, 166, 35, 0.8)',
-                        'rgba(52, 152, 219, 0.8)',
-                        'rgba(46, 204, 113, 0.8)',
-                        'rgba(155, 89, 182, 0.8)',
-                        'rgba(230, 126, 34, 0.8)',
-                        'rgba(26, 188, 156, 0.8)',
-                        'rgba(241, 196, 15, 0.8)',
-                        'rgba(231, 76, 60, 0.8)',
-                        'rgba(52, 73, 94, 0.8)',
-                        'rgba(142, 68, 173, 0.8)',
-                        'rgba(22, 160, 133, 0.8)',
-                        'rgba(192, 57, 43, 0.8)',
-                        'rgba(44, 62, 80, 0.8)',
-                        'rgba(39, 174, 96, 0.8)',
-                        'rgba(41, 128, 185, 0.8)',
-                        'rgba(243, 156, 18, 0.8)',
-                        'rgba(211, 84, 0, 0.8)',
-                        'rgba(127, 140, 141, 0.8)',
-                        'rgba(189, 195, 199, 0.8)'
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)',
+                        'rgba(254, 180, 0, 0.8)',
+                        'rgba(227, 25, 47, 0.8)'
                     ];
 
                     function showLoading() {
@@ -5086,6 +5225,70 @@
 
     </script>
 
+    <!-- ── Tooltip de detalle para tablas ── -->
+    <script>
+    (function () {
+        var tip   = document.getElementById('row-tooltip');
+        var tRank = document.getElementById('rtip-rank');
+        var tName = document.getElementById('rtip-name');
+        var tBody = document.getElementById('rtip-body');
+        var PAD   = 16;
+
+        function row(label, val, cls) {
+            return '<div class="rtip-row"><span class="rtip-label">' + label +
+                   '</span><span class="rtip-val' + (cls ? ' ' + cls : '') + '">' + val + '</span></div>';
+        }
+
+        function show(e, html, rank, name) {
+            tRank.textContent = '#' + rank;
+            tName.textContent = name;
+            tBody.innerHTML   = html;
+            tip.classList.add('visible');
+            move(e);
+        }
+
+        function move(e) {
+            var x = e.clientX + PAD;
+            var y = e.clientY + PAD;
+            if (x + 256 > window.innerWidth)  x = e.clientX - 256 - PAD;
+            if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - PAD;
+            tip.style.left = x + 'px';
+            tip.style.top  = y + 'px';
+        }
+
+        function hide() { tip.classList.remove('visible'); }
+
+        /* Tabla ranking */
+        document.querySelectorAll('tr.tip-ranking').forEach(function (tr) {
+            tr.addEventListener('mouseenter', function (e) {
+                var d = tr.dataset;
+                var html = row('Crecimiento', d.pct, 'green') +
+                           row('Avalúo 2016', d.av16) +
+                           row('Avalúo 2026', d.av26) +
+                           row('Variación abs.', d.var, 'green') +
+                           '<div class="rtip-note">' + d.note + '</div>';
+                show(e, html, d.rank, d.loc);
+            });
+            tr.addEventListener('mousemove', move);
+            tr.addEventListener('mouseleave', hide);
+        });
+
+        /* Tabla avalúo promedio */
+        document.querySelectorAll('tr.tip-avg').forEach(function (tr) {
+            tr.addEventListener('mouseenter', function (e) {
+                var d = tr.dataset;
+                var html = row('Avg / predio', d.avg, 'red') +
+                           row('Total predios', d.predios) +
+                           row('Uso principal', d.uso) +
+                           '<div class="rtip-note">' + d.note + '</div>';
+                show(e, html, d.rank, d.loc);
+            });
+            tr.addEventListener('mousemove', move);
+            tr.addEventListener('mouseleave', hide);
+        });
+    })();
+    </script>
+
 
 
     <section class="kpis-final-section">
@@ -5136,6 +5339,28 @@
         </div>
         </div>
     </section>
+
+    <!-- ── Tooltip flotante de detalle ── -->
+    <div id="row-tooltip">
+        <div class="rtip-card">
+            <div class="rtip-header">
+                <span class="rtip-rank" id="rtip-rank">#1</span>
+                <span class="rtip-name" id="rtip-name">Localidad</span>
+            </div>
+            <div class="rtip-body" id="rtip-body"></div>
+        </div>
+    </div>
+
+    <!-- ── Sección de descarga ── -->
+    <div class="download-section">
+        <p>Para vigencias anteriores descarga el archivo</p>
+        <button class="Download-button">
+            <svg viewBox="0 0 640 512" width="20" height="16" xmlns="http://www.w3.org/2000/svg">
+                <path fill="white" d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-167l80 80c9.4 9.4 24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-39 39V184c0-13.3-10.7-24-24-24s-24 10.7-24 24V318.1l-39-39c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9z"></path>
+            </svg>
+            <span>Download</span>
+        </button>
+    </div>
 
 </body>
 

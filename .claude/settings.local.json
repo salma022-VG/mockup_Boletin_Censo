@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python informe_censo.py)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)"
     ]
   }
 }
