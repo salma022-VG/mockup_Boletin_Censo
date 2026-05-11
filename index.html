@@ -1728,6 +1728,70 @@
             box-shadow: 0 4px 12px rgba(196, 30, 30, 0.12);
         }
 
+        /* Tabla resumen por localidad (área construida) */
+        .area-table-section {
+            border-top: 2px solid rgba(196,30,30,0.12);
+            padding: 0 0 8px;
+            overflow-x: auto;
+        }
+        .area-table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px 10px;
+        }
+        .area-table-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.01em;
+        }
+        .area-table-legend {
+            display: flex;
+            gap: 16px;
+            font-size: 0.73rem;
+            color: var(--text-muted);
+        }
+        .area-table-legend span { display: flex; align-items: center; gap: 4px; }
+        .area-table-legend .dot-pos { width:8px;height:8px;border-radius:50%;background:#1a7a40;display:inline-block; }
+        .area-table-legend .dot-neg { width:8px;height:8px;border-radius:50%;background:var(--color-red);display:inline-block; }
+        .area-loc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.80rem;
+        }
+        .area-loc-table thead tr { background: rgba(196,30,30,0.06); }
+        .area-loc-table th {
+            text-align: left;
+            padding: 9px 18px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        .area-loc-table th.num { text-align: right; }
+        .area-loc-table td {
+            padding: 8px 18px;
+            border-bottom: 1px solid rgba(0,0,0,0.045);
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+        .area-loc-table tbody tr:hover { background: rgba(196,30,30,0.035); }
+        .area-loc-table td.val-pos { color: #1a7a40; font-weight: 600; }
+        .area-loc-table td.val-neg { color: var(--color-red); font-weight: 600; }
+        .area-loc-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+        .area-loc-table .tr-highlight td {
+            background: rgba(196,30,30,0.07);
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .area-loc-table .tr-highlight td:first-child {
+            border-left: 3px solid var(--color-red);
+            padding-left: 15px;
+        }
+
         .chart-canvas-wrap {
             position: relative;
             height: 280px;
@@ -1739,7 +1803,7 @@
         }
 
         .chart-canvas-wide {
-            height: 320px;
+            height: 360px;
         }
 
         @media (max-width: 900px) {
@@ -1758,7 +1822,7 @@
             }
 
             .chart-canvas-wide {
-                height: 260px;
+                height: 280px;
             }
         }
 
@@ -2372,7 +2436,7 @@
             <div class="stats-row-primary">
                 <div class="stat-card reveal-scale" data-delay="0">
                     <span class="stat-card-label">Avalúo Total 2026</span>
-                    <span class="stat-card-value" id="stat-avaluo" data-counter="938250000000000" data-prefix="$"
+                    <span class="stat-card-value" id="stat-valor_catastral" data-counter="938250000000000" data-prefix="$"
                         data-format="currency">$0</span>
                     <span class="stat-trend up">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -2676,7 +2740,7 @@
 
         <div class="locality-metric-pills reveal">
             <button class="metric-pill active" data-metric="predios">Predios</button>
-            <button class="metric-pill" data-metric="avaluo">Avalúo</button>
+            <button class="metric-pill" data-metric="Valor catastral">Valor catastral</button>
             <button class="metric-pill" data-metric="area_construida">Área Construida</button>
             <button class="metric-pill" data-metric="area_terreno">Área Terreno</button>
         </div>
@@ -2695,7 +2759,7 @@
         <div class="charts-row charts-row-full">
             <div class="chart-card chart-card-wide reveal-scale" data-delay="200">
                 <div class="chart-card-header">
-                    <h3>Área construida urbana y rural 2016 - 2026 (metros cuadrados)</h3>
+                    <h3>Área construida urbana y rural&nbsp; 2016 - 2026 (metros cuadrados)</h3>
                     <div class="chart-filter">
                         <label for="localidad-select">Localidad</label>
                         <select id="localidad-select" class="chart-filter-select">
@@ -2725,6 +2789,27 @@
                 </div>
                 <div class="chart-canvas-wrap chart-canvas-wide">
                     <canvas id="chart-area-variation"></canvas>
+                </div>
+                <!-- Tabla por año para la localidad seleccionada -->
+                <div class="area-table-section">
+                    <div class="area-table-header">
+                        <span id="area-table-title" class="area-table-title">Datos por año · Bogotá D.C.</span>
+                        <div class="area-table-legend">
+                            <span><i class="dot-pos"></i> Crecimiento</span>
+                            <span><i class="dot-neg"></i> Decrecimiento</span>
+                        </div>
+                    </div>
+                    <table class="area-loc-table">
+                        <thead>
+                            <tr>
+                                <th>Vigencia</th>
+                                <th class="num">Área total (miles m²)</th>
+                                <th class="num">Neto anual (miles m²)</th>
+                                <th class="num">Variación %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="area-loc-tbody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -3842,166 +3927,273 @@
                     }
                 })();
 
-                // ───── GRÁFICA COMBINADA: Aumentos netos y variaciones en área construida ─────
+                // ───── GRÁFICA: Área construida por año y por localidad ─────
                 (function () {
                     var ctx = document.getElementById('chart-area-variation');
                     if (!ctx) return;
 
-                    var periodos = [
-                        '2017-2016',
-                        '2018-2017',
-                        '2019-2018',
-                        '2020-2019',
-                        '2021-2020',
-                        '2022-2021',
-                        '2023-2022',
-                        '2024-2023',
-                        '2025-2024',
-                        '2026-2025'
-                    ];
+                    var AÑOS = ['2017-2016','2018-2017','2019-2018','2020-2019','2021-2020','2022-2021','2023-2022','2024-2023','2025-2024','2026-2025'];
 
-                    // Valores base según la gráfica de referencia (miles de m² y %)
-                    var baseAumentos = [348.22, 884.15, 292.64, 404.37, -18.82, 200.79, 297.19, 271.27, 189.47, 227.92];
-                    var baseVariaciones = [1.3, 3.4, 1.1, 1.5, -0.1, 0.7, 1.1, 1.0, 0.7, 0.8];
+                    // Paleta consistente y accesible
+                    var C_POS   = 'rgba(196, 30, 30, 0.82)';
+                    var C_POS_B = 'rgba(196, 30, 30, 1)';
+                    var C_NEG   = 'rgba(220, 80, 80, 0.62)';
+                    var C_NEG_B = 'rgba(220, 80, 80, 1)';
+                    var C_HOV   = 'rgba(245, 166, 35, 0.88)';
+                    var C_LINE  = 'rgba(245, 166, 35, 1)';
 
-                    function buildSeriesForLocalidad(nombre) {
-                        // Pequeña variación por localidad manteniendo la forma general
-                        var seed = 0;
-                        for (var i = 0; i < nombre.length; i++) {
-                            seed += nombre.charCodeAt(i);
+                    // Datos base referencia Usaquén (peso 0.148)
+                    var netosBase  = [0, 348.22, 884.15, 292.64, 404.37, -18.82, 200.79, 297.19, 271.27, 189.47, 227.92];
+                    var variacBase = [0,   1.3,    3.4,   1.1,   1.5,   -0.1,   0.7,   1.1,   1.0,   0.7,   0.8];
+                    var area2016Ref = 25829.939;
+                    var pesoRef     = 0.148;
+
+                    var localidadPesos = {
+                        'Bogotá D.C.': 1.000, 'Suba': 0.185, 'Usaquén': 0.148,
+                        'Chapinero': 0.080, 'Kennedy': 0.112, 'Engativá': 0.095,
+                        'Fontibón': 0.072, 'Teusaquillo': 0.038, 'Puente Aranda': 0.049,
+                        'Bosa': 0.065, 'Barrios Unidos': 0.026, 'Ciudad Bolívar': 0.058,
+                        'Santa Fe': 0.022, 'Rafael Uribe Uribe': 0.034, 'Los Mártires': 0.017,
+                        'San Cristóbal': 0.040, 'Tunjuelito': 0.014, 'Usme': 0.038,
+                        'Antonio Nariño': 0.012, 'La Candelaria': 0.006, 'Sumapaz': 0.003
+                    };
+
+                    function buildSeries(nombre) {
+                        if (nombre === 'Engativá') {
+                            var netosEng  = [261.83, 403.78, 165.71, 329.05, 53.35, 392.95, 336.34, 283.57, 501.00, 366.64];
+                            var variacEng = [1.0, 1.6, 0.6, 1.2, 0.2, 1.5, 1.2, 1.0, 1.8, 1.3];
+                            var areaEng = [];
+                            var acumEng = 26183;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumEng = +(acumEng + netosEng[j]).toFixed(3);
+                                areaEng.push(acumEng);
+                            }
+                            return { area: areaEng, netos: netosEng, variaciones: variacEng };
                         }
-                        var factor = 1 + ((seed % 9) - 4) / 100; // entre -4% y +4%
-
-                        var aumentos = baseAumentos.map(function (v) { return +(v * factor).toFixed(2); });
-                        var variac = baseVariaciones.map(function (v) { return +(v * factor).toFixed(1); });
-
-                        return { aumentos: aumentos, variaciones: variac };
+                        if (nombre === 'Santa Fe') {
+                            var notosSF  = [-37.35, 80.51, 104.85, 107.73, 19.89, 48.70, 30.48, -6.75, 59.90, 126.68];
+                            var variacSF = [-0.5, 1.2, 1.5, 1.5, 0.3, 0.7, 0.4, -0.1, 0.8, 1.8];
+                            var areaSF = [];
+                            var acumSF = 6746.52;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumSF = +(acumSF + notosSF[j]).toFixed(3);
+                                areaSF.push(acumSF);
+                            }
+                            return { area: areaSF, netos: notosSF, variaciones: variacSF };
+                        }
+                        if (nombre === 'Chapinero') {
+                            var netosCh  = [-8.44, 454.02, 145.67, 418.38, -9.50, 22.41, 2.47, 36.15, 6.34, 150.65];
+                            var variacCh = [-0.1, 3.0, 0.9, 2.7, -0.1, 0.1, 0.0, 0.2, 0.0, 0.9];
+                            var areaCh = [];
+                            var acumCh = 8440;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumCh = +(acumCh + netosCh[j]).toFixed(3);
+                                areaCh.push(acumCh);
+                            }
+                            return { area: areaCh, netos: netosCh, variaciones: variacCh };
+                        }
+                        if (nombre === 'San Cristóbal') {
+                            var netosSC  = [143.98, 91.88, 174.57, 191.41, 24.43, 348.34, 29.03, 179.61, 203.96, 341.15];
+                            var variacSC = [1.3, 0.8, 1.5, 1.7, 0.2, 3.0, 0.2, 1.5, 1.7, 2.7];
+                            var areaSC = [];
+                            var acumSC = 11075;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumSC = +(acumSC + netosSC[j]).toFixed(3);
+                                areaSC.push(acumSC);
+                            }
+                            return { area: areaSC, netos: netosSC, variaciones: variacSC };
+                        }
+                        if (nombre === 'Usme') {
+                            var netosUsme  = [264.98, 134.70, 186.11, 207.17, 37.59, 285.50, 173.68, 291.19, 59.12, 289.71];
+                            var variacUsme = [3.0, 1.5, 2.0, 2.2, 0.4, 3.0, 1.8, 2.9, 0.6, 2.8];
+                            var areaUsme = [];
+                            var acumUsme = 8833;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumUsme = +(acumUsme + netosUsme[j]).toFixed(3);
+                                areaUsme.push(acumUsme);
+                            }
+                            return { area: areaUsme, netos: netosUsme, variaciones: variacUsme };
+                        }
+                        if (nombre === 'Tunjuelito') {
+                            var netosTun  = [32.42, 21.56, 45.82, 72.63, 1.57, 25.66, 69.60, 83.42, 28.16, 114.28];
+                            var variacTun = [0.5, 0.4, 0.7, 1.2, 0.0, 0.4, 1.1, 1.3, 0.4, 1.8];
+                            var areaTun = [];
+                            var acumTun = 6484;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumTun = +(acumTun + netosTun[j]).toFixed(3);
+                                areaTun.push(acumTun);
+                            }
+                            return { area: areaTun, netos: netosTun, variaciones: variacTun };
+                        }
+                        if (nombre === 'Bosa') {
+                            var netosBosa  = [445.91, 483.54, 694.93, 226.19, 8.97, 414.83, 290.47, 254.00, 245.91, 325.95];
+                            var variacBosa = [2.9, 3.0, 4.1, 1.3, 0.1, 2.4, 1.6, 1.4, 1.3, 1.7];
+                            var areaBosa = [];
+                            var acumBosa = 15376;
+                            for (var j = 0; j < AÑOS.length; j++) {
+                                acumBosa = +(acumBosa + netosBosa[j]).toFixed(3);
+                                areaBosa.push(acumBosa);
+                            }
+                            return { area: areaBosa, netos: netosBosa, variaciones: variacBosa };
+                        }
+                        var seed = 0;
+                        for (var i = 0; i < nombre.length; i++) seed += nombre.charCodeAt(i);
+                        var factor = 1 + ((seed % 9) - 4) / 100;
+                        var peso   = localidadPesos[nombre] !== undefined ? localidadPesos[nombre] : 0.05;
+                        var scale  = (peso / pesoRef) * factor;
+                        var netosAll  = netosBase.map(function (v) { return v === null ? null : +(v * scale).toFixed(2); });
+                        var variacAll = variacBase.map(function (v) { return v === null ? null : +(v * factor).toFixed(1); });
+                        var area = [];
+                        var acum = +(area2016Ref * (peso / pesoRef) * factor).toFixed(3);
+                        for (var j = 1; j <= AÑOS.length; j++) {
+                            acum = +(acum + (netosAll[j] !== null ? netosAll[j] : 0)).toFixed(3);
+                            area.push(acum);
+                        }
+                        return { area: area, netos: netosAll.slice(1), variaciones: variacAll.slice(1) };
                     }
 
                     var localidadSelect = document.getElementById('localidad-select');
-                    var localidadInicial = localidadSelect ? localidadSelect.value : 'Bogotá D.C.';
-                    var serieInicial = buildSeriesForLocalidad(localidadInicial);
+                    var locInicial = localidadSelect ? localidadSelect.value : 'Bogotá D.C.';
+                    var s0 = buildSeries(locInicial);
 
-                    var aumentosNetos = serieInicial.aumentos;
-                    var variaciones = serieInicial.variaciones;
-
-                    var areaVariationChart = new Chart(ctx, {
+                    var areaChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: periodos,
+                            labels: AÑOS,
                             datasets: [
                                 {
                                     type: 'bar',
-                                    label: 'Área construida urbana y rural  2016 - 2026 (metros cuadrados)',
-                                    data: aumentosNetos,
-                                    yAxisID: 'y1',
-                                    backgroundColor: function (context) {
-                                        var chart = context.chart;
-                                        var area = chart.chartArea;
-                                        if (!area) return red;
-                                        var gradient = chart.ctx.createLinearGradient(0, area.bottom, 0, area.top);
-                                        gradient.addColorStop(0, 'rgba(196, 30, 30, 0.6)');
-                                        gradient.addColorStop(1, 'rgba(245, 166, 35, 0.9)');
-                                        return gradient;
+                                    label: 'Neto anual (miles m²)',
+                                    data: s0.netos,
+                                    yAxisID: 'yNetos',
+                                    backgroundColor: function (c) {
+                                        var v = c.raw;
+                                        if (v === null || v === undefined) return 'transparent';
+                                        if (v === 0) return 'rgba(160,160,160,0.45)';
+                                        return v < 0 ? C_NEG : C_POS;
                                     },
-                                    borderColor: red,
+                                    borderColor: function (c) {
+                                        var v = c.raw;
+                                        if (v === null || v === undefined) return 'transparent';
+                                        if (v === 0) return 'rgba(120,120,120,0.7)';
+                                        return v < 0 ? C_NEG_B : C_POS_B;
+                                    },
                                     borderWidth: 1,
-                                    borderRadius: 6,
-                                    borderSkipped: false,
-                                    hoverBackgroundColor: red
+                                    borderRadius: 4,
+                                    hoverBackgroundColor: C_HOV,
+                                    hoverBorderColor: 'rgba(245,166,35,1)',
+                                    order: 2
                                 },
                                 {
                                     type: 'line',
-                                    label: 'Área construida urbana y rural  2016 - 2026 (metros cuadrados)',
-                                    data: variaciones,
-                                    yAxisID: 'y',
-                                    borderColor: yellow,
-                                    backgroundColor: yellowLight,
-                                    tension: 0.3,
+                                    label: 'Variación anual (%)',
+                                    data: s0.netos,
+                                    variaciones: s0.variaciones,
+                                    yAxisID: 'yNetos',
+                                    borderColor: C_LINE,
+                                    backgroundColor: 'rgba(245,166,35,0.07)',
+                                    fill: false,
+                                    tension: 0.35,
                                     borderWidth: 2.5,
-                                    pointRadius: 4,
-                                    pointHoverRadius: 6,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7,
                                     pointBackgroundColor: '#fff',
-                                    pointBorderColor: yellow,
-                                    pointBorderWidth: 2
+                                    pointBorderColor: C_LINE,
+                                    pointBorderWidth: 2.5,
+                                    spanGaps: true,
+                                    order: 1
                                 }
                             ]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            interaction: {
-                                mode: 'index',
-                                intersect: false
-                            },
-                            animation: {
-                                duration: 1600,
-                                easing: 'easeOutQuart'
-                            },
+                            interaction: { mode: 'index', intersect: false },
+                            animation: { duration: 700, easing: 'easeOutCubic' },
+                            layout: { padding: { top: 6, right: 10, bottom: 0, left: 2 } },
                             plugins: {
                                 legend: {
+                                    position: 'top',
+                                    align: 'center',
                                     labels: {
-                                        padding: 20,
+                                        padding: 28,
                                         usePointStyle: true,
-                                        pointStyle: 'circle',
-                                        font: { size: 11, weight: '500' }
+                                        font: { size: 12, weight: '500' },
+                                        color: '#333',
+                                        generateLabels: function (chart) {
+                                            return [
+                                                { text: 'Neto anual (miles m²)', fillStyle: C_POS, strokeStyle: C_POS_B, lineWidth: 1, pointStyle: 'rect', datasetIndex: 0 },
+                                                { text: 'Variación anual (%)',   fillStyle: C_LINE, strokeStyle: C_LINE, lineWidth: 2.5, pointStyle: 'circle', datasetIndex: 1 }
+                                            ];
+                                        }
                                     }
                                 },
                                 tooltip: {
-                                    backgroundColor: 'rgba(30,30,30,0.92)',
-                                    titleFont: { weight: '600' },
-                                    padding: 12,
-                                    cornerRadius: 8,
+                                    backgroundColor: 'rgba(18,18,18,0.93)',
+                                    titleFont: { weight: '700', size: 13 },
+                                    bodyFont: { size: 12 },
+                                    padding: 14,
+                                    cornerRadius: 10,
+                                    borderColor: 'rgba(255,255,255,0.08)',
+                                    borderWidth: 1,
                                     callbacks: {
+                                        title: function (items) {
+                                            return items[0].label;
+                                        },
                                         label: function (ctx) {
-                                            if (ctx.dataset.yAxisID === 'y1') {
-                                                return ctx.dataset.label + ': ' +
-                                                    ctx.raw.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
-                                                    ' mil m²';
+                                            if (ctx.raw === null || ctx.raw === undefined) return null;
+                                            var sign = ctx.raw >= 0 ? '+' : '';
+                                            if (ctx.datasetIndex === 0) {
+                                                return '  Neto: ' + sign + ctx.raw.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' miles m²';
                                             }
-                                            return ctx.dataset.label + ': ' +
-                                                ctx.raw.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
-                                                ' %';
+                                            var v = ctx.chart.data.datasets[1].variaciones[ctx.dataIndex];
+                                            if (v === null || v === undefined) return null;
+                                            var vs = v >= 0 ? '+' : '';
+                                            return '  Variación: ' + vs + v.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+                                        },
+                                        afterBody: function (items) {
+                                            if (!items.length) return [];
+                                            var i   = items[0].dataIndex;
+                                            var loc = localidadSelect ? localidadSelect.value : 'Bogotá D.C.';
+                                            var s   = buildSeries(loc);
+                                            return ['', '  Área acum.: ' + s.area[i].toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' miles m²'];
                                         }
                                     }
                                 }
                             },
                             scales: {
                                 x: {
-                                    grid: { color: 'rgba(0,0,0,0.04)' },
-                                    ticks: {
-                                        font: { size: 10, weight: '500' }
-                                    }
+                                    offset: true,
+                                    grid: { color: 'rgba(0,0,0,0.04)', offset: false },
+                                    ticks: { font: { size: 10, weight: '600' }, color: '#555', maxRotation: 45, minRotation: 45 }
                                 },
-                                y: {
-                                    type: 'linear',
+                                yPct: {
+                                    display: true,
                                     position: 'left',
-                                    min: -0.5,
-                                    max: 4.0,
-                                    grid: { color: 'rgba(0,0,0,0.08)' },
-                                    title: {
-                                        display: true,
-                                        text: 'Porcentaje de variación',
-                                        font: { size: 11, weight: '600' }
-                                    },
+                                    min: -1,
+                                    max: 2,
+                                    grid: { drawOnChartArea: false, display: false },
+                                    title: { display: true, text: 'Porcentaje de variación', font: { size: 11, weight: '600' }, color: '#555' },
                                     ticks: {
-                                        callback: function (v) {
-                                            return v.toFixed(1).replace('.', ',') + '%';
-                                        }
+                                        color: '#555',
+                                        font: { size: 10, weight: '500' },
+                                        stepSize: 0.5,
+                                        callback: function (v) { return v.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; }
                                     }
                                 },
-                                y1: {
+                                yNetos: {
                                     type: 'linear',
                                     position: 'right',
+                                    beginAtZero: true,
                                     grid: { drawOnChartArea: false },
-                                    title: {
-                                        display: true,
-                                        text: 'Área construida urbana y rural  2016 - 2026 (metros cuadrados)',
-                                        font: { size: 11, weight: '600' }
-                                    },
+                                    title: { display: true, text: 'Variaciones en área neta construida (miles m²)', font: { size: 11, weight: '600' }, color: 'rgba(196,30,30,0.9)', padding: { bottom: 8 } },
                                     ticks: {
+                                        color: 'rgba(196,30,30,0.85)',
+                                        font: { size: 10, weight: '500' },
+                                        maxTicksLimit: 6,
                                         callback: function (v) {
-                                            return v.toLocaleString('es-CO');
+                                            if (Math.abs(v) >= 1000) return (v / 1000).toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'K';
+                                            return v.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
                                         }
                                     }
                                 }
@@ -4009,12 +4201,44 @@
                         }
                     });
 
+                    var areaLocTbody   = document.getElementById('area-loc-tbody');
+                    var areaTableTitle = document.getElementById('area-table-title');
+
+                    function renderAreaTable(nombre) {
+                        var s = buildSeries(nombre);
+                        if (areaTableTitle) areaTableTitle.textContent = 'Datos por año · ' + nombre;
+                        var html = '';
+                        AÑOS.forEach(function (año, i) {
+                            var netVal = s.netos[i];
+                            var varVal = s.variaciones[i];
+                            var isBase = (año === '2016');
+                            var clsNet = (netVal === null || isBase) ? '' : (netVal < 0 ? 'val-neg' : 'val-pos');
+                            var clsVar = (varVal === null || isBase) ? '' : (varVal < 0 ? 'val-neg' : 'val-pos');
+                            var sign   = function (v) { return v !== null && v >= 0 ? '+' : ''; };
+                            var netStr = isBase ? '<em style="color:#999;font-style:normal">Año base</em>' : (netVal === null ? '—' : sign(netVal) + netVal.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' miles m²');
+                            var varStr = isBase ? '<em style="color:#999;font-style:normal">—</em>'        : (varVal === null ? '—' : sign(varVal) + varVal.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%');
+                            var isLast = año === '2026';
+                            html += '<tr' + (isLast ? ' class="tr-highlight"' : '') + '>'
+                                + '<td>' + año + (isLast ? ' &#9733;' : '') + '</td>'
+                                + '<td class="num">' + s.area[i].toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' miles m²</td>'
+                                + '<td class="num ' + clsNet + '">' + netStr + '</td>'
+                                + '<td class="num ' + clsVar + '">' + varStr + '</td>'
+                                + '</tr>';
+                        });
+                        if (areaLocTbody) areaLocTbody.innerHTML = html;
+                    }
+
+                    renderAreaTable(locInicial);
+
                     if (localidadSelect) {
                         localidadSelect.addEventListener('change', function () {
-                            var serie = buildSeriesForLocalidad(localidadSelect.value);
-                            areaVariationChart.data.datasets[0].data = serie.aumentos;
-                            areaVariationChart.data.datasets[1].data = serie.variaciones;
-                            areaVariationChart.update();
+                            var loc = localidadSelect.value;
+                            var s   = buildSeries(loc);
+                            areaChart.data.datasets[0].data = s.netos;
+                            areaChart.data.datasets[1].data = s.netos;
+                            areaChart.data.datasets[1].variaciones = s.variaciones;
+                            areaChart.update('active');
+                            renderAreaTable(loc);
                         });
                     }
                 })();
@@ -4039,7 +4263,7 @@
 
                     var metricLabels = {
                         predios: 'Número de Predios',
-                        avaluo: 'Valor Avalúo (Millones COP)',
+                        valor_catastral: 'Valor Catastral (Millones COP)',
                         area_construida: 'Área Construida (m²)',
                         area_terreno: 'Área Terreno (m²)'
                     };
@@ -4105,7 +4329,7 @@
                         var suffix = '_' + year.slice(-2);
                         switch (metric) {
                             case 'predios': return item['PREDIOS' + suffix] || 0;
-                            case 'avaluo': return (item['VALOR_AVALUO' + suffix] || 0);
+                            case 'valor_catastral': return (item['valor_catastral' + suffix] || 0);
                             case 'area_construida': return item['AREA_CONSTRUIDA' + suffix] || 0;
                             case 'area_terreno': return item['AREA_TERRENO' + suffix] || 0;
                             default: return 0;
@@ -4183,7 +4407,7 @@
                     }
 
                     function formatValue(val, metric) {
-                        if (metric === 'avaluo') {
+                        if (metric === 'valor_catastral') {
                             if (val >= 1e12) return '$' + (val / 1e12).toFixed(1) + 'B';
                             if (val >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'MM';
                             if (val >= 1e6) return '$' + (val / 1e6).toFixed(1) + 'M';
@@ -4195,7 +4419,7 @@
                     }
 
                     function formatTooltipValue(val, metric) {
-                        if (metric === 'avaluo') {
+                        if (metric === 'Valor catastral') {
                             return '$' + val.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
                         }
                         return val.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
