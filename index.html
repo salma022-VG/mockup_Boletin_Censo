@@ -2881,11 +2881,11 @@
             <!-- Segmentadores Rural / Urbano (se movieron junto a las tarjetas de estadísticas) -->
         </div>
         <div class="about-wrapper">
-            <h2>¿Qué es el Catastro Distrital?</h2>
-            <p>El <strong>catastro distrital</strong> es el inventario oficial de los bienes inmuebles de Bogotá D.C. Registra
+            <h2 id="about-title">¿Qué es el Catastro Distrital?</h2>
+            <p id="about-p1">El <strong>catastro distrital</strong> es el inventario oficial de los bienes inmuebles de Bogotá D.C. Registra
                 la ubicación, características físicas, uso del suelo y valor de cada predio para apoyar la planificación
                 urbana, la equidad tributaria y la toma de decisiones territoriales.</p>
-            <p style="margin-top:12px;">Entre <strong>2012 y 2026</strong> el catastro incorporó más de
+            <p id="about-p2" style="margin-top:12px;">Entre <strong>2012 y 2026</strong> el catastro incorporó más de
                 <strong>660.000 nuevos predios</strong>, alcanzando un total de <strong>2.929.879 unidades</strong>.
                 El avalúo catastral total creció de <strong>$280 billones</strong> a <strong>$938 billones COP</strong>,
                 un aumento del <strong>235 %</strong> en términos nominales, impulsado por la expansión residencial
@@ -3041,12 +3041,6 @@
                 </select>
             </div>
             <div class="locality-filter-group">
-                <label for="locality-group-filter">Grupo Económico</label>
-                <select id="locality-group-filter" class="locality-filter-select">
-                    <option value="TODOS" selected>Todos</option>
-                </select>
-            </div>
-            <div class="locality-filter-group">
                 <label for="locality-loc-filter">Localidad</label>
                 <select id="locality-loc-filter" class="locality-filter-select">
                     <option value="TODAS" selected>Todas</option>
@@ -3056,7 +3050,7 @@
 
         <div class="locality-metric-pills reveal">
             <button class="metric-pill active" data-metric="predios">Predios</button>
-            <button class="metric-pill" data-metric="Valor catastral">Valor catastral</button>
+            <button class="metric-pill" data-metric="valor_catastral">Valor catastral</button>
             <button class="metric-pill" data-metric="area_construida">Área Construida</button>
             <button class="metric-pill" data-metric="area_terreno">Área Terreno</button>
         </div>
@@ -3136,7 +3130,7 @@
          ══════════════════════════════════════════════════════ -->
     <section id="hallazgos" class="charts-section hallazgos-section">
         <div class="charts-header reveal">
-            <h2>Hallazgos del Catastro Distrital</h2>
+            <h2>Datos del Catastro</h2>
             <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2012–2026)</p>
         </div>
 
@@ -3145,6 +3139,20 @@
             <div class="hallazgos-card hallazgos-dist-card">
                 <div class="hallazgos-card-header">
                     <h3>Distribución por uso del suelo · por localidad</h3>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                    <select class="uso-year-select" id="uso-year-select">
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
+                    </select>
                     <select class="uso-year-select" id="uso-loc-select">
                         <option value="Bogotá D.C." selected>Bogotá D.C.</option>
                         <option value="Usaquén">Usaquén</option>
@@ -3168,6 +3176,7 @@
                         <option value="Ciudad Bolívar">Ciudad Bolívar</option>
                         <option value="Sumapaz">Sumapaz</option>
                     </select>
+                    </div>
                 </div>
                 <div class="hallazgos-dist-inner">
                     <div class="hgrupos-list" id="uso-loc-bars">
@@ -3229,28 +3238,24 @@
             <div class="hallazgos-card">
                 <div class="hallazgos-card-header">
                     <h3>Ranking de localidades por crecimiento de avalúo</h3>
-                    <span class="hallazgos-badge">2016–2026</span>
+                    <select class="uso-year-select" id="ranking-period-select">
+                        <option value="10">Últimos 10 años (2016–2026)</option>
+                        <option value="5">Últimos 5 años (2021–2026)</option>
+                        <option value="3">Últimos 3 años (2023–2026)</option>
+                        <option value="1">Último año (2025–2026)</option>
+                    </select>
                 </div>
                 <div class="hallazgos-scroll-wrap">
                 <table class="hallazgos-table">
                     <thead>
-                        <tr><th>#</th><th>Localidad</th><th>Crec. %</th><th>2016</th><th>2026</th><th>Var.</th></tr>
+                        <tr><th>#</th><th>Localidad</th><th>Crec. %</th><th id="ranking-yr-start">2016</th><th>2026</th><th>Var.</th></tr>
                     </thead>
-                    <tbody>
-                        <tr class="tip-ranking" data-rank="1" data-loc="Ciudad Bolívar" data-sub="Zona sur · Periferia urbana" data-pct="+167,8 %" data-pct-num="167.8" data-av16="$10,8 B" data-av26="$28,9 B" data-var="+$18,1 B" data-uso="Residencial / VIS" data-predios="~390.000" data-vsciudad="+74,7 pp vs promedio ciudad" data-note="Mayor crecimiento de Bogotá. Expansión urbana acelerada en la periferia sur con masiva incorporación predial."><td>1</td><td><strong>Ciudad Bolívar</strong></td><td style="color:#27ae60;font-weight:700;">+167,8 %</td><td>$10,8 B</td><td>$28,9 B</td><td>+$18,1 B</td></tr>
-                        <tr class="tip-ranking" data-rank="2" data-loc="Rafael Uribe Uribe" data-sub="Zona sur · Residencial consolidado" data-pct="+154,2 %" data-pct-num="154.2" data-av16="$8,2 B" data-av26="$20,8 B" data-var="+$12,6 B" data-uso="Residencial" data-predios="~185.000" data-vsciudad="+61,1 pp vs promedio ciudad" data-note="Fuerte revalorización impulsada por mejoras en infraestructura vial y nuevos equipamientos públicos."><td>2</td><td>Rafael Uribe Uribe</td><td style="color:#27ae60;font-weight:700;">+154,2 %</td><td>$8,2 B</td><td>$20,8 B</td><td>+$12,6 B</td></tr>
-                        <tr class="tip-ranking" data-rank="3" data-loc="La Candelaria" data-sub="Centro histórico · Institucional" data-pct="+150,5 %" data-pct-num="150.5" data-av16="$3,5 B" data-av26="$8,8 B" data-var="+$5,3 B" data-uso="Institucional / Comercial" data-predios="15.610" data-vsciudad="+57,4 pp vs promedio ciudad" data-note="Concentración de uso institucional y comercial en el centro histórico eleva el valor catastral."><td>3</td><td>La Candelaria</td><td style="color:#27ae60;font-weight:700;">+150,5 %</td><td>$3,5 B</td><td>$8,8 B</td><td>+$5,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="4" data-loc="Usme" data-sub="Zona sur · Expansión y rural" data-pct="+138,1 %" data-pct-num="138.1" data-av16="$5,6 B" data-av26="$13,4 B" data-var="+$7,8 B" data-uso="Residencial / Rural" data-predios="~200.000" data-vsciudad="+45,0 pp vs promedio ciudad" data-note="Rápida incorporación de predios rurales al catastro urbano y proyectos de vivienda de interés social."><td>4</td><td>Usme</td><td style="color:#27ae60;font-weight:700;">+138,1 %</td><td>$5,6 B</td><td>$13,4 B</td><td>+$7,8 B</td></tr>
-                        <tr class="tip-ranking" data-rank="5" data-loc="San Cristóbal" data-sub="Zona suroriente · Ladera" data-pct="+130,3 %" data-pct-num="130.3" data-av16="$7,7 B" data-av26="$17,8 B" data-var="+$10,1 B" data-uso="Residencial" data-predios="~220.000" data-vsciudad="+37,2 pp vs promedio ciudad" data-note="Consolidación residencial en ladera oriental con mejora de vías y acceso a servicios."><td>5</td><td>San Cristóbal</td><td style="color:#27ae60;font-weight:700;">+130,3 %</td><td>$7,7 B</td><td>$17,8 B</td><td>+$10,1 B</td></tr>
-                        <tr class="tip-ranking" data-rank="6" data-loc="Bosa" data-sub="Zona suroccidente · VIS" data-pct="+127,8 %" data-pct-num="127.8" data-av16="$15,1 B" data-av26="$34,5 B" data-var="+$19,3 B" data-uso="Residencial / VIS" data-predios="~345.000" data-vsciudad="+34,7 pp vs promedio ciudad" data-note="Gran dinamismo por nuevos proyectos de VIS y expansión urbana hacia el suroccidente."><td>6</td><td>Bosa</td><td style="color:#27ae60;font-weight:700;">+127,8 %</td><td>$15,1 B</td><td>$34,5 B</td><td>+$19,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="7" data-loc="Santa Fe" data-sub="Centro tradicional · Mixto" data-pct="+123,2 %" data-pct-num="123.2" data-av16="$11,6 B" data-av26="$25,8 B" data-var="+$14,3 B" data-uso="Residencial / Comercial" data-predios="~105.000" data-vsciudad="+30,1 pp vs promedio ciudad" data-note="Renovación urbana y centralidad histórica han impulsado la valorización catastral sostenida."><td>7</td><td>Santa Fe</td><td style="color:#27ae60;font-weight:700;">+123,2 %</td><td>$11,6 B</td><td>$25,8 B</td><td>+$14,3 B</td></tr>
-                        <tr class="tip-ranking" data-rank="8" data-loc="Los Mártires" data-sub="Centro · Renovación urbana" data-pct="+122,4 %" data-pct-num="122.4" data-av16="$9,2 B" data-av26="$20,4 B" data-var="+$11,2 B" data-uso="Mixto" data-predios="45.082" data-vsciudad="+29,3 pp vs promedio ciudad" data-note="Revitalización del centro tradicional con usos mixtos residencial-comercial e institucional."><td>8</td><td>Los Mártires</td><td style="color:#27ae60;font-weight:700;">+122,4 %</td><td>$9,2 B</td><td>$20,4 B</td><td>+$11,2 B</td></tr>
-                        <tr class="tip-ranking" data-rank="9" data-loc="Puente Aranda" data-sub="Zona industrial · Occidente" data-pct="+118,6 %" data-pct-num="118.6" data-av16="$20,5 B" data-av26="$44,9 B" data-var="+$24,4 B" data-uso="Industrial / Bodegas" data-predios="83.703" data-vsciudad="+25,5 pp vs promedio ciudad" data-note="Área industrial con alta densidad de bodegas y comercio especializado de gran área."><td>9</td><td>Puente Aranda</td><td style="color:#27ae60;font-weight:700;">+118,6 %</td><td>$20,5 B</td><td>$44,9 B</td><td>+$24,4 B</td></tr>
-                        <tr class="tip-ranking" data-rank="10" data-loc="Antonio Nariño" data-sub="Centro sur · Residencial" data-pct="+116,1 %" data-pct-num="116.1" data-av16="$5,9 B" data-av26="$12,8 B" data-var="+$6,9 B" data-uso="Residencial" data-predios="26.177" data-vsciudad="+23,0 pp vs promedio ciudad" data-note="Zona residencial consolidada próxima al centro con equipamientos de salud y educación."><td>10</td><td>Antonio Nariño</td><td style="color:#27ae60;font-weight:700;">+116,1 %</td><td>$5,9 B</td><td>$12,8 B</td><td>+$6,9 B</td></tr>
+                    <tbody id="ranking-tbody">
+                        <tr><td colspan="6" style="text-align:center;padding:20px;color:#999;">Cargando datos…</td></tr>
                     </tbody>
                 </table>
                 </div>
-                <p class="hallazgos-nota">Top 10 localidades por mayor crecimiento porcentual de avalúo catastral 2016–2026 · B = billones COP corrientes</p>
+                <p class="hallazgos-nota" id="ranking-nota">Top 10 localidades por mayor crecimiento porcentual de avalúo catastral 2016–2026 · B = billones COP corrientes</p>
                 <p class="htable-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Pasa el cursor sobre una fila para ver el análisis detallado</p>
             </div>
 
@@ -3651,6 +3656,7 @@
             let featureIndex = []; // para búsqueda
             let allLayerEntries = []; // referencia a cada capa + elemento para filtrar
 
+
             /* ---------- PANEL DE INFORMACIÓN ---------- */
             function showPanel(props) {
                 document.getElementById('panel-title').textContent = props.scanombre || '—';
@@ -3663,6 +3669,7 @@
                     props.shape_leng ? (props.shape_leng * 111.32).toFixed(2) + ' km (aprox)' : '—';
                 document.getElementById('detail-area').textContent =
                     props.shape_area ? (props.shape_area * 111.32 * 111.32).toFixed(4) + ' km²' : '—';
+
                 infoPanel.classList.remove('hidden');
             }
 
@@ -3837,6 +3844,32 @@
 
             filterUrbano.addEventListener('change', applyFilters);
             filterRural.addEventListener('change', applyFilters);
+
+            /* ---------- DESCRIPCIONES RURAL / URBANO ---------- */
+            var ABOUT_URBAN = {
+                title: '¿Qué es el Catastro Distrital?',
+                p1: 'El <strong>catastro distrital</strong> es el inventario oficial de los bienes inmuebles de Bogotá D.C. Registra la ubicación, características físicas, uso del suelo y valor de cada predio para apoyar la planificación urbana, la equidad tributaria y la toma de decisiones territoriales.',
+                p2: 'Entre <strong>2012 y 2026</strong> el catastro incorporó más de <strong>660.000 nuevos predios</strong>, alcanzando un total de <strong>2.929.879 unidades</strong>. El avalúo catastral total creció de <strong>$280 billones</strong> a <strong>$938 billones COP</strong>, un aumento del <strong>235 %</strong> en términos nominales, impulsado por la expansión residencial de localidades como Suba y Engativá, y por las actualizaciones masivas de valores unitarios aplicadas a partir de 2022.'
+            };
+            var ABOUT_RURAL = {
+                title: '¿Qué es el Catastro Rural Distrital?',
+                p1: 'El <strong>catastro rural distrital</strong> es el inventario oficial de los predios ubicados en el suelo rural de Bogotá D.C. Registra la ubicación, extensión, uso agropecuario o de conservación y el valor de cada predio para apoyar la planificación territorial, la protección ambiental y la gestión sostenible del suelo no urbanizado.',
+                p2: 'El suelo rural de Bogotá abarca más de <strong>163.000 hectáreas</strong>, concentradas principalmente en la localidad de <strong>Sumapaz</strong> — el páramo urbano más extenso del mundo —, así como en zonas de borde de <strong>Usme</strong>, <strong>Ciudad Bolívar</strong> y <strong>Chapinero</strong>. Los predios rurales son fundamentales para la seguridad hídrica, la biodiversidad y el equilibrio ecológico de la ciudad y la región.'
+            };
+
+            function updateAboutText() {
+                var onlyRural = filterRural.checked && !filterUrbano.checked;
+                var src = onlyRural ? ABOUT_RURAL : ABOUT_URBAN;
+                var titleEl = document.getElementById('about-title');
+                var p1El    = document.getElementById('about-p1');
+                var p2El    = document.getElementById('about-p2');
+                if (titleEl) titleEl.innerHTML = src.title;
+                if (p1El)    p1El.innerHTML    = src.p1;
+                if (p2El)    p2El.innerHTML    = src.p2;
+            }
+
+            filterUrbano.addEventListener('change', updateAboutText);
+            filterRural.addEventListener('change', updateAboutText);
 
             /* ---------- CARGAR DATOS ---------- */
             try {
@@ -4287,16 +4320,10 @@
                                 if (grand === 0) return;
                                 var labels = [];
                                 var values = [];
-                                var otrosSum = 0;
                                 mainGroups.forEach(function (g) {
                                     labels.push(labelMap[g]);
                                     values.push(parseFloat(((totals[g] || 0) / grand * 100).toFixed(2)));
                                 });
-                                Object.keys(totals).forEach(function (g) {
-                                    if (mainGroups.indexOf(g) === -1) otrosSum += totals[g];
-                                });
-                                labels.push('Otros servicios');
-                                values.push(parseFloat((otrosSum / grand * 100).toFixed(2)));
                                 pieChart.data.labels = labels;
                                 pieChart.data.datasets[0].data = values;
                                 pieChart.update();
@@ -4904,7 +4931,6 @@
                     if (!ctx) return;
 
                     var yearSelect = document.getElementById('locality-year-filter');
-                    var groupSelect = document.getElementById('locality-group-filter');
                     var locSelect = document.getElementById('locality-loc-filter');
                     var loadingEl = document.getElementById('locality-loading');
                     var metricPills = document.querySelectorAll('.metric-pill');
@@ -4984,7 +5010,7 @@
                         var suffix = '_' + year.slice(-2);
                         switch (metric) {
                             case 'predios': return item['PREDIOS' + suffix] || 0;
-                            case 'valor_catastral': return (item['valor_catastral' + suffix] || 0);
+                            case 'valor_catastral': return (item['VALOR_AVALUO' + suffix] || 0);
                             case 'area_construida': return item['AREA_CONSTRUIDA' + suffix] || 0;
                             case 'area_terreno': return item['AREA_TERRENO' + suffix] || 0;
                             default: return 0;
@@ -5031,22 +5057,9 @@
                     }
 
                     function populateGroupFilter(data) {
-                        var groups = {};
                         var locs = {};
                         data.forEach(function (item) {
-                            if (item.GRUPO_ECONOMICO) groups[item.GRUPO_ECONOMICO] = true;
                             if (item.NOMBRE_LOCALIDAD) locs[item.NOMBRE_LOCALIDAD] = true;
-                        });
-
-                        var sortedGroups = Object.keys(groups).sort();
-                        while (groupSelect.options.length > 1) {
-                            groupSelect.remove(1);
-                        }
-                        sortedGroups.forEach(function (g) {
-                            var opt = document.createElement('option');
-                            opt.value = g;
-                            opt.textContent = g.charAt(0) + g.slice(1).toLowerCase();
-                            groupSelect.appendChild(opt);
                         });
 
                         var sortedLocs = Object.keys(locs).sort();
@@ -5074,7 +5087,7 @@
                     }
 
                     function formatTooltipValue(val, metric) {
-                        if (metric === 'Valor catastral') {
+                        if (metric === 'valor_catastral') {
                             return '$' + val.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
                         }
                         return val.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -5303,7 +5316,7 @@
 
                     function refreshChart() {
                         var selectedYear = yearSelect.value;
-                        var groupFilter = groupSelect.value;
+                        var groupFilter = 'TODOS';
                         var locFilter = locSelect.value;
 
                         if (selectedYear === 'historico') {
@@ -5341,7 +5354,6 @@
                     });
 
                     yearSelect.addEventListener('change', refreshChart);
-                    groupSelect.addEventListener('change', refreshChart);
                     locSelect.addEventListener('change', refreshChart);
                     locSelect.addEventListener('change', refreshChart);
 
@@ -5474,6 +5486,157 @@
         });
     });
 
+    /* ── RANKING DINÁMICO por periodo ── */
+    (function () {
+        var rankCache = {};
+        var periodSel = document.getElementById('ranking-period-select');
+        if (!periodSel) return;
+
+        var periods = {
+            '10': { start: 2016, end: 2026 },
+            '5':  { start: 2021, end: 2026 },
+            '3':  { start: 2023, end: 2026 },
+            '1':  { start: 2025, end: 2026 }
+        };
+
+        function fetchYear(year) {
+            return new Promise(function (resolve, reject) {
+                if (rankCache[year]) { resolve(rankCache[year]); return; }
+                fetch('datos_' + year + '.json')
+                    .then(function (r) { return r.json(); })
+                    .then(function (d) { rankCache[year] = d; resolve(d); })
+                    .catch(reject);
+            });
+        }
+
+        function sumByLoc(data, suffix) {
+            var t = {};
+            data.forEach(function (item) {
+                var loc = item.NOMBRE_LOCALIDAD;
+                t[loc] = (t[loc] || 0) + (item['VALOR_AVALUO' + suffix] || 0);
+            });
+            return t;
+        }
+
+        function fmtB(v) {
+            var abs = Math.abs(v);
+            if (abs >= 1e12) return '$' + (v / 1e12).toFixed(1).replace('.', ',') + ' B';
+            if (abs >= 1e9)  return '$' + (v / 1e9).toFixed(1).replace('.', ',') + ' MM';
+            if (abs >= 1e6)  return '$' + (v / 1e6).toFixed(0) + ' M';
+            return '$' + v.toLocaleString('es-CO');
+        }
+
+        function fmtPct(n) {
+            return (n >= 0 ? '+' : '') + n.toFixed(1).replace('.', ',') + ' %';
+        }
+
+        function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
+
+        function attachTooltips(entries, startYear, endYear) {
+            var tip   = document.getElementById('row-tooltip');
+            var tRank = document.getElementById('rtip-rank');
+            var tName = document.getElementById('rtip-name');
+            var tSub  = document.getElementById('rtip-subtitle');
+            var tBody = document.getElementById('rtip-body');
+            if (!tip) return;
+            var PAD = 18, TIP_W = 310;
+            var maxPct = entries.length ? entries[0].pct : 1;
+            var periodLabel = 'Crecimiento ' + startYear + '–' + endYear;
+
+            function tipRow(label, val, cls) {
+                return '<div class="rtip-row"><span class="rtip-label">' + label +
+                       '</span><span class="rtip-val' + (cls ? ' ' + cls : '') + '">' + val + '</span></div>';
+            }
+            function tipRows(html) { return '<div class="rtip-rows">' + html + '</div>'; }
+            function tipSection(t) { return '<div class="rtip-section">' + t + '</div>'; }
+            function tipBar(label, val, pct, cls) {
+                return '<div class="rtip-bar-wrap"><div class="rtip-bar-header">' +
+                       '<span class="rtip-bar-label">' + label + '</span>' +
+                       '<span class="rtip-bar-val ' + (cls || '') + '">' + val + '</span></div>' +
+                       '<div class="rtip-bar-track"><div class="rtip-bar-fill" style="width:' + Math.min(pct, 100) + '%"></div></div></div>';
+            }
+            function moveTip(e) {
+                var x = e.clientX + PAD, y = e.clientY + PAD;
+                if (x + TIP_W > window.innerWidth)  x = e.clientX - TIP_W - PAD;
+                if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - PAD;
+                tip.style.left = x + 'px';
+                tip.style.top  = y + 'px';
+            }
+
+            document.querySelectorAll('#ranking-tbody tr').forEach(function (tr, i) {
+                var e = entries[i];
+                if (!e) return;
+                tr.addEventListener('mouseenter', function (ev) {
+                    var barPct = maxPct > 0 ? (e.pct / maxPct) * 100 : 0;
+                    tRank.textContent = '#' + (i + 1);
+                    tName.textContent = e.locDisplay;
+                    tSub.textContent  = '';
+                    tBody.innerHTML =
+                        tipBar(periodLabel, fmtPct(e.pct), barPct, 'green') +
+                        tipSection('Valores catastrales') +
+                        tipRows(
+                            tipRow('Avalúo ' + startYear, fmtB(e.startVal)) +
+                            tipRow('Avalúo ' + endYear,   fmtB(e.endVal)) +
+                            tipRow('Variación absoluta',  (e.varAbs >= 0 ? '+' : '') + fmtB(e.varAbs), 'green')
+                        );
+                    tip.classList.add('visible');
+                    moveTip(ev);
+                });
+                tr.addEventListener('mousemove', moveTip);
+                tr.addEventListener('mouseleave', function () { tip.classList.remove('visible'); });
+            });
+        }
+
+        function loadRanking(period) {
+            var p = periods[period];
+            if (!p) return;
+            var startSuffix = '_' + String(p.start).slice(-2);
+            var endSuffix   = '_' + String(p.end).slice(-2);
+
+            Promise.all([fetchYear(p.start), fetchYear(p.end)]).then(function (res) {
+                var startTotals = sumByLoc(res[0], startSuffix);
+                var endTotals   = sumByLoc(res[1], endSuffix);
+
+                var entries = Object.keys(endTotals).map(function (loc) {
+                    var sv = startTotals[loc] || 0;
+                    var ev = endTotals[loc]   || 0;
+                    var pct = sv > 0 ? (ev - sv) / sv * 100 : 0;
+                    return { loc: loc, locDisplay: cap(loc), startVal: sv, endVal: ev, pct: pct, varAbs: ev - sv };
+                }).filter(function (e) { return e.startVal > 0 && e.endVal > 0; })
+                  .sort(function (a, b) { return b.pct - a.pct; })
+                  .slice(0, 10);
+
+                var tbody   = document.getElementById('ranking-tbody');
+                var thStart = document.getElementById('ranking-yr-start');
+                var nota    = document.getElementById('ranking-nota');
+
+                if (thStart) thStart.textContent = p.start;
+                if (nota)    nota.textContent = 'Top 10 localidades por mayor crecimiento porcentual de avalúo catastral ' + p.start + '–' + p.end + ' · B = billones COP corrientes';
+
+                tbody.innerHTML = entries.map(function (e, i) {
+                    var pctColor = e.pct >= 0 ? '#27ae60' : '#c41e1e';
+                    return '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + (i === 0 ? '<strong>' + e.locDisplay + '</strong>' : e.locDisplay) + '</td>' +
+                        '<td style="color:' + pctColor + ';font-weight:700;">' + fmtPct(e.pct) + '</td>' +
+                        '<td>' + fmtB(e.startVal) + '</td>' +
+                        '<td>' + fmtB(e.endVal) + '</td>' +
+                        '<td>' + (e.varAbs >= 0 ? '+' : '') + fmtB(e.varAbs) + '</td>' +
+                        '</tr>';
+                }).join('');
+
+                attachTooltips(entries, p.start, p.end);
+            }).catch(function (err) {
+                console.error('Error cargando ranking por periodo:', err);
+                var tbody = document.getElementById('ranking-tbody');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:#c41e1e;">Error al cargar datos</td></tr>';
+            });
+        }
+
+        periodSel.addEventListener('change', function () { loadRanking(this.value); });
+        loadRanking('10');
+    })();
+
     /* ── SELECTOR: Total Predios por año ── */
     (function () {
         var PREDIOS = {
@@ -5499,241 +5662,106 @@
         if (sel) { sel.addEventListener('change', function () { update(parseInt(sel.value)); }); }
     })();
 
-    /* ── FILTRO LOCALIDAD: Distribución por uso del suelo ── */
+    /* ── FILTRO LOCALIDAD + AÑO: Distribución por uso del suelo (dinámico) ── */
     (function () {
-        var LOC_DATA = {
-            'Bogotá D.C.': {
-                rows: [
-                    { pct: 59.4, color: '#c41e1e' }, { pct: 12.7, color: '#e06020' },
-                    { pct: 9.2,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
-                    { pct: 5.8,  color: '#6366f1' }, { pct: 3.3,  color: '#10b981' },
-                    { pct: 1.3,  color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
-                    { pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Vista general de la ciudad. Residencial concentra el 59,4 % del avalúo. Oficinas aportan el 9,2 % pese a representar solo el 2,5 % de los predios.'
-            },
-            'Usaquén': {
-                rows: [
-                    { pct: 54.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
-                    { pct: 16.0, color: '#f5a623' }, { pct: 11.0, color: '#3b82f6' },
-                    { pct: 3.0,  color: '#6366f1' }, { pct: 3.0,  color: '#10b981' },
-                    { pct: 0.5,  color: '#64748b' }, { pct: 2.0,  color: '#f59e0b' },
-                    { pct: 0.5,  color: '#ec4899' }
-                ],
-                nota: 'Norte de la ciudad. Concentración significativa de Oficinas (16 %) y Comercio de alto valor. Residencial de estrato alto domina con el 54 %.'
-            },
-            'Chapinero': {
-                rows: [
-                    { pct: 42.0, color: '#c41e1e' }, { pct: 9.0,  color: '#e06020' },
-                    { pct: 24.0, color: '#f5a623' }, { pct: 15.0, color: '#3b82f6' },
-                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
-                    { pct: 0.3,  color: '#64748b' }, { pct: 4.0,  color: '#f59e0b' },
-                    { pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Principal hub financiero y de servicios. Oficinas alcanzan el 24 % del avalúo, la mayor participación de la ciudad. Hoteles reflejan la actividad turística del sector.'
-            },
-            'Santa Fe': {
-                rows: [
-                    { pct: 52.0, color: '#c41e1e' }, { pct: 13.0, color: '#e06020' },
-                    { pct: 5.0,  color: '#f5a623' }, { pct: 19.0, color: '#3b82f6' },
-                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
-                    { pct: 1.5,  color: '#64748b' }, { pct: 2.0,  color: '#f59e0b' },
-                    { pct: 0.5,  color: '#ec4899' }
-                ],
-                nota: 'Centro tradicional. Comercio con el 19 % refleja la actividad del centro histórico. Residencial en descenso ante la tercerización del uso del suelo.'
-            },
-            'San Cristóbal': {
-                rows: [
-                    { pct: 79.0, color: '#c41e1e' }, { pct: 9.0,  color: '#e06020' },
-                    { pct: 1.0,  color: '#f5a623' }, { pct: 5.5,  color: '#3b82f6' },
-                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
-                    { pct: 0.7,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Ladera suroriente. Predominio residencial al 79 %. Uso mixto y equipamientos comunitarios completan el perfil catastral.'
-            },
-            'Usme': {
-                rows: [
-                    { pct: 81.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
-                    { pct: 0.5,  color: '#f5a623' }, { pct: 4.5,  color: '#3b82f6' },
-                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
-                    { pct: 0.8,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.1,  color: '#ec4899' }
-                ],
-                nota: 'Zona de expansión sur. Residencial representa el 81 % del avalúo, con alta proporción de vivienda de interés prioritario.'
-            },
-            'Tunjuelito': {
-                rows: [
-                    { pct: 73.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
-                    { pct: 1.0,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
-                    { pct: 4.0,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
-                    { pct: 2.0,  color: '#64748b' }, { pct: 0.2,  color: '#f59e0b' },
-                    { pct: 0.3,  color: '#ec4899' }
-                ],
-                nota: 'Localidad sur consolidada. Residencial domina con el 73 %. Comercio e Industria reflejan la actividad de pequeñas empresas locales.'
-            },
-            'Bosa': {
-                rows: [
-                    { pct: 83.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
-                    { pct: 0.5,  color: '#f5a623' }, { pct: 5.0,  color: '#3b82f6' },
-                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
-                    { pct: 0.3,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.1,  color: '#ec4899' }
-                ],
-                nota: 'VIS en suroccidente. Residencial alcanza el 83 % del avalúo. Alta densidad predial con predominio de vivienda social.'
-            },
-            'Kennedy': {
-                rows: [
-                    { pct: 71.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
-                    { pct: 1.0,  color: '#f5a623' }, { pct: 8.0,  color: '#3b82f6' },
-                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
-                    { pct: 1.7,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Mayor localidad por predios. Residencial (71 %) domina; Comercio y Bodegas reflejan el dinamismo económico del occidente.'
-            },
-            'Fontibón': {
-                rows: [
-                    { pct: 47.0, color: '#c41e1e' }, { pct: 7.0,  color: '#e06020' },
-                    { pct: 4.0,  color: '#f5a623' }, { pct: 11.0, color: '#3b82f6' },
-                    { pct: 19.0, color: '#6366f1' }, { pct: 1.0,  color: '#10b981' },
-                    { pct: 10.0, color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
-                    { pct: 0.3,  color: '#ec4899' }
-                ],
-                nota: 'Corredor aeropuerto-ciudad. Bodegas (19 %) e Industria (10 %) reflejan la actividad logística. Segundo índice industrial más alto de Bogotá.'
-            },
-            'Engativá': {
-                rows: [
-                    { pct: 74.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
-                    { pct: 1.0,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
-                    { pct: 4.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
-                    { pct: 0.8,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.1,  color: '#ec4899' }
-                ],
-                nota: 'Residencial occidente consolidado. El 74 % del avalúo es residencial. Comercio local y equipamientos completan el perfil.'
-            },
-            'Suba': {
-                rows: [
-                    { pct: 67.0, color: '#c41e1e' }, { pct: 12.0, color: '#e06020' },
-                    { pct: 6.0,  color: '#f5a623' }, { pct: 9.0,  color: '#3b82f6' },
-                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
-                    { pct: 0.3,  color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Localidad más extensa. Residencial al 67 % con tendencia a crecer en Oficinas y Comercio hacia el norte de la ciudad.'
-            },
-            'Barrios Unidos': {
-                rows: [
-                    { pct: 60.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
-                    { pct: 8.0,  color: '#f5a623' }, { pct: 14.0, color: '#3b82f6' },
-                    { pct: 4.0,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
-                    { pct: 1.0,  color: '#64748b' }, { pct: 0.3,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Corredor comercial norte. Comercio alcanza el 14 % del avalúo, el mayor fuera del centro. Residencial se mantiene en el 60 %.'
-            },
-            'Teusaquillo': {
-                rows: [
-                    { pct: 55.0, color: '#c41e1e' }, { pct: 7.0,  color: '#e06020' },
-                    { pct: 14.0, color: '#f5a623' }, { pct: 10.0, color: '#3b82f6' },
-                    { pct: 2.0,  color: '#6366f1' }, { pct: 10.0, color: '#10b981' },
-                    { pct: 0.5,  color: '#64748b' }, { pct: 0.8,  color: '#f59e0b' },
-                    { pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Ciudad universitaria. Universidades/Colegios con el 10 % del avalúo, máximo de la ciudad. Oficinas y Comercio reflejan la vitalidad del sector.'
-            },
-            'Los Mártires': {
-                rows: [
-                    { pct: 50.0, color: '#c41e1e' }, { pct: 13.0, color: '#e06020' },
-                    { pct: 7.0,  color: '#f5a623' }, { pct: 17.0, color: '#3b82f6' },
-                    { pct: 8.0,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
-                    { pct: 2.5,  color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
-                    { pct: 0.3,  color: '#ec4899' }
-                ],
-                nota: 'Zona mixta centro. Comercio (17 %) y Bodegas (8 %) reflejan la actividad de San Andresito y el comercio popular del centro.'
-            },
-            'Antonio Nariño': {
-                rows: [
-                    { pct: 68.0, color: '#c41e1e' }, { pct: 12.0, color: '#e06020' },
-                    { pct: 2.0,  color: '#f5a623' }, { pct: 9.0,  color: '#3b82f6' },
-                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
-                    { pct: 1.0,  color: '#64748b' }, { pct: 0.2,  color: '#f59e0b' },
-                    { pct: 0.3,  color: '#ec4899' }
-                ],
-                nota: 'Sur central. Predominio residencial al 68 %. Comercio barrial y bodegas medianas caracterizan la economía local.'
-            },
-            'Puente Aranda': {
-                rows: [
-                    { pct: 32.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
-                    { pct: 4.0,  color: '#f5a623' }, { pct: 14.0, color: '#3b82f6' },
-                    { pct: 21.0, color: '#6366f1' }, { pct: 1.0,  color: '#10b981' },
-                    { pct: 19.0, color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
-                    { pct: 0.5,  color: '#ec4899' }
-                ],
-                nota: 'Principal zona industrial. Bodegas (21 %) e Industria (19 %) suman el 40 % del avalúo, el mayor índice industrial de Bogotá.'
-            },
-            'La Candelaria': {
-                rows: [
-                    { pct: 28.0, color: '#c41e1e' }, { pct: 24.0, color: '#e06020' },
-                    { pct: 6.0,  color: '#f5a623' }, { pct: 23.0, color: '#3b82f6' },
-                    { pct: 4.0,  color: '#6366f1' }, { pct: 4.0,  color: '#10b981' },
-                    { pct: 1.0,  color: '#64748b' }, { pct: 7.0,  color: '#f59e0b' },
-                    { pct: 3.0,  color: '#ec4899' }
-                ],
-                nota: 'Centro histórico. Comercio (23 %) e Institucional/Otros (24 %) dominan sobre un Residencial reducido al 28 %. Mayor concentración hotelera de la ciudad.'
-            },
-            'Rafael Uribe Uribe': {
-                rows: [
-                    { pct: 77.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
-                    { pct: 0.5,  color: '#f5a623' }, { pct: 6.0,  color: '#3b82f6' },
-                    { pct: 3.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
-                    { pct: 1.2,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Sur residencial popular. El 77 % del avalúo es residencial. Escasa presencia de usos terciarios o industriales.'
-            },
-            'Ciudad Bolívar': {
-                rows: [
-                    { pct: 85.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
-                    { pct: 0.3,  color: '#f5a623' }, { pct: 4.0,  color: '#3b82f6' },
-                    { pct: 1.0,  color: '#6366f1' }, { pct: 1.2,  color: '#10b981' },
-                    { pct: 0.3,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
-                    { pct: 0.1,  color: '#ec4899' }
-                ],
-                nota: 'Periferia sur. Mayor peso residencial de la ciudad (85 %), mayormente VIS y vivienda informal con catastro en actualización.'
-            },
-            'Sumapaz': {
-                rows: [
-                    { pct: 58.0, color: '#c41e1e' }, { pct: 27.0, color: '#e06020' },
-                    { pct: 0.3,  color: '#f5a623' }, { pct: 8.0,  color: '#3b82f6' },
-                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
-                    { pct: 3.0,  color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
-                    { pct: 0.2,  color: '#ec4899' }
-                ],
-                nota: 'Localidad rural. Residencial al 58 %; Otros (27 %) incluye suelo rural e institucional. Industria y Comercio con presencia mínima.'
-            }
-        };
+        var jsonCache = {}
 
-        var sel  = document.getElementById('uso-loc-select');
-        var bars = document.getElementById('uso-loc-bars');
-        var nota = document.getElementById('uso-loc-nota');
+        var LOC_NORM = {
+            'Bogotá D.C.': null,
+            'Usaquén': 'USAQUEN', 'Chapinero': 'CHAPINERO', 'Santa Fe': 'SANTA FE',
+            'San Cristóbal': 'SAN CRISTOBAL', 'Usme': 'USME', 'Tunjuelito': 'TUNJUELITO',
+            'Bosa': 'BOSA', 'Kennedy': 'KENNEDY', 'Fontibón': 'FONTIBON',
+            'Engativá': 'ENGATIVA', 'Suba': 'SUBA', 'Barrios Unidos': 'BARRIOS UNIDOS',
+            'Teusaquillo': 'TEUSAQUILLO', 'Los Mártires': 'LOS MARTIRES',
+            'Antonio Nariño': 'ANTONIO NARINO', 'Puente Aranda': 'PUENTE ARANDA',
+            'La Candelaria': 'LA CANDELARIA', 'Rafael Uribe Uribe': 'RAFAEL URIBE URIBE',
+            'Ciudad Bolívar': 'CIUDAD BOLIVAR', 'Sumapaz': 'SUMAPAZ'
+        }
 
-        function update(loc) {
-            var data = LOC_DATA[loc];
-            if (!data) return;
-            var rows = bars.querySelectorAll('.hg-row');
-            data.rows.forEach(function (d, i) {
-                var bar = rows[i].querySelector('.hg-bar');
-                var pct = rows[i].querySelector('.hg-pct');
-                bar.style.width = d.pct + '%';
-                pct.textContent = d.pct.toFixed(1).replace('.', ',') + ' %';
+        var GROUP_TO_IDX = {
+            'RESIDENCIAL': 0,
+            'OTROS': 1, 'LOTES': 1,
+            'OFICINAS': 2,
+            'COMERCIO': 3,
+            'BODEGAS': 4,
+            'UNIVERSIDADES Y COLEGIOS': 5,
+            'INDUSTRIA': 6,
+            'HOTELES': 7,
+            'CLINICAS, HOSPITALES, CENTROS MEDICOS': 8
+        }
+
+        var ROW_LABELS = ['Residencial', 'Otros', 'Oficinas', 'Comercio', 'Bodegas',
+                          'Universidades/Colegios', 'Industria', 'Hoteles', 'Clínicas/Hospitales'];
+
+        var sel   = document.getElementById('uso-loc-select');
+        var yrSel = document.getElementById('uso-year-select');
+        var bars  = document.getElementById('uso-loc-bars');
+        var nota  = document.getElementById('uso-loc-nota');
+
+        function fetchYear(year, cb) {
+            var yr = String(year);
+            if (jsonCache[yr]) { cb(jsonCache[yr]); return; }
+            fetch('datos_' + yr + '.json')
+                .then(function (r) { return r.json(); })
+                .then(function (data) { jsonCache[yr] = data; cb(data); })
+                .catch(function () { jsonCache[yr] = []; cb([]); });
+        }
+
+        function compute(data, locNorm, year) {
+            var yy = String(year).slice(-2);
+            var field = 'VALOR_AVALUO_' + yy;
+            var totals = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            data.forEach(function (item) {
+                if (locNorm && (item.NOMBRE_LOCALIDAD || '').toUpperCase().trim() !== locNorm) return;
+                var g   = (item.GRUPO_ECONOMICO || '').toUpperCase().trim();
+                var idx = GROUP_TO_IDX[g];
+                if (idx === undefined) return;
+                var raw = item[field];
+                var v   = parseFloat(typeof raw === 'string' ? raw.replace(',', '.') : raw);
+                totals[idx] += isNaN(v) ? 0 : v;
             });
-            nota.textContent = data.nota;
+            return totals;
         }
 
-        if (sel) {
-            sel.addEventListener('change', function () { update(sel.value); });
+        function update() {
+            var loc     = sel   ? sel.value   : 'Bogotá D.C.';
+            var year    = yrSel ? yrSel.value : '2026';
+            var locNorm = LOC_NORM[loc];
+
+            fetchYear(year, function (data) {
+                var totals = compute(data, locNorm, year);
+                var grand  = totals.reduce(function (a, b) { return a + b; }, 0);
+
+                var hgRows = bars.querySelectorAll('.hg-row');
+                totals.forEach(function (v, i) {
+                    var pct   = grand > 0 ? v / grand * 100 : 0;
+                    var bar   = hgRows[i].querySelector('.hg-bar');
+                    var pctEl = hgRows[i].querySelector('.hg-pct');
+                    bar.style.width = pct.toFixed(1) + '%';
+                    pctEl.textContent = pct.toFixed(1).replace('.', ',') + ' %';
+                });
+
+                var sorted = totals
+                    .map(function (v, i) { return { i: i, v: v }; })
+                    .filter(function (x) { return x.v > 0; })
+                    .sort(function (a, b) { return b.v - a.v; });
+
+                if (nota) {
+                    var notaText = loc + ' · ' + year + '.';
+                    if (sorted.length >= 2 && grand > 0) {
+                        var p0 = (sorted[0].v / grand * 100).toFixed(1).replace('.', ',');
+                        var p1 = (sorted[1].v / grand * 100).toFixed(1).replace('.', ',');
+                        notaText += ' ' + ROW_LABELS[sorted[0].i] + ' concentra el ' + p0 +
+                                    ' % del avalúo. ' + ROW_LABELS[sorted[1].i] + ' aporta el ' + p1 + ' %.';
+                    }
+                    nota.textContent = notaText;
+                }
+            });
         }
+
+        if (sel)   sel.addEventListener('change', update);
+        if (yrSel) yrSel.addEventListener('change', update);
+        update();
     })();
     </script>
 
