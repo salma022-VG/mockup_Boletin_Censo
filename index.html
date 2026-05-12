@@ -3140,27 +3140,37 @@
             <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2012–2026)</p>
         </div>
 
-        <!-- Distribución por uso del suelo: ancho completo -->
+        <!-- Distribución por uso del suelo: por localidad -->
         <div class="hallazgos-dist-wrap reveal-scale">
             <div class="hallazgos-card hallazgos-dist-card">
                 <div class="hallazgos-card-header">
-                    <h3>Distribución por uso del suelo</h3>
-                    <select class="uso-year-select" id="uso-year-select">
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026" selected>2026</option>
+                    <h3>Distribución por uso del suelo · por localidad</h3>
+                    <select class="uso-year-select" id="uso-loc-select">
+                        <option value="Bogotá D.C." selected>Bogotá D.C.</option>
+                        <option value="Usaquén">Usaquén</option>
+                        <option value="Chapinero">Chapinero</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="San Cristóbal">San Cristóbal</option>
+                        <option value="Usme">Usme</option>
+                        <option value="Tunjuelito">Tunjuelito</option>
+                        <option value="Bosa">Bosa</option>
+                        <option value="Kennedy">Kennedy</option>
+                        <option value="Fontibón">Fontibón</option>
+                        <option value="Engativá">Engativá</option>
+                        <option value="Suba">Suba</option>
+                        <option value="Barrios Unidos">Barrios Unidos</option>
+                        <option value="Teusaquillo">Teusaquillo</option>
+                        <option value="Los Mártires">Los Mártires</option>
+                        <option value="Antonio Nariño">Antonio Nariño</option>
+                        <option value="Puente Aranda">Puente Aranda</option>
+                        <option value="La Candelaria">La Candelaria</option>
+                        <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
+                        <option value="Ciudad Bolívar">Ciudad Bolívar</option>
+                        <option value="Sumapaz">Sumapaz</option>
                     </select>
                 </div>
                 <div class="hallazgos-dist-inner">
-                    <div class="hgrupos-list" id="uso-bars">
+                    <div class="hgrupos-list" id="uso-loc-bars">
                         <div class="hg-row" data-uso="Residencial">
                             <span class="hg-label">Residencial</span>
                             <div class="hg-bar-wrap"><div class="hg-bar" style="width:59.4%;background:#c41e1e;"></div></div>
@@ -3207,8 +3217,7 @@
                             <span class="hg-pct">0,6 %</span>
                         </div>
                     </div>
-                    <p class="hallazgos-nota hallazgos-dist-nota" id="uso-nota">Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios.
-                        Oficinas genera el 9,2 % del avalúo con solo el 2,5 % de los predios.</p>
+                    <p class="hallazgos-nota hallazgos-dist-nota" id="uso-loc-nota">Vista general de la ciudad. Residencial concentra el 59,4 % del avalúo. Oficinas aportan el 9,2 % pese a representar solo el 2,5 % de los predios.</p>
                 </div>
             </div>
         </div>
@@ -5465,187 +5474,6 @@
         });
     });
 
-    /* ── FILTRO AÑO: Distribución por uso del suelo ── */
-    (function () {
-        var USO_DATA = {
-            2016: {
-                rows: [
-                    { uso: 'Residencial',           pct: 61.2, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 11.8, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 7.8,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.5,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.3,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.5, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.7,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.6,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Residencial dominaba con el 61,2 % del avalúo. Comercio e Industria tenían mayor peso relativo que en años posteriores.'
-            },
-            2017: {
-                rows: [
-                    { uso: 'Residencial',           pct: 61.0, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.0, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 7.9,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.4,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.4,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.5, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.6,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.6,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Leve descenso de Residencial al 61,0 %. Otros usos ganan terreno progresivamente.'
-            },
-            2018: {
-                rows: [
-                    { uso: 'Residencial',           pct: 60.5, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.1, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.1,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.3,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.5,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.6,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.8,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas crecen al 8,1 %. Clínicas / Hospitales aumentan su participación ante nuevas edificaciones en salud.'
-            },
-            2019: {
-                rows: [
-                    { uso: 'Residencial',           pct: 60.2, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.2, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.4,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.2,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.5,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.5,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.8,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.8,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas alcanzan el 8,4 %. Hoteles empiezan a crecer impulsados por el turismo previo a la pandemia.'
-            },
-            2020: {
-                rows: [
-                    { uso: 'Residencial',           pct: 60.8, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.3, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.2,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 6.9,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.6,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.4, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Año pandemia: Comercio cae al 6,9 % y Hoteles retroceden. Residencial recupera participación como refugio de valor.'
-            },
-            2021: {
-                rows: [
-                    { uso: 'Residencial',           pct: 60.5, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.4, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.3,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Recuperación económica post-pandemia. Comercio regresa al 7,0 % y Bodegas crecen por logística y e-commerce.'
-            },
-            2022: {
-                rows: [
-                    { uso: 'Residencial',           pct: 60.1, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.5, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.6,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas suben al 8,6 % por reactivación del sector corporativo. Residencial continúa bajando levemente su participación relativa.'
-            },
-            2023: {
-                rows: [
-                    { uso: 'Residencial',           pct: 59.8, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.6, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 8.9,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.7,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.4,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas casi alcanzan el 9 % impulsadas por edificios corporativos de alta gama en el norte de la ciudad.'
-            },
-            2024: {
-                rows: [
-                    { uso: 'Residencial',           pct: 59.6, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.6, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 9.0,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.7,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas consolidan el 9 % del avalúo total. Bodegas alcanzan su mayor participación histórica por demanda logística.'
-            },
-            2025: {
-                rows: [
-                    { uso: 'Residencial',           pct: 59.5, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.7, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 9.1,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Oficinas superan Comercio como tercer uso en valor. Residencial se estabiliza en torno al 59,5 % del avalúo total.'
-            },
-            2026: {
-                rows: [
-                    { uso: 'Residencial',           pct: 59.4, color: '#c41e1e' },
-                    { uso: 'Otros',                 pct: 12.7, color: '#e06020' },
-                    { uso: 'Oficinas',              pct: 9.2,  color: '#f5a623' },
-                    { uso: 'Comercio',              pct: 7.0,  color: '#3b82f6' },
-                    { uso: 'Bodegas',               pct: 5.8,  color: '#6366f1' },
-                    { uso: 'Universidades / Colegios', pct: 3.3, color: '#10b981' },
-                    { uso: 'Industria',             pct: 1.3,  color: '#64748b' },
-                    { uso: 'Hoteles',               pct: 0.7,  color: '#f59e0b' },
-                    { uso: 'Clínicas / Hospitales', pct: 0.6,  color: '#ec4899' }
-                ],
-                nota: 'Residencial concentra el 59,4 % del avalúo y el 88,9 % de los predios. Oficinas genera el 9,2 % del avalúo con solo el 2,5 % de los predios.'
-            }
-        };
-
-        var sel  = document.getElementById('uso-year-select');
-        var bars = document.getElementById('uso-bars');
-        var nota = document.getElementById('uso-nota');
-
-        function update(year) {
-            var data = USO_DATA[year];
-            if (!data) return;
-            var rows = bars.querySelectorAll('.hg-row');
-            data.rows.forEach(function (d, i) {
-                var bar = rows[i].querySelector('.hg-bar');
-                var pct = rows[i].querySelector('.hg-pct');
-                bar.style.width = d.pct + '%';
-                pct.textContent = d.pct.toFixed(1).replace('.', ',') + ' %';
-            });
-            nota.textContent = data.nota;
-        }
-
-        if (sel) {
-            sel.addEventListener('change', function () { update(parseInt(sel.value)); });
-        }
-    })();
-
     /* ── SELECTOR: Total Predios por año ── */
     (function () {
         var PREDIOS = {
@@ -5669,6 +5497,243 @@
         }
         var sel = document.getElementById('stat-predios-year-sel');
         if (sel) { sel.addEventListener('change', function () { update(parseInt(sel.value)); }); }
+    })();
+
+    /* ── FILTRO LOCALIDAD: Distribución por uso del suelo ── */
+    (function () {
+        var LOC_DATA = {
+            'Bogotá D.C.': {
+                rows: [
+                    { pct: 59.4, color: '#c41e1e' }, { pct: 12.7, color: '#e06020' },
+                    { pct: 9.2,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
+                    { pct: 5.8,  color: '#6366f1' }, { pct: 3.3,  color: '#10b981' },
+                    { pct: 1.3,  color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
+                    { pct: 0.6,  color: '#ec4899' }
+                ],
+                nota: 'Vista general de la ciudad. Residencial concentra el 59,4 % del avalúo. Oficinas aportan el 9,2 % pese a representar solo el 2,5 % de los predios.'
+            },
+            'Usaquén': {
+                rows: [
+                    { pct: 54.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
+                    { pct: 16.0, color: '#f5a623' }, { pct: 11.0, color: '#3b82f6' },
+                    { pct: 3.0,  color: '#6366f1' }, { pct: 3.0,  color: '#10b981' },
+                    { pct: 0.5,  color: '#64748b' }, { pct: 2.0,  color: '#f59e0b' },
+                    { pct: 0.5,  color: '#ec4899' }
+                ],
+                nota: 'Norte de la ciudad. Concentración significativa de Oficinas (16 %) y Comercio de alto valor. Residencial de estrato alto domina con el 54 %.'
+            },
+            'Chapinero': {
+                rows: [
+                    { pct: 42.0, color: '#c41e1e' }, { pct: 9.0,  color: '#e06020' },
+                    { pct: 24.0, color: '#f5a623' }, { pct: 15.0, color: '#3b82f6' },
+                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
+                    { pct: 0.3,  color: '#64748b' }, { pct: 4.0,  color: '#f59e0b' },
+                    { pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Principal hub financiero y de servicios. Oficinas alcanzan el 24 % del avalúo, la mayor participación de la ciudad. Hoteles reflejan la actividad turística del sector.'
+            },
+            'Santa Fe': {
+                rows: [
+                    { pct: 52.0, color: '#c41e1e' }, { pct: 13.0, color: '#e06020' },
+                    { pct: 5.0,  color: '#f5a623' }, { pct: 19.0, color: '#3b82f6' },
+                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
+                    { pct: 1.5,  color: '#64748b' }, { pct: 2.0,  color: '#f59e0b' },
+                    { pct: 0.5,  color: '#ec4899' }
+                ],
+                nota: 'Centro tradicional. Comercio con el 19 % refleja la actividad del centro histórico. Residencial en descenso ante la tercerización del uso del suelo.'
+            },
+            'San Cristóbal': {
+                rows: [
+                    { pct: 79.0, color: '#c41e1e' }, { pct: 9.0,  color: '#e06020' },
+                    { pct: 1.0,  color: '#f5a623' }, { pct: 5.5,  color: '#3b82f6' },
+                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
+                    { pct: 0.7,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Ladera suroriente. Predominio residencial al 79 %. Uso mixto y equipamientos comunitarios completan el perfil catastral.'
+            },
+            'Usme': {
+                rows: [
+                    { pct: 81.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
+                    { pct: 0.5,  color: '#f5a623' }, { pct: 4.5,  color: '#3b82f6' },
+                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
+                    { pct: 0.8,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.1,  color: '#ec4899' }
+                ],
+                nota: 'Zona de expansión sur. Residencial representa el 81 % del avalúo, con alta proporción de vivienda de interés prioritario.'
+            },
+            'Tunjuelito': {
+                rows: [
+                    { pct: 73.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
+                    { pct: 1.0,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
+                    { pct: 4.0,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
+                    { pct: 2.0,  color: '#64748b' }, { pct: 0.2,  color: '#f59e0b' },
+                    { pct: 0.3,  color: '#ec4899' }
+                ],
+                nota: 'Localidad sur consolidada. Residencial domina con el 73 %. Comercio e Industria reflejan la actividad de pequeñas empresas locales.'
+            },
+            'Bosa': {
+                rows: [
+                    { pct: 83.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
+                    { pct: 0.5,  color: '#f5a623' }, { pct: 5.0,  color: '#3b82f6' },
+                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
+                    { pct: 0.3,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.1,  color: '#ec4899' }
+                ],
+                nota: 'VIS en suroccidente. Residencial alcanza el 83 % del avalúo. Alta densidad predial con predominio de vivienda social.'
+            },
+            'Kennedy': {
+                rows: [
+                    { pct: 71.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
+                    { pct: 1.0,  color: '#f5a623' }, { pct: 8.0,  color: '#3b82f6' },
+                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
+                    { pct: 1.7,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Mayor localidad por predios. Residencial (71 %) domina; Comercio y Bodegas reflejan el dinamismo económico del occidente.'
+            },
+            'Fontibón': {
+                rows: [
+                    { pct: 47.0, color: '#c41e1e' }, { pct: 7.0,  color: '#e06020' },
+                    { pct: 4.0,  color: '#f5a623' }, { pct: 11.0, color: '#3b82f6' },
+                    { pct: 19.0, color: '#6366f1' }, { pct: 1.0,  color: '#10b981' },
+                    { pct: 10.0, color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
+                    { pct: 0.3,  color: '#ec4899' }
+                ],
+                nota: 'Corredor aeropuerto-ciudad. Bodegas (19 %) e Industria (10 %) reflejan la actividad logística. Segundo índice industrial más alto de Bogotá.'
+            },
+            'Engativá': {
+                rows: [
+                    { pct: 74.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
+                    { pct: 1.0,  color: '#f5a623' }, { pct: 7.0,  color: '#3b82f6' },
+                    { pct: 4.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
+                    { pct: 0.8,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.1,  color: '#ec4899' }
+                ],
+                nota: 'Residencial occidente consolidado. El 74 % del avalúo es residencial. Comercio local y equipamientos completan el perfil.'
+            },
+            'Suba': {
+                rows: [
+                    { pct: 67.0, color: '#c41e1e' }, { pct: 12.0, color: '#e06020' },
+                    { pct: 6.0,  color: '#f5a623' }, { pct: 9.0,  color: '#3b82f6' },
+                    { pct: 2.5,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
+                    { pct: 0.3,  color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Localidad más extensa. Residencial al 67 % con tendencia a crecer en Oficinas y Comercio hacia el norte de la ciudad.'
+            },
+            'Barrios Unidos': {
+                rows: [
+                    { pct: 60.0, color: '#c41e1e' }, { pct: 11.0, color: '#e06020' },
+                    { pct: 8.0,  color: '#f5a623' }, { pct: 14.0, color: '#3b82f6' },
+                    { pct: 4.0,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
+                    { pct: 1.0,  color: '#64748b' }, { pct: 0.3,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Corredor comercial norte. Comercio alcanza el 14 % del avalúo, el mayor fuera del centro. Residencial se mantiene en el 60 %.'
+            },
+            'Teusaquillo': {
+                rows: [
+                    { pct: 55.0, color: '#c41e1e' }, { pct: 7.0,  color: '#e06020' },
+                    { pct: 14.0, color: '#f5a623' }, { pct: 10.0, color: '#3b82f6' },
+                    { pct: 2.0,  color: '#6366f1' }, { pct: 10.0, color: '#10b981' },
+                    { pct: 0.5,  color: '#64748b' }, { pct: 0.8,  color: '#f59e0b' },
+                    { pct: 0.7,  color: '#ec4899' }
+                ],
+                nota: 'Ciudad universitaria. Universidades/Colegios con el 10 % del avalúo, máximo de la ciudad. Oficinas y Comercio reflejan la vitalidad del sector.'
+            },
+            'Los Mártires': {
+                rows: [
+                    { pct: 50.0, color: '#c41e1e' }, { pct: 13.0, color: '#e06020' },
+                    { pct: 7.0,  color: '#f5a623' }, { pct: 17.0, color: '#3b82f6' },
+                    { pct: 8.0,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
+                    { pct: 2.5,  color: '#64748b' }, { pct: 0.7,  color: '#f59e0b' },
+                    { pct: 0.3,  color: '#ec4899' }
+                ],
+                nota: 'Zona mixta centro. Comercio (17 %) y Bodegas (8 %) reflejan la actividad de San Andresito y el comercio popular del centro.'
+            },
+            'Antonio Nariño': {
+                rows: [
+                    { pct: 68.0, color: '#c41e1e' }, { pct: 12.0, color: '#e06020' },
+                    { pct: 2.0,  color: '#f5a623' }, { pct: 9.0,  color: '#3b82f6' },
+                    { pct: 5.0,  color: '#6366f1' }, { pct: 2.5,  color: '#10b981' },
+                    { pct: 1.0,  color: '#64748b' }, { pct: 0.2,  color: '#f59e0b' },
+                    { pct: 0.3,  color: '#ec4899' }
+                ],
+                nota: 'Sur central. Predominio residencial al 68 %. Comercio barrial y bodegas medianas caracterizan la economía local.'
+            },
+            'Puente Aranda': {
+                rows: [
+                    { pct: 32.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
+                    { pct: 4.0,  color: '#f5a623' }, { pct: 14.0, color: '#3b82f6' },
+                    { pct: 21.0, color: '#6366f1' }, { pct: 1.0,  color: '#10b981' },
+                    { pct: 19.0, color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
+                    { pct: 0.5,  color: '#ec4899' }
+                ],
+                nota: 'Principal zona industrial. Bodegas (21 %) e Industria (19 %) suman el 40 % del avalúo, el mayor índice industrial de Bogotá.'
+            },
+            'La Candelaria': {
+                rows: [
+                    { pct: 28.0, color: '#c41e1e' }, { pct: 24.0, color: '#e06020' },
+                    { pct: 6.0,  color: '#f5a623' }, { pct: 23.0, color: '#3b82f6' },
+                    { pct: 4.0,  color: '#6366f1' }, { pct: 4.0,  color: '#10b981' },
+                    { pct: 1.0,  color: '#64748b' }, { pct: 7.0,  color: '#f59e0b' },
+                    { pct: 3.0,  color: '#ec4899' }
+                ],
+                nota: 'Centro histórico. Comercio (23 %) e Institucional/Otros (24 %) dominan sobre un Residencial reducido al 28 %. Mayor concentración hotelera de la ciudad.'
+            },
+            'Rafael Uribe Uribe': {
+                rows: [
+                    { pct: 77.0, color: '#c41e1e' }, { pct: 10.0, color: '#e06020' },
+                    { pct: 0.5,  color: '#f5a623' }, { pct: 6.0,  color: '#3b82f6' },
+                    { pct: 3.0,  color: '#6366f1' }, { pct: 2.0,  color: '#10b981' },
+                    { pct: 1.2,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Sur residencial popular. El 77 % del avalúo es residencial. Escasa presencia de usos terciarios o industriales.'
+            },
+            'Ciudad Bolívar': {
+                rows: [
+                    { pct: 85.0, color: '#c41e1e' }, { pct: 8.0,  color: '#e06020' },
+                    { pct: 0.3,  color: '#f5a623' }, { pct: 4.0,  color: '#3b82f6' },
+                    { pct: 1.0,  color: '#6366f1' }, { pct: 1.2,  color: '#10b981' },
+                    { pct: 0.3,  color: '#64748b' }, { pct: 0.1,  color: '#f59e0b' },
+                    { pct: 0.1,  color: '#ec4899' }
+                ],
+                nota: 'Periferia sur. Mayor peso residencial de la ciudad (85 %), mayormente VIS y vivienda informal con catastro en actualización.'
+            },
+            'Sumapaz': {
+                rows: [
+                    { pct: 58.0, color: '#c41e1e' }, { pct: 27.0, color: '#e06020' },
+                    { pct: 0.3,  color: '#f5a623' }, { pct: 8.0,  color: '#3b82f6' },
+                    { pct: 1.5,  color: '#6366f1' }, { pct: 1.5,  color: '#10b981' },
+                    { pct: 3.0,  color: '#64748b' }, { pct: 0.5,  color: '#f59e0b' },
+                    { pct: 0.2,  color: '#ec4899' }
+                ],
+                nota: 'Localidad rural. Residencial al 58 %; Otros (27 %) incluye suelo rural e institucional. Industria y Comercio con presencia mínima.'
+            }
+        };
+
+        var sel  = document.getElementById('uso-loc-select');
+        var bars = document.getElementById('uso-loc-bars');
+        var nota = document.getElementById('uso-loc-nota');
+
+        function update(loc) {
+            var data = LOC_DATA[loc];
+            if (!data) return;
+            var rows = bars.querySelectorAll('.hg-row');
+            data.rows.forEach(function (d, i) {
+                var bar = rows[i].querySelector('.hg-bar');
+                var pct = rows[i].querySelector('.hg-pct');
+                bar.style.width = d.pct + '%';
+                pct.textContent = d.pct.toFixed(1).replace('.', ',') + ' %';
+            });
+            nota.textContent = data.nota;
+        }
+
+        if (sel) {
+            sel.addEventListener('change', function () { update(sel.value); });
+        }
     })();
     </script>
 
