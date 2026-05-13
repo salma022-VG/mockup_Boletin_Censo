@@ -2721,11 +2721,6 @@
                 <div class="stat-card reveal-scale" data-delay="300">
                     <span class="stat-card-label">Total Predios&nbsp;
                         <select class="uso-year-select" id="stat-predios-year-sel">
-                            <option value="2012">2012</option>
-                            <option value="2013">2013</option>
-                            <option value="2014">2014</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
                             <option value="2017">2017</option>
                             <option value="2018">2018</option>
                             <option value="2019">2019</option>
@@ -3281,10 +3276,17 @@
                 <div class="hallazgos-card-header">
                     <h3>Ranking de localidades por crecimiento de avalúo</h3>
                     <select class="uso-year-select" id="ranking-period-select">
-                        <option value="10">Últimos 10 años (2016–2026)</option>
-                        <option value="5">Últimos 5 años (2021–2026)</option>
-                        <option value="3">Últimos 3 años (2023–2026)</option>
-                        <option value="1">Último año (2025–2026)</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026" selected>2026</option>
                     </select>
                 </div>
                 <div class="hallazgos-scroll-wrap">
@@ -5455,10 +5457,10 @@
                     }
 
                     function buildVarChart(byYear) {
-                        var C_AUM  = '#1b3a6b';
-                        var C_RED  = '#5bb8e8';
-                        var C_AUM_H = 'rgba(27,58,107,0.75)';
-                        var C_RED_H = 'rgba(91,184,232,0.75)';
+                        var C_AUM  = '#FEB400';
+                        var C_RED  = '#E3192F';
+                        var C_AUM_H = 'rgba(254,180,0,0.75)';
+                        var C_RED_H = 'rgba(227,25,47,0.75)';
 
                         var aumentosArr    = YEARS_VAR.map(function (y) { return byYear[y].aumentos; });
                         var reduccionesArr = YEARS_VAR.map(function (y) { return -byYear[y].reducciones; }); // negative for chart
@@ -5470,14 +5472,14 @@
                             var thFirst  = 'padding:5px 10px;text-align:left;font-size:10.5px;font-weight:700;min-width:220px;';
                             var tdStyle  = 'padding:4px 8px;text-align:right;font-size:11px;white-space:nowrap;';
                             var tdFirst  = 'padding:4px 10px;text-align:left;font-size:11px;white-space:nowrap;';
-                            var thead = '<thead><tr style="background:#1b3a6b;color:#fff;">'
+                            var thead = '<thead><tr style="background:linear-gradient(90deg,#E3192F 0%,#FEB400 100%);color:#fff;">'
                                 + '<th style="' + thFirst  + '"></th>'
                                 + YEARS_VAR.map(function (y) { return '<th style="' + thStyle + '">' + y + '</th>'; }).join('')
                                 + '</tr></thead>';
                             var rows = [
-                                { label: 'Aumentos de área construida (m²)', vals: aumentosArr,    color: '#1b3a6b', bold: false, bg: '#fff' },
-                                { label: 'Reducciones de área construida (m²)', vals: reduccionesArr, color: '#2178a8', bold: false, bg: '#f4f9fd' },
-                                { label: 'Área neta',                          vals: netaArr,       color: '#222',   bold: true,  bg: '#eaf1f8' }
+                                { label: 'Aumentos de área construida (m²)', vals: aumentosArr,    color: '#FEB400', bold: false, bg: '#fff' },
+                                { label: 'Reducciones de área construida (m²)', vals: reduccionesArr, color: '#E3192F', bold: false, bg: '#fff8f8' },
+                                { label: 'Área neta',                          vals: netaArr,       color: '#222',   bold: true,  bg: '#f5f5f5' }
                             ];
                             var tbody = '<tbody>' + rows.map(function (row) {
                                 return '<tr style="background:' + row.bg + ';">'
@@ -5840,12 +5842,10 @@
         var periodSel = document.getElementById('ranking-period-select');
         if (!periodSel) return;
 
-        var periods = {
-            '10': { start: 2016, end: 2026 },
-            '5':  { start: 2021, end: 2026 },
-            '3':  { start: 2023, end: 2026 },
-            '1':  { start: 2025, end: 2026 }
-        };
+        function periods(year) {
+            var y = parseInt(year);
+            return { start: y - 1, end: y };
+        }
 
         function fetchYear(year) {
             return new Promise(function (resolve, reject) {
@@ -5936,7 +5936,7 @@
         }
 
         function loadRanking(period) {
-            var p = periods[period];
+            var p = periods(period);
             if (!p) return;
             var startSuffix = '_' + String(p.start).slice(-2);
             var endSuffix   = '_' + String(p.end).slice(-2);
@@ -5982,7 +5982,7 @@
         }
 
         periodSel.addEventListener('change', function () { loadRanking(this.value); });
-        loadRanking('10');
+        loadRanking('2026');
     })();
 
     /* ── SELECTOR: Total Predios por año ── */
