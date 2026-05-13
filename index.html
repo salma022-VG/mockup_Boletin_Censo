@@ -3065,6 +3065,48 @@
         </div>
     </section>
 
+        <!-- Fila: Aumentos y reducciones de área construida -->
+        <div class="charts-row charts-row-full">
+            <div class="chart-card chart-card-wide reveal-scale">
+                <div class="chart-card-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                    <h3>Aumentos y reducciones de área construida urbana y rural &nbsp;·&nbsp; 2016–2026 (metros cuadrados)</h3>
+                    <div class="chart-filter">
+                        <label for="var-localidad-select">Localidad</label>
+                        <select id="var-localidad-select" class="chart-filter-select">
+                            <option value="">Bogotá D.C. (Total)</option>
+                            <option value="USAQUEN">Usaquén</option>
+                            <option value="CHAPINERO">Chapinero</option>
+                            <option value="SANTA FE">Santa Fe</option>
+                            <option value="SAN CRISTOBAL">San Cristóbal</option>
+                            <option value="USME">Usme</option>
+                            <option value="TUNJUELITO">Tunjuelito</option>
+                            <option value="BOSA">Bosa</option>
+                            <option value="KENNEDY">Kennedy</option>
+                            <option value="FONTIBON">Fontibón</option>
+                            <option value="ENGATIVA">Engativá</option>
+                            <option value="SUBA">Suba</option>
+                            <option value="BARRIOS UNIDOS">Barrios Unidos</option>
+                            <option value="TEUSAQUILLO">Teusaquillo</option>
+                            <option value="LOS MARTIRES">Los Mártires</option>
+                            <option value="ANTONIO NARINO">Antonio Nariño</option>
+                            <option value="PUENTE ARANDA">Puente Aranda</option>
+                            <option value="LA CANDELARIA">La Candelaria</option>
+                            <option value="RAFAEL URIBE URIBE">Rafael Uribe Uribe</option>
+                            <option value="CIUDAD BOLIVAR">Ciudad Bolívar</option>
+                            <option value="SUMAPAZ">Sumapaz</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="var-loading" style="text-align:center;padding:18px 0 4px;color:#888;font-size:13px;">Cargando datos…</div>
+                <div id="var-table-wrap" style="overflow-x:auto;padding:4px 8px 12px;display:none;">
+                    <table id="var-data-table" style="width:100%;border-collapse:collapse;font-size:11.5px;"></table>
+                </div>
+                <div class="chart-canvas-wrap chart-canvas-wide">
+                    <canvas id="chart-variacion-anual"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Fila 3: Aumentos netos y variaciones en área construida -->
         <div class="charts-row charts-row-full">
             <div class="chart-card chart-card-wide reveal-scale" data-delay="200">
@@ -5365,6 +5407,312 @@
                         console.error('Error loading initial data:', err);
                         hideLoading();
                     });
+                })();
+
+                // ───── GRÁFICA: Aumentos y reducciones de área construida ─────
+                (function () {
+                    var ctx = document.getElementById('chart-variacion-anual');
+                    if (!ctx) return;
+
+                    var YEARS_VAR    = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+                    var locSelectVar = document.getElementById('var-localidad-select');
+                    var loadingElVar = document.getElementById('var-loading');
+                    var tableWrap    = document.getElementById('var-table-wrap');
+                    var tableEl      = document.getElementById('var-data-table');
+                    var varChart     = null;
+                    var yearCacheVar = {};
+
+                    function fetchYearVar(year) {
+                        return new Promise(function (resolve) {
+                            if (yearCacheVar[year]) { resolve(yearCacheVar[year]); return; }
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', 'datos_' + year + '.json', true);
+                            xhr.onload = function () {
+                                if (xhr.status === 200) {
+                                    try { yearCacheVar[year] = JSON.parse(xhr.responseText); }
+                                    catch (e) { yearCacheVar[year] = []; }
+                                } else { yearCacheVar[year] = []; }
+                                resolve(yearCacheVar[year]);
+                            };
+                            xhr.onerror = function () { yearCacheVar[year] = []; resolve([]); };
+                            xhr.send();
+                        });
+                    }
+
+                    function calcAumRed(data, year, locFilter) {
+                        var s = '_' + year.slice(-2);
+                        var aum = 0, red = 0;
+                        data.forEach(function (item) {
+                            if (locFilter && item.NOMBRE_LOCALIDAD !== locFilter) return;
+                            aum += (+(item['ACA' + s] || 0) + +(item['ACN' + s] || 0) + +(item['ACr' + s] || 0));
+                            red += (+(item['ACb' + s] || 0) + +(item['ACd' + s] || 0));
+                        });
+                        return { aumentos: +aum.toFixed(2), reducciones: +red.toFixed(2), neta: +(aum - red).toFixed(2) };
+                    }
+
+                    function fmtM2(v) {
+                        return (+v).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                    }
+
+                    function buildVarChart(byYear) {
+                        var C_AUM  = '#1b3a6b';
+                        var C_RED  = '#5bb8e8';
+                        var C_AUM_H = 'rgba(27,58,107,0.75)';
+                        var C_RED_H = 'rgba(91,184,232,0.75)';
+
+                        var aumentosArr    = YEARS_VAR.map(function (y) { return byYear[y].aumentos; });
+                        var reduccionesArr = YEARS_VAR.map(function (y) { return -byYear[y].reducciones; }); // negative for chart
+                        var netaArr        = YEARS_VAR.map(function (y) { return byYear[y].neta; });
+
+                        // Data table
+                        if (tableEl && tableWrap) {
+                            var thStyle  = 'padding:5px 8px;text-align:right;font-size:10.5px;font-weight:700;white-space:nowrap;';
+                            var thFirst  = 'padding:5px 10px;text-align:left;font-size:10.5px;font-weight:700;min-width:220px;';
+                            var tdStyle  = 'padding:4px 8px;text-align:right;font-size:11px;white-space:nowrap;';
+                            var tdFirst  = 'padding:4px 10px;text-align:left;font-size:11px;white-space:nowrap;';
+                            var thead = '<thead><tr style="background:#1b3a6b;color:#fff;">'
+                                + '<th style="' + thFirst  + '"></th>'
+                                + YEARS_VAR.map(function (y) { return '<th style="' + thStyle + '">' + y + '</th>'; }).join('')
+                                + '</tr></thead>';
+                            var rows = [
+                                { label: 'Aumentos de área construida (m²)', vals: aumentosArr,    color: '#1b3a6b', bold: false, bg: '#fff' },
+                                { label: 'Reducciones de área construida (m²)', vals: reduccionesArr, color: '#2178a8', bold: false, bg: '#f4f9fd' },
+                                { label: 'Área neta',                          vals: netaArr,       color: '#222',   bold: true,  bg: '#eaf1f8' }
+                            ];
+                            var tbody = '<tbody>' + rows.map(function (row) {
+                                return '<tr style="background:' + row.bg + ';">'
+                                    + '<td style="' + tdFirst + 'color:' + row.color + ';font-weight:' + (row.bold ? '700' : '400') + ';">' + row.label + '</td>'
+                                    + row.vals.map(function (v) {
+                                        var sign = v < 0 ? '−' : '';
+                                        return '<td style="' + tdStyle + 'color:' + row.color + ';font-weight:' + (row.bold ? '700' : '400') + ';">'
+                                            + sign + fmtM2(Math.abs(v)) + '</td>';
+                                    }).join('')
+                                    + '</tr>';
+                            }).join('') + '</tbody>';
+                            tableEl.innerHTML = thead + tbody;
+                            tableWrap.style.display = 'block';
+                        }
+
+                        if (varChart) { varChart.destroy(); varChart = null; }
+
+                        varChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: YEARS_VAR,
+                                datasets: [
+                                    {
+                                        label: 'Aumentos de área construida (m²)',
+                                        data: aumentosArr,
+                                        backgroundColor: C_AUM,
+                                        hoverBackgroundColor: C_AUM_H,
+                                        borderWidth: 0,
+                                        borderRadius: 3,
+                                        stack: 'stack'
+                                    },
+                                    {
+                                        label: 'Reducciones de área construida (m²)',
+                                        data: reduccionesArr,
+                                        backgroundColor: C_RED,
+                                        hoverBackgroundColor: C_RED_H,
+                                        borderWidth: 0,
+                                        borderRadius: 3,
+                                        stack: 'stack'
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                interaction: { mode: 'index', intersect: false },
+                                animation: { duration: 700, easing: 'easeOutCubic' },
+                                layout: { padding: { top: 8, right: 14, bottom: 0, left: 4 } },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: { padding: 22, usePointStyle: true, pointStyle: 'rect', font: { size: 12, weight: '500' }, color: '#333' }
+                                    },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(18,18,18,0.93)',
+                                        titleFont: { weight: '700', size: 13 },
+                                        bodyFont: { size: 12 },
+                                        padding: 14,
+                                        cornerRadius: 10,
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        borderWidth: 1,
+                                        callbacks: {
+                                            label: function (c) {
+                                                var v = c.raw;
+                                                var sign = v < 0 ? '' : '+';
+                                                return '  ' + c.dataset.label.split('(')[0].trim() + ': ' + sign + fmtM2(v) + ' m²';
+                                            },
+                                            afterBody: function (items) {
+                                                if (!items.length) return [];
+                                                var i = items[0].dataIndex;
+                                                return ['', '  Área neta: ' + (netaArr[i] >= 0 ? '+' : '') + fmtM2(netaArr[i]) + ' m²'];
+                                            }
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        stacked: true,
+                                        offset: true,
+                                        grid: { color: 'rgba(0,0,0,0.04)' },
+                                        ticks: { font: { size: 11, weight: '600' }, color: '#555' }
+                                    },
+                                    y: {
+                                        stacked: true,
+                                        grid: { color: 'rgba(0,0,0,0.06)' },
+                                        title: { display: true, text: 'Metros cuadrados (m²)', font: { size: 11, weight: '600' }, color: '#555' },
+                                        ticks: {
+                                            color: '#666',
+                                            font: { size: 10 },
+                                            callback: function (v) { return v.toLocaleString('es-CO'); }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Datos de referencia por localidad (años 2016-2026)
+                    var DATOS_LOCALIDAD = {
+                        'USAQUEN': {
+                            aumentos:    [841133, 755946, 1149858, 1149858, 750890, 750890, 368805, 370187, 389207, 345304, 361282],
+                            reducciones: [460409, 408715, 323539,  484333,  347347, 222056, 170214, 77260,  134459, 154483, 108731],
+                            neta:        [380723, 347231, 826319,  665525,  403543, 528833, 198591, 292927, 254748, 190822, 252551]
+                        },
+                        'CHAPINERO': {
+                            aumentos:    [387829, 330441, 566450, 566450, 597514, 597514, 312554, 137057, 199266, 123054, 246238],
+                            reducciones: [207071, 339554, 172499, 257931, 193979, 195785, 292183, 136409, 163512, 118691, 121425],
+                            neta:        [180757, -9112,  393950, 308519, 403535, 401729, 20371,  648,    35754,  4363,   124814]
+                        },
+                        'SANTA FE': {
+                            aumentos:    [189133, 145315, 115062, 115062, 220946, 220946, 84165, 45346, 91514, 112387, 187083],
+                            reducciones: [36913,  182756, 39272,  54476,  113255, 48219,  35540, 16166, 97897, 52102,  61703],
+                            neta:        [152220, -37441, 75790,  60586,  107691, 172727, 48625, 29179, -6383, 60285,  125380]
+                        },
+                        'SAN CRISTOBAL': {
+                            aumentos:    [126040, 236495, 178356, 178356, 242924, 242924, 370232, 152914, 206637, 302487, 430902],
+                            reducciones: [48234,  93528,  88473,  73261,  51330,  28078,  25453,  121739, 27116,  34525,  83220],
+                            neta:        [77806,  142967, 89883,  105095, 191593, 214845, 344779, 31176,  179521, 267962, 347682]
+                        },
+                        'USME': {
+                            aumentos:    [229987, 305498, 169457, 169457, 243463, 243463, 309041, 170191, 343942, 181677, 375391],
+                            reducciones: [46545,  45724,  58900,  52572,  37309,  76358,  27415,  14825,  56565,  119860, 85716],
+                            neta:        [183442, 259774, 110557, 116886, 206154, 167106, 281625, 155366, 287378, 61817,  289675]
+                        },
+                        'TUNJUELITO': {
+                            aumentos:    [44309, 53506, 43537, 43537, 87720, 87720, 39749, 80993, 96281, 59816,  138154],
+                            reducciones: [27892, 21083, 21977, 20574, 15092, 13672, 14085, 11388, 12818, 31652,  23803],
+                            neta:        [16417, 32423, 21560, 22963, 72629, 74048, 25664, 69605, 83464, 28164,  114352]
+                        },
+                        'BOSA': {
+                            aumentos:    [503139, 377231, 477529, 477529, 386312, 386312, 490416, 308756, 293465, 316477, 353337],
+                            reducciones: [114745, 70415,  89102,  55640,  175732, 120148, 78507,  53225,  63622,  72737,  43747],
+                            neta:        [388394, 306815, 388428, 421889, 210579, 266163, 411909, 255531, 229843, 243740, 309590]
+                        },
+                        'KENNEDY': {
+                            aumentos:    [795945, 477462, 527105, 527105, 1055907, 1055907, 630149, 696329, 499238, 467189, 717425],
+                            reducciones: [96458,  96728,  93593,  160027, 519237,  264855,  226599, 164731, 127819, 160447, 232227],
+                            neta:        [699487, 380734, 433513, 367079, 536670,  791052,  403549, 531599, 371419, 306742, 485199]
+                        },
+                        'FONTIBON': {
+                            aumentos:    [1336789, 478207, 329357, 329357, 412812, 412812, 333734, 481456, 607066, 435069, 598598],
+                            reducciones: [1083785, 136160, 68893,  143680, 125156, 98264,  88950,  148211, 342823, 158644, 188459],
+                            neta:        [253004,  342047, 260464, 185678, 287656, 314548, 244784, 333246, 264243, 276425, 410139]
+                        },
+                        'ENGATIVA': {
+                            aumentos:    [421251, 508052, 571350, 571350, 535244, 535244, 450841, 457965, 372202, 572482, 534512],
+                            reducciones: [156584, 246219, 167568, 172137, 206194, 78627,  57891,  121625, 87888,  66485,  166532],
+                            neta:        [264667, 261834, 403782, 399213, 329050, 456617, 392950, 336340, 284314, 505997, 367979]
+                        },
+                        'SUBA': {
+                            aumentos:    [780167,  1520610, 730998, 730998, 740727, 740727, 913018, 398859, 432137, 506270, 802523],
+                            reducciones: [265382,  279226,  328137, 506759, 183331, 207032, 128446, 92348,  88322,  112502, 124585],
+                            neta:        [514785,  1241384, 402862, 224240, 557395, 533695, 784572, 306511, 343815, 393767, 677938]
+                        },
+                        'BARRIOS UNIDOS': {
+                            aumentos:    [62732, 87458, 210122, 210122, 278752, 278752, 59846, 38523, 88663, 208980, 404992],
+                            reducciones: [35980, 33825, 65310,  67559,  121869, 141295, 19443, 30698, 38434, 86721,  156500],
+                            neta:        [26752, 53633, 144812, 142564, 156882, 137457, 40403, 7825,  50229, 122259, 248492]
+                        },
+                        'TEUSAQUILLO': {
+                            aumentos:    [127078, 176233, 227155, 227155, 201844, 201844, 247360, 51009, 49104, 99956,  140358],
+                            reducciones: [124483, 88345,  165557, 73085,  40662,  56552,  158031, 39542, 38134, 61550,  61271],
+                            neta:        [2595,   87888,  61598,  154070, 161182, 145292, 89329,  11468, 10970, 38406,  79087]
+                        },
+                        'LOS MARTIRES': {
+                            aumentos:    [35337, 94525, 71147, 71147, 163732, 163732, 45443, 104596, 91665, 197088, 319731],
+                            reducciones: [19298, 38576, 32722, 47073, 137022, 12015,  31349, 61729,  52376, 85666,  113812],
+                            neta:        [16039, 55949, 38425, 24074, 26710,  151716, 14094, 42867,  39289, 111422, 205920]
+                        },
+                        'ANTONIO NARINO': {
+                            aumentos:    [20176, 71174, 67122, 67122, 93288, 93288, 37474, 66363, 58575, 95349,  102620],
+                            reducciones: [8854,  26691, 27862, 85793, 30119, 18991, 11963, 26302, 51745, 22207,  30787],
+                            neta:        [11323, 44482, 39259, -18671, 63168, 74297, 25511, 40061, 6831,  73143,  71833]
+                        },
+                        'PUENTE ARANDA': {
+                            aumentos:    [175066, 310719, 312327, 312327, 406896, 406896, 254534, 39362,  176609, 352276, 469648],
+                            reducciones: [58096,  89666,  168881, 156937, 98915,  49573,  151078, 55944,  99604,  93127,  219050],
+                            neta:        [116970, 221054, 143446, 155390, 307982, 357324, 103456, -16582, 77005,  259149, 250599]
+                        },
+                        'LA CANDELARIA': {
+                            aumentos:    [35628, 97182, 22376, 22376, 48250, 48250, 21310, 37066, 76702, 35001, 31417],
+                            reducciones: [4356,  17709, 19075, 11951, 22476, 4289,  6678,  31387, 73302, 18793, 11350],
+                            neta:        [31272, 79473, 3302,  10425, 25774, 43962, 14632, 5680,  3399,  16208, 20067]
+                        },
+                        'RAFAEL URIBE URIBE': {
+                            aumentos:    [177501, 151313, 141884, 141884, 285110, 285110, 283615, 119153, 368802, 266351, 216498],
+                            reducciones: [63090,  56119,  56606,  50068,  90125,  19866,  30354,  60683,  69441,  39652,  33041],
+                            neta:        [114411, 95194,  85277,  91816,  194985, 265244, 253261, 58470,  299361, 226699, 183457]
+                        },
+                        'CIUDAD BOLIVAR': {
+                            aumentos:    [387140, 345846, 671884, 671884, 499692, 499692, 958765, 279306, 509328, 343575, 577813],
+                            reducciones: [114697, 97623,  167018, 169525, 117968, 94968,  374938, 120590, 122285, 114450, 219524],
+                            neta:        [272444, 248223, 504866, 502360, 381724, 404724, 583826, 158716, 387043, 229125, 358288]
+                        },
+                        'SUMAPAZ': {
+                            aumentos:    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            reducciones: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            neta:        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                        },
+                        '': {
+                            aumentos:    [6676380, 6523213, 6583076, 6583076, 7252023, 7252023, 6211051, 4035431, 4950403, 5020788, 7008522],
+                            reducciones: [2972872, 2368662, 2154984, 2643381, 2627118, 1750643, 1929117, 1384802, 1748162, 1604294, 2085483],
+                            neta:        [3703508, 4154552, 4428093, 3939701, 4624902, 5501379, 4281931, 2650633, 3202243, 3416495, 4923042]
+                        }
+                    };
+
+                    function loadAndRenderVar() {
+                        var locFilter = locSelectVar ? locSelectVar.value : '';
+
+                        // Usar datos de referencia si existen para esta localidad
+                        if (Object.prototype.hasOwnProperty.call(DATOS_LOCALIDAD, locFilter)) {
+                            if (loadingElVar) loadingElVar.style.display = 'none';
+                            var d = DATOS_LOCALIDAD[locFilter];
+                            var byYear = {};
+                            YEARS_VAR.forEach(function (y, i) {
+                                byYear[y] = { aumentos: d.aumentos[i], reducciones: d.reducciones[i], neta: d.neta[i] };
+                            });
+                            buildVarChart(byYear);
+                            return;
+                        }
+
+                        if (loadingElVar) loadingElVar.style.display = 'block';
+                        if (tableWrap) tableWrap.style.display = 'none';
+                        Promise.all(YEARS_VAR.map(fetchYearVar)).then(function (results) {
+                            var byYear = {};
+                            results.forEach(function (data, i) {
+                                byYear[YEARS_VAR[i]] = calcAumRed(data, YEARS_VAR[i], locFilter);
+                            });
+                            if (loadingElVar) loadingElVar.style.display = 'none';
+                            buildVarChart(byYear);
+                        });
+                    }
+
+                    if (locSelectVar) locSelectVar.addEventListener('change', loadAndRenderVar);
+                    loadAndRenderVar();
                 })();
             }
 
