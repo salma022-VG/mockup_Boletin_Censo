@@ -2894,6 +2894,55 @@
         </div>
     </section>
 
+    <section id="locality-chart" class="locality-chart-section">
+        <div class="locality-chart-header reveal">
+            <h2>Información por Localidades</h2>
+            <p>Datos del censo inmobiliario por localidad, año y grupo económico</p>
+        </div>
+
+        <div class="locality-filters reveal">
+            <div class="locality-filter-group">
+                <label for="locality-year-filter">Año</label>
+                <select id="locality-year-filter" class="locality-filter-select">
+                    <option value="historico">Histórico</option>
+                    <option value="2026" selected>2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                </select>
+            </div>
+            <div class="locality-filter-group">
+                <label for="locality-loc-filter">Localidad</label>
+                <select id="locality-loc-filter" class="locality-filter-select">
+                    <option value="TODAS" selected>Todas</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="locality-metric-pills reveal">
+            <button class="metric-pill active" data-metric="predios">Predios</button>
+            <button class="metric-pill" data-metric="valor_catastral">Valor catastral</button>
+            <button class="metric-pill" data-metric="area_construida">Área Construida</button>
+            <button class="metric-pill" data-metric="area_terreno">Área Terreno</button>
+        </div>
+
+        <div class="locality-chart-card reveal-scale">
+            <div class="locality-chart-canvas-wrap">
+                <canvas id="chart-locality"></canvas>
+                <div id="locality-loading" class="locality-chart-loading">
+                    <div class="mini-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Sección de gráficas dinámicas -->
     <section id="charts" class="charts-section">
         <div class="charts-header reveal">
@@ -3016,55 +3065,6 @@
                 </div>
             </div>
         </div>
-    <section id="locality-chart" class="locality-chart-section">
-        <div class="locality-chart-header reveal">
-            <h2>Información por Localidades</h2>
-            <p>Datos del censo inmobiliario por localidad, año y grupo económico</p>
-        </div>
-
-        <div class="locality-filters reveal">
-            <div class="locality-filter-group">
-                <label for="locality-year-filter">Año</label>
-                <select id="locality-year-filter" class="locality-filter-select">
-                    <option value="historico">Histórico</option>
-                    <option value="2026" selected>2026</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                </select>
-            </div>
-            <div class="locality-filter-group">
-                <label for="locality-loc-filter">Localidad</label>
-                <select id="locality-loc-filter" class="locality-filter-select">
-                    <option value="TODAS" selected>Todas</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="locality-metric-pills reveal">
-            <button class="metric-pill active" data-metric="predios">Predios</button>
-            <button class="metric-pill" data-metric="valor_catastral">Valor catastral</button>
-            <button class="metric-pill" data-metric="area_construida">Área Construida</button>
-            <button class="metric-pill" data-metric="area_terreno">Área Terreno</button>
-        </div>
-
-        <div class="locality-chart-card reveal-scale">
-            <div class="locality-chart-canvas-wrap">
-                <canvas id="chart-locality"></canvas>
-                <div id="locality-loading" class="locality-chart-loading">
-                    <div class="mini-spinner"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="charts-section" style="padding-top:48px;padding-bottom:60px;">
         <!-- Fila: Aumentos y reducciones de área construida -->
         <div class="charts-row charts-row-full">
