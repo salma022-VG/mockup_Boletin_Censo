@@ -533,7 +533,7 @@
         }
 
         .stats-container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             gap: 20px;
@@ -545,10 +545,10 @@
             background: var(--bg-white);
             border: 1px solid #e0e0e0;
             border-radius: var(--radius-md);
-            padding: 22px 32px;
+            padding: 18px 20px;
             text-align: center;
             flex: 1;
-            max-width: 260px;
+            min-width: 140px;
             box-shadow: var(--shadow-card);
             display: flex;
             flex-direction: column;
@@ -872,8 +872,9 @@
         .stats-row-primary {
             display: flex;
             align-items: stretch;
-            gap: 24px;
+            gap: 14px;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .stats-row-primary .stat-card {
@@ -2473,46 +2474,280 @@
    DISEÑO RESPONSIVO
    ======================================== */
         @media (max-width: 900px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
+            .hero-content h1 { font-size: 2rem; }
+            .stats-container { gap: 12px; }
+            .stat-card { max-width: 100%; }
+            .map-about-section { flex-direction: column; }
+            .about-wrapper { flex: none; padding: 36px 24px; }
+            .services-container { flex-direction: column; align-items: center; }
+            .service-card { max-width: 100%; width: 100%; }
+            .info-panel { left: 8px; right: 8px; width: auto; bottom: 8px; }
+        }
 
+        /* =============================================
+           RESPONSIVE — 1200px (tablet grande / laptop pequeño)
+           ============================================= */
+        @media (max-width: 1200px) {
             .stats-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .stat-card {
                 max-width: 100%;
-                width: 100%;
-            }
-
-            .map-about-section {
-                flex-direction: column;
+                padding: 0 16px;
             }
 
             .about-wrapper {
-                flex: none;
-                padding: 36px 24px;
+                flex: 0 0 38%;
+                padding: 44px 36px;
             }
 
-            .services-container {
+            .chart-card {
+                max-width: none;
+            }
+
+            .locality-filters {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .hallazgos-dist-nota {
+                width: 220px;
+            }
+        }
+
+        /* =============================================
+           RESPONSIVE — 768px (tablet)
+           ============================================= */
+        @media (max-width: 768px) {
+            /* Hero */
+            .hero { min-height: 180px; }
+            .hero-content { padding: 36px 16px; }
+            .hero-content h1 { font-size: 1.6rem; line-height: 1.25; }
+            .hero-content p { font-size: 0.88rem; }
+
+            /* Stats */
+            .stats-section { padding: 0 12px; }
+            .stats-container {
+                transform: translateY(-20px);
+                gap: 10px;
+                padding: 0;
+            }
+            .stats-row-primary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                flex-direction: unset;
+                align-items: unset;
+            }
+            .stats-row-primary .map-filters {
+                grid-column: 1 / -1;
+                min-width: unset;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 14px;
+                padding: 12px 16px;
+            }
+            .stat-card { min-width: unset; padding: 14px 12px; }
+            .stat-card-label { font-size: 0.7rem; }
+            .stat-card-value { font-size: 1.25rem !important; word-break: break-all; }
+            .uso-year-select { font-size: 0.68rem; }
+
+            /* Mapa + About */
+            .map-about-section { flex-direction: column; min-height: unset; }
+            .map-wrapper { min-height: 380px; }
+            #map { min-height: 380px; }
+            .about-wrapper { flex: none; padding: 32px 20px; }
+            .map-search { width: calc(100% - 80px); max-width: none; }
+            .info-panel { left: 8px; right: 8px; width: auto; bottom: 8px; }
+
+            /* Secciones — padding reducido */
+            .charts-section       { padding: 36px 14px 50px; }
+            .locality-chart-section { padding: 36px 14px 50px; }
+            .services-section     { padding: 40px 14px 56px; }
+            .property-section     { padding: 40px 14px 56px; }
+
+            /* Charts */
+            .charts-row { flex-direction: column; align-items: stretch; }
+            .chart-card { max-width: 100%; width: 100%; padding: 16px 14px; }
+            .chart-canvas-wrap { height: 230px; }
+            .chart-canvas-wide { height: 270px; }
+
+            /* Localidades */
+            .locality-filters { flex-direction: column; gap: 10px; }
+            .locality-chart-canvas-wrap { height: 300px; }
+            .locality-chart-card { padding: 16px 14px; }
+
+            /* Hallazgos */
+            .hallazgos-kpis { gap: 10px; }
+            .hkpi-card { min-width: 130px; flex: 1 1 130px; padding: 12px 14px; }
+            .hallazgos-grid { grid-template-columns: 1fr; }
+            .hallazgos-card-header {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 14px 16px 12px;
+            }
+            .hallazgos-card-header h3 { font-size: 0.92rem; }
+            .hg-row {
+                display: grid;
+                grid-template-areas: "label pct" "bar bar";
+                grid-template-columns: 1fr auto;
+                row-gap: 2px;
+                column-gap: 8px;
+                margin-bottom: 10px;
                 align-items: center;
             }
-
-            .service-card {
-                max-width: 100%;
-                width: 100%;
+            .hg-label {
+                grid-area: label;
+                min-width: 0;
+                max-width: none;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                align-self: center;
             }
+            .hg-bar-wrap { grid-area: bar; }
+            .hg-pct { grid-area: pct; min-width: 38px; align-self: center; }
 
-            .info-panel {
+            /* Propiedades */
+            .property-container { flex-direction: column; align-items: center; }
+            .property-card { width: 100%; max-width: 100%; }
+
+            /* Servicios */
+            .services-container { flex-direction: column; align-items: center; }
+            .service-card { max-width: 100%; width: 100%; }
+
+            /* Títulos */
+            .section-title { font-size: 1.5rem; }
+        }
+
+        /* =============================================
+           RESPONSIVE — 480px (móvil)
+           ============================================= */
+        @media (max-width: 480px) {
+            /* Hero */
+            .hero { min-height: 150px; }
+            .hero-content { padding: 28px 14px; }
+            .hero-content h1 { font-size: 1.2rem; line-height: 1.2; }
+            .hero-content p { font-size: 0.78rem; padding: 0 4px; }
+
+            /* Stats — grid 2 columnas */
+            .stats-section { padding: 0 8px; }
+            .stats-container {
+                transform: translateY(-14px);
+                gap: 8px;
+                padding: 0;
+            }
+            .stats-row-primary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stats-row-primary .map-filters {
+                grid-column: 1 / -1;
+                min-width: unset;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 14px;
+            }
+            .stat-card {
+                min-width: unset;
+                padding: 11px 9px;
+                border-radius: 10px;
+            }
+            .stat-card-label {
+                font-size: 0.58rem;
+                letter-spacing: 0.02em;
+                margin-bottom: 4px;
+            }
+            .stat-card-value {
+                font-size: 1.05rem !important;
+                word-break: break-all;
+                line-height: 1.2;
+            }
+            .stat-trend {
+                font-size: 0.58rem !important;
+                padding: 2px 6px;
+                margin-top: 4px;
+            }
+            .uso-year-select { font-size: 0.6rem; padding: 1px 2px; }
+
+            /* Mapa */
+            .map-wrapper { min-height: 300px; }
+            #map { min-height: 300px; }
+            .about-wrapper { padding: 24px 14px; }
+            .map-search {
+                width: calc(100% - 16px);
                 left: 8px;
                 right: 8px;
-                width: auto;
-                bottom: 8px;
+                top: 8px;
+                max-width: none;
             }
+
+            /* Secciones — padding mínimo */
+            .charts-section       { padding: 24px 8px 36px; }
+            .locality-chart-section { padding: 24px 8px 36px; }
+            .services-section     { padding: 30px 8px 40px; }
+            .property-section     { padding: 30px 8px 40px; }
+
+            /* Charts */
+            .chart-card { padding: 12px 10px; }
+            .chart-card-header h3 { font-size: 0.85rem; }
+            .chart-canvas-wrap { height: 190px; }
+            .chart-canvas-wide { height: 210px; }
+
+            /* Localidades */
+            .locality-chart-canvas-wrap { height: 250px; }
+            .locality-chart-card { padding: 12px 10px; }
+
+            /* Hallazgos */
+            .hallazgos-kpis { gap: 8px; }
+            .hkpi-card { min-width: 110px; flex: 1 1 110px; max-width: none; padding: 10px 10px; gap: 10px; }
+            .hallazgos-dist-wrap { margin: 0 auto 16px; }
+            .hallazgos-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px 13px 10px;
+            }
+            .hallazgos-card-header h3 { font-size: 0.85rem; line-height: 1.3; }
+            .hallazgos-card-header > div { display: flex; gap: 6px; flex-wrap: wrap; }
+            .hg-row {
+                display: grid;
+                grid-template-areas: "label pct" "bar bar";
+                grid-template-columns: 1fr auto;
+                row-gap: 2px;
+                column-gap: 8px;
+                margin-bottom: 10px;
+                align-items: center;
+            }
+            .hg-label {
+                grid-area: label;
+                font-size: 0.72rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                min-width: 0;
+                align-self: center;
+            }
+            .hg-bar-wrap {
+                grid-area: bar;
+                height: 9px;
+            }
+            .hg-pct { grid-area: pct; font-size: 0.7rem; text-align: right; align-self: center; }
+            .hallazgos-dist-nota { font-size: 0.75rem; padding: 11px 13px; }
+            .hgrupos-list { padding: 12px 13px 4px; }
+
+            /* Títulos */
+            .section-title { font-size: 1.2rem; }
+
+            /* Tablas — scroll horizontal */
+            .area-table-section,
+            .var-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+            /* Footer */
+            .footer { font-size: 0.7rem; padding: 14px 10px; }
         }
 
         /* ── Theme toggle button ── */
@@ -2747,17 +2982,6 @@
                     </span>
                 </div>
 
-                <div class="stat-card reveal-scale" data-delay="375">
-                    <span class="stat-card-label">Part. en Bogotá&nbsp;·&nbsp;<span id="predios-pct-loc-label" style="font-weight:700;">Bogotá D.C.</span></span>
-                    <span class="stat-card-value accent" id="predios-stat-pct" style="font-size:1.9rem;">–</span>
-                    <span class="stat-trend" style="color:#888;font-size:11px;">predios totales / Bogotá</span>
-                </div>
-
-                <div class="stat-card reveal-scale" data-delay="412">
-                    <span class="stat-card-label">Part. Urbana en Bogotá</span>
-                    <span class="stat-card-value accent" id="predios-stat-pct-urb" style="font-size:1.9rem;">–</span>
-                    <span class="stat-trend" style="color:#888;font-size:11px;">predios urbanos / Bogotá</span>
-                </div>
 
                 <div class="map-filters reveal-scale" id="map-filters" data-delay="450">
                     <span class="filters-title">Filtros</span>
@@ -2958,8 +3182,8 @@
     <!-- Sección de gráficas dinámicas -->
     <section id="charts" class="charts-section">
         <div class="charts-header reveal">
-            <h2>Análisis del Comportamiento Inmobiliario en Bogotá D.C.</h2>
-            <p>Análisis del comportamiento de arriendos y ventas en Bogotá D.C.</p>
+            <h2>Exploración de Datos del Censo Urbano en Bogotá D.C.</h2>
+            <p>Análisis del comportamiento Urbano y rutal en Bogotá D.C.</p>
         </div>
 
         <!-- Fila 1: Barras + Pastel -->
@@ -3187,7 +3411,7 @@
     <section id="hallazgos" class="charts-section hallazgos-section">
         <div class="charts-header reveal">
             <h2>Datos del Catastro</h2>
-            <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2012–2026)</p>
+            <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2016–2026)</p>
         </div>
 
         <!-- Distribución por uso del suelo: por localidad -->
@@ -4939,22 +5163,11 @@
                                     ticks: { font: { size: 10, weight: '600' }, color: '#555', maxRotation: 45, minRotation: 45 }
                                 },
                                 yPct: {
-                                    display: true,
-                                    position: 'left',
-                                    min: -1,
-                                    max: 2,
-                                    grid: { drawOnChartArea: false, display: false },
-                                    title: { display: true, text: 'Porcentaje de variación', font: { size: 11, weight: '600' }, color: '#555' },
-                                    ticks: {
-                                        color: '#555',
-                                        font: { size: 10, weight: '500' },
-                                        stepSize: 0.5,
-                                        callback: function (v) { return v.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; }
-                                    }
+                                    display: false
                                 },
                                 yNetos: {
                                     type: 'linear',
-                                    position: 'right',
+                                    position: 'left',
                                     beginAtZero: true,
                                     grid: { drawOnChartArea: false },
                                     title: { display: true, text: 'Variaciones en área neta construida (miles m²)', font: { size: 11, weight: '600' }, color: 'rgba(196,30,30,0.9)', padding: { bottom: 8 } },
