@@ -5031,6 +5031,43 @@
                     var currentMetric = 'predios';
                     var localityChart = null;
 
+                    // Datos inline de predios (urbano+rural) por localidad 2016-2026
+                    var PRED_AÑOS = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+                    var PRED_DATA = {
+                        'Bogotá D.C.':       [2481706,2543290,2593116,2645510,2688734,2715978,2766595,2809381,2850844,2889282,2941785],
+                        'Usaquén':           [336059,346503,353553,361112,366989,369104,374109,377689,383442,388414,392157],
+                        'Chapinero':         [168043,171583,173415,175358,177315,179233,181455,182721,185602,187645,190907],
+                        'Santa Fe':          [60689,62920,64392,65498,66272,68067,68754,70104,71266,73089,75514],
+                        'San Cristóbal':     [84604,86006,86612,89185,90314,91082,91540,93693,94019,94593,95701],
+                        'Usme':              [85097,88146,89619,91859,92730,94095,94471,94830,95652,97986,99149],
+                        'Tunjuelito':        [33232,33427,33550,33660,33735,33735,33883,33938,34036,34164,34384],
+                        'Bosa':              [147015,152117,156575,165877,167433,169234,170108,170888,173747,176699,178371],
+                        'Kennedy':           [273647,277432,281380,284136,287145,290815,294529,297246,299545,304194,311568],
+                        'Fontibón':          [145165,148373,151079,154393,158006,159503,165003,169332,177790,186388,196808],
+                        'Engativá':          [206314,210634,216697,219921,223274,225152,229908,234388,237188,239234,241842],
+                        'Suba':              [450210,464945,473002,488965,494925,498232,502166,509053,513014,521744,529488],
+                        'Barrios Unidos':    [55229,56107,56428,56869,58049,59852,60114,60751,61434,62485,64048],
+                        'Teusaquillo':       [82313,83637,84476,85820,86970,87710,89417,90306,91269,93023,94604],
+                        'Los Mártires':      [33847,34298,34846,35604,37094,37215,37374,38006,39201,43160,45082],
+                        'Antonio Nariño':    [21686,21885,22580,22640,23084,23389,23890,24246,24711,25331,26177],
+                        'Puente Aranda':     [67380,68934,69455,70889,71881,72123,73280,73652,75085,80694,83703],
+                        'La Candelaria':     [14066,14304,14323,14399,14451,14482,15079,15269,15265,15329,15610],
+                        'Rafael Uribe Uribe':[75722,76376,77072,77705,80063,80636,81301,82109,83503,87674,88570],
+                        'Ciudad Bolívar':    [139641,143966,146470,148074,150454,150951,154250,156333,157139,160028,164393],
+                        'Sumapaz':           [1747,1697,1702,1702,1702,1703,1757,1808,1807,1806,1803]
+                    };
+                    var LOC_NAME_MAP = {
+                        'Bogotá D.C.':'BOGOTA D.C.','Usaquén':'USAQUEN','Chapinero':'CHAPINERO',
+                        'Santa Fe':'SANTA FE','San Cristóbal':'SAN CRISTOBAL','Usme':'USME',
+                        'Tunjuelito':'TUNJUELITO','Bosa':'BOSA','Kennedy':'KENNEDY',
+                        'Fontibón':'FONTIBON','Engativá':'ENGATIVA','Suba':'SUBA',
+                        'Barrios Unidos':'BARRIOS UNIDOS','Teusaquillo':'TEUSAQUILLO',
+                        'Los Mártires':'LOS MARTIRES','Antonio Nariño':'ANTONIO NARINO',
+                        'Puente Aranda':'PUENTE ARANDA','La Candelaria':'LA CANDELARIA',
+                        'Rafael Uribe Uribe':'RAFAEL URIBE URIBE','Ciudad Bolívar':'CIUDAD BOLIVAR',
+                        'Sumapaz':'SUMAPAZ'
+                    };
+
                     var metricLabels = {
                         predios: 'Número de Predios',
                         valor_catastral: 'Valor Catastral (Millones COP)',
@@ -5107,11 +5144,12 @@
                     }
 
                     function processData(data, year, groupFilter, locFilter, metric) {
+                        var jsonLoc = locFilter && locFilter !== 'TODAS' ? (LOC_NAME_MAP[locFilter] || locFilter.toUpperCase()) : null;
                         // If a specific locality is selected, show breakdown by group
-                        if (locFilter && locFilter !== 'TODAS') {
+                        if (jsonLoc) {
                             var grupos = {};
                             data.forEach(function (item) {
-                                if (item.NOMBRE_LOCALIDAD !== locFilter) return;
+                                if (item.NOMBRE_LOCALIDAD !== jsonLoc) return;
                                 var grupo = item.GRUPO_ECONOMICO;
                                 if (groupFilter !== 'TODOS' && grupo !== groupFilter) return;
                                 if (!grupos[grupo]) grupos[grupo] = 0;
@@ -5270,17 +5308,78 @@
                     }
 
                     function handleHistorico(groupFilter, locFilter, metric) {
+                        if (metric === 'predios') {
+                            showLoading();
+                            var locKeys = Object.keys(PRED_DATA).filter(function(k){ return k !== 'Bogotá D.C.'; });
+                            var datasets;
+                            if (locFilter && locFilter !== 'TODAS') {
+                                datasets = [{
+                                    label: locFilter,
+                                    data: PRED_DATA[locFilter] || [],
+                                    borderColor: barColors[0].replace('0.8','1'),
+                                    backgroundColor: barColors[0].replace('0.8','0.15'),
+                                    fill: false, tension: 0.3, borderWidth: 2.5,
+                                    pointRadius: 3, pointHoverRadius: 6,
+                                    pointBackgroundColor: '#fff',
+                                    pointBorderColor: barColors[0].replace('0.8','1'),
+                                    pointBorderWidth: 2
+                                }];
+                            } else {
+                                var topLocs = locKeys.map(function(k){ return [k, PRED_DATA[k][PRED_DATA[k].length-1]]; })
+                                    .sort(function(a,b){ return b[1]-a[1]; }).slice(0,8).map(function(e){ return e[0]; });
+                                datasets = topLocs.map(function(loc, idx) {
+                                    var color = barColors[idx % barColors.length];
+                                    return {
+                                        label: loc,
+                                        data: PRED_DATA[loc],
+                                        borderColor: color.replace('0.8','1'),
+                                        backgroundColor: color.replace('0.8','0.15'),
+                                        fill: false, tension: 0.3, borderWidth: 2.5,
+                                        pointRadius: 3, pointHoverRadius: 6,
+                                        pointBackgroundColor: '#fff',
+                                        pointBorderColor: color.replace('0.8','1'),
+                                        pointBorderWidth: 2
+                                    };
+                                });
+                            }
+                            if (localityChart) { localityChart.destroy(); localityChart = null; }
+                            localityChart = new Chart(ctx, {
+                                type: 'line',
+                                data: { labels: PRED_AÑOS, datasets: datasets },
+                                options: {
+                                    responsive: true, maintainAspectRatio: false,
+                                    interaction: { mode: 'index', intersect: false },
+                                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                                    plugins: {
+                                        legend: { position: 'top', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle', font: { size: 11, weight: '500' } } },
+                                        tooltip: {
+                                            backgroundColor: 'rgba(30,30,30,0.92)', titleFont: { weight: '600' }, padding: 14, cornerRadius: 8,
+                                            callbacks: { label: function(t){ return t.dataset.label + ': ' + formatTooltipValue(t.raw, 'predios'); } }
+                                        }
+                                    },
+                                    scales: {
+                                        x: { grid: { color: 'rgba(0,0,0,0.03)' }, ticks: { font: { size: 11, weight: '500' } } },
+                                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' },
+                                            title: { display: true, text: metricLabels['predios'], font: { size: 11, weight: '600' } },
+                                            ticks: { callback: function(v){ return formatValue(v,'predios'); } } }
+                                    }
+                                }
+                            });
+                            hideLoading();
+                            return;
+                        }
+                        var jsonLoc = locFilter && locFilter !== 'TODAS' ? (LOC_NAME_MAP[locFilter] || locFilter.toUpperCase()) : null;
                         showLoading();
                         var promises = allYears.map(function (y) { return fetchYear(y); });
                         Promise.all(promises).then(function (allData) {
                             var datasets;
 
-                            if (locFilter && locFilter !== 'TODAS') {
+                            if (jsonLoc) {
                                 // Specific locality: show lines per economic group
                                 var lastYearData = allData[allData.length - 1];
                                 var groupTotals = {};
                                 lastYearData.forEach(function (item) {
-                                    if (item.NOMBRE_LOCALIDAD !== locFilter) return;
+                                    if (item.NOMBRE_LOCALIDAD !== jsonLoc) return;
                                     var grupo = item.GRUPO_ECONOMICO;
                                     if (groupFilter !== 'TODOS' && grupo !== groupFilter) return;
                                     if (!groupTotals[grupo]) groupTotals[grupo] = 0;
@@ -5297,7 +5396,7 @@
                                         var year = allYears[yi];
                                         var total = 0;
                                         yearData.forEach(function (item) {
-                                            if (item.NOMBRE_LOCALIDAD !== locFilter) return;
+                                            if (item.NOMBRE_LOCALIDAD !== jsonLoc) return;
                                             if (item.GRUPO_ECONOMICO !== grupo) return;
                                             total += getFieldValue(item, year, metric);
                                         });
@@ -5409,20 +5508,38 @@
                         var locFilter = locSelect.value;
 
                         if (selectedYear === 'historico') {
-                            if (localityChart) {
-                                localityChart.destroy();
-                                localityChart = null;
-                            }
+                            if (localityChart) { localityChart.destroy(); localityChart = null; }
                             handleHistorico(groupFilter, locFilter, currentMetric);
                             return;
                         }
 
-                        showLoading();
                         if (localityChart && localityChart.config.type === 'line') {
                             localityChart.destroy();
                             localityChart = null;
                         }
 
+                        if (currentMetric === 'predios') {
+                            showLoading();
+                            var yearIdx = PRED_AÑOS.indexOf(selectedYear);
+                            var result;
+                            if (locFilter && locFilter !== 'TODAS') {
+                                var val = yearIdx >= 0 && PRED_DATA[locFilter] ? PRED_DATA[locFilter][yearIdx] : 0;
+                                result = { labels: [locFilter], values: [val] };
+                            } else {
+                                var entries = Object.keys(PRED_DATA)
+                                    .filter(function(k){ return k !== 'Bogotá D.C.'; })
+                                    .map(function(k){ return [k, yearIdx >= 0 ? PRED_DATA[k][yearIdx] : 0]; })
+                                    .sort(function(a,b){ return b[1]-a[1]; });
+                                result = {
+                                    labels: entries.map(function(e){ return e[0]; }),
+                                    values: entries.map(function(e){ return e[1]; })
+                                };
+                            }
+                            updateChart(result);
+                            return;
+                        }
+
+                        showLoading();
                         fetchYear(selectedYear).then(function (data) {
                             var result = processData(data, selectedYear, groupFilter, locFilter, currentMetric);
                             updateChart(result);
@@ -5446,14 +5563,17 @@
                     locSelect.addEventListener('change', refreshChart);
                     locSelect.addEventListener('change', refreshChart);
 
-                    // Initial load: fetch first year to populate groups, then load chart
-                    fetchYear('2026').then(function (data) {
-                        populateGroupFilter(data);
-                        refreshChart();
-                    }).catch(function (err) {
-                        console.error('Error loading initial data:', err);
-                        hideLoading();
+                    // Cargar localidades en el select desde datos inline
+                    var predLocs = Object.keys(PRED_DATA).filter(function(k){ return k !== 'Bogotá D.C.'; }).sort();
+                    while (locSelect.options.length > 1) locSelect.remove(1);
+                    predLocs.forEach(function(l) {
+                        var opt = document.createElement('option');
+                        opt.value = l; opt.textContent = l;
+                        locSelect.appendChild(opt);
                     });
+                    refreshChart();
+                    // Pre-cargar JSON 2026 para que otros tabs funcionen sin espera
+                    fetchYear('2026').catch(function(){});
                 })();
 
                 // ───── GRÁFICA: Aumentos y reducciones de área construida ─────
