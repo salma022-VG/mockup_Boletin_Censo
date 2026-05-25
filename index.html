@@ -2576,7 +2576,7 @@
             .map-wrapper { min-height: 380px; }
             #map { min-height: 380px; }
             .about-wrapper { flex: none; padding: 32px 20px; }
-            .map-search { width: calc(100% - 80px); max-width: none; }
+            .map-search { width: calc(100% - 80px); max-width: none; transform: none; left: 8px; }
             .info-panel { left: 8px; right: 8px; width: auto; bottom: 8px; }
 
             /* Secciones — padding reducido */
@@ -2702,18 +2702,19 @@
                 padding: 2px 6px;
                 margin-top: 4px;
             }
-            .uso-year-select { font-size: 0.6rem; padding: 1px 2px; }
+            .uso-year-select { font-size: 0.68rem; padding: 4px 22px 4px 9px; background-position: right 6px center; }
 
             /* Mapa */
             .map-wrapper { min-height: 300px; }
             #map { min-height: 300px; }
             .about-wrapper { padding: 24px 14px; }
             .map-search {
-                width: calc(100% - 16px);
-                left: 8px;
-                right: 8px;
-                top: 8px;
-                max-width: none;
+                width: 70%;
+                left: 50%;
+                right: auto;
+                top: 10px;
+                max-width: 300px;
+                transform: translateX(-50%);
             }
 
             /* Secciones — padding mínimo */
@@ -3394,8 +3395,8 @@
         <!-- Fila 3: Aumentos netos y variaciones en área construida -->
         <div class="charts-row charts-row-full">
             <div class="chart-card chart-card-wide reveal-scale" data-delay="200">
-                <div class="chart-card-header">
-                    <h3>Área construida urbana y rural&nbsp; 2016 - 2026 (metros cuadrados)</h3>
+                <div class="chart-card-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
+                    <h3 style="width:100%;margin:0;">Área construida urbana y rural · 2016–2026 (metros cuadrados)</h3>
                     <div class="chart-filter">
                         <label for="localidad-select">Localidad</label>
                         <select id="localidad-select" class="chart-filter-select">
@@ -5217,7 +5218,7 @@
                                     position: 'left',
                                     beginAtZero: true,
                                     grid: { drawOnChartArea: false },
-                                    title: { display: true, text: 'Variaciones en área neta construida (miles m²)', font: { size: 11, weight: '600' }, color: 'rgba(196,30,30,0.9)', padding: { bottom: 8 } },
+                                    title: { display: true, text: window.innerWidth <= 480 ? 'Área neta (miles m²)' : 'Variaciones en área neta construida (miles m²)', font: { size: 11, weight: '600' }, color: 'rgba(196,30,30,0.9)', padding: { bottom: 8 } },
                                     ticks: {
                                         color: 'rgba(196,30,30,0.85)',
                                         font: { size: 10, weight: '500' },
@@ -6391,10 +6392,10 @@
                     return '<tr>' +
                         '<td>' + (i + 1) + '</td>' +
                         '<td>' + (i === 0 ? '<strong>' + e.locDisplay + '</strong>' : e.locDisplay) + '</td>' +
-                        '<td style="color:' + pctColor + ';font-weight:700;">' + fmtPct(e.pct) + '</td>' +
-                        '<td>' + fmtB(e.startVal) + '</td>' +
-                        '<td>' + fmtB(e.endVal) + '</td>' +
-                        '<td>' + (e.varAbs >= 0 ? '+' : '') + fmtB(e.varAbs) + '</td>' +
+                        '<td style="color:' + pctColor + ';font-weight:700;white-space:nowrap;">' + fmtPct(e.pct) + '</td>' +
+                        '<td style="white-space:nowrap;">' + fmtB(e.startVal) + '</td>' +
+                        '<td style="white-space:nowrap;">' + fmtB(e.endVal) + '</td>' +
+                        '<td style="white-space:nowrap;">' + (e.varAbs >= 0 ? '+' : '') + fmtB(e.varAbs) + '</td>' +
                         '</tr>';
                 }).join('');
 
