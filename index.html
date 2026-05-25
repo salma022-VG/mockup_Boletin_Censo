@@ -1435,6 +1435,10 @@
             background: var(--bg-light);
             padding: 60px 24px 80px;
         }
+        .charts-section-area {
+            padding-top: 48px;
+            padding-bottom: 60px;
+        }
 
         /* ─── HALLAZGOS SECTION ─────────────────────────────── */
         .hallazgos-section { background: #fff; }
@@ -1478,6 +1482,8 @@
         .hallazgos-dist-wrap {
             max-width: 1200px;
             margin: 0 auto 28px;
+            width: 100%;
+            box-sizing: border-box;
             height: auto;
             overflow: visible;
         }
@@ -1530,19 +1536,32 @@
             max-width: 1200px;
             margin: 0 auto;
             align-items: start;
+            width: 100%;
+            box-sizing: border-box;
         }
-        @media (max-width: 900px) { .hallazgos-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) {
+            .hallazgos-grid {
+                grid-template-columns: 1fr;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .hallazgos-dist-wrap {
+                margin-bottom: 16px;
+            }
+        }
 
 
         .hallazgos-card {
             background: var(--bg-light);
             border-radius: var(--radius-md);
             border: 1px solid rgba(0,0,0,0.07);
-            overflow: visible;
+            overflow: hidden;
             height: auto;
             box-shadow: var(--shadow-card);
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            box-sizing: border-box;
         }
         .hallazgos-card-header {
             display: flex;
@@ -1753,6 +1772,7 @@
         .htable-var { color: #22a85a; font-weight: 700; font-size: 0.78rem; white-space: nowrap; }
         .hallazgos-scroll-wrap {
             flex: 1;
+            overflow-x: auto;
             overflow-y: visible;
         }
 
@@ -2747,7 +2767,7 @@
             /* Hallazgos */
             .hallazgos-kpis { gap: 8px; }
             .hkpi-card { min-width: 110px; flex: 1 1 110px; max-width: none; padding: 10px 10px; gap: 10px; }
-            .hallazgos-dist-wrap { margin: 0 auto 16px; }
+            .hallazgos-grid { grid-template-columns: 1fr; gap: 16px; }
             .hallazgos-card-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -3360,7 +3380,7 @@
                 </div>
             </div>
         </div>
-    <section class="charts-section" style="padding-top:48px;padding-bottom:60px;">
+    <section class="charts-section charts-section-area">
         <!-- Fila: Aumentos y reducciones de área construida -->
         <div class="charts-row charts-row-full">
             <div class="chart-card chart-card-wide reveal-scale">
@@ -3473,7 +3493,7 @@
             <p>Principales resultados del análisis de los registros catastrales de Bogotá D.C. (2016–2026)</p>
         </div>
 
-        <!-- Distribución por uso del suelo: por localidad -->
+        <!-- Fila 1: Distribución (ancho completo) -->
         <div class="hallazgos-dist-wrap reveal-scale">
             <div class="hallazgos-card hallazgos-dist-card">
                 <div class="hallazgos-card-header">
@@ -3568,12 +3588,10 @@
                     <p class="hallazgos-nota hallazgos-dist-nota" id="uso-loc-nota">Vista general de la ciudad. Residencial concentra el 59,4 % del avalúo. Oficinas aportan el 9,2 % pese a representar solo el 2,5 % de los predios.</p>
                 </div>
             </div>
-        </div>
+        </div><!-- /hallazgos-dist-wrap -->
 
-        <!-- Dos columnas simétricas: ranking + avalúo promedio -->
+        <!-- Fila 2: Ranking + Avalúo (dos columnas iguales) -->
         <div class="hallazgos-grid reveal-scale">
-
-            <!-- Columna 1: Ranking localidades por crecimiento -->
             <div class="hallazgos-card">
                 <div class="hallazgos-card-header">
                     <h3>Ranking de localidades por crecimiento de avalúo</h3>
@@ -3605,7 +3623,6 @@
                 <p class="htable-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Pasa el cursor sobre una fila para ver el análisis detallado</p>
             </div>
 
-            <!-- Columna 2: Avalúo promedio por predio -->
             <div class="hallazgos-card">
                 <div class="hallazgos-card-header">
                     <h3>Avalúo promedio por predio</h3>
@@ -3631,7 +3648,6 @@
                 <p class="hallazgos-nota">M = millones COP por predio · La Candelaria lidera pese a tener solo 15.610 predios, por concentración de uso institucional y comercial de alto valor en el centro histórico.</p>
                 <p class="htable-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Pasa el cursor sobre una fila para ver el análisis detallado</p>
             </div>
-
         </div><!-- /hallazgos-grid -->
 
         <!-- Línea de tiempo del liderazgo -->
