@@ -1515,10 +1515,11 @@
                 overflow: visible;
             }
             .hallazgos-dist-nota {
-                width: 100%;
+                width: 100% !important;
                 border-left: none;
                 border-top: 1px solid rgba(0,0,0,0.07);
                 align-self: auto;
+                text-align: center;
             }
         }
 
@@ -2557,6 +2558,11 @@
                 flex-direction: unset;
                 align-items: unset;
             }
+            .stats-row-primary .stat-card:nth-child(3) {
+                grid-column: 1 / -1;
+                max-width: calc(50% - 5px);
+                margin: 0 auto;
+            }
             .stats-row-primary .map-filters {
                 grid-column: 1 / -1;
                 min-width: unset;
@@ -2672,6 +2678,11 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
+            }
+            .stats-row-primary .stat-card:nth-child(3) {
+                grid-column: 1 / -1;
+                max-width: calc(50% - 4px);
+                margin: 0 auto;
             }
             .stats-row-primary .map-filters {
                 grid-column: 1 / -1;
@@ -6150,6 +6161,22 @@
 
     <!-- ── Tooltip de detalle para tablas ── -->
     <script>
+    document.addEventListener('touchstart', function () {
+        var tip = document.getElementById('row-tooltip');
+        if (tip) tip.classList.remove('visible');
+    }, { passive: true });
+
+    window.addEventListener('scroll', function () {
+        var tip = document.getElementById('row-tooltip');
+        if (tip) tip.classList.remove('visible');
+        if (typeof Chart !== 'undefined' && Chart.instances) {
+            Object.values(Chart.instances).forEach(function (chart) {
+                chart.tooltip.setActiveElements([], {});
+                chart.update('none');
+            });
+        }
+    }, { passive: true });
+
     document.addEventListener('DOMContentLoaded', function () {
         var tip      = document.getElementById('row-tooltip');
         var tRank    = document.getElementById('rtip-rank');
@@ -6190,10 +6217,20 @@
         }
 
         function move(e) {
-            var x = e.clientX + PAD;
-            var y = e.clientY + PAD;
-            if (x + TIP_W > window.innerWidth)  x = e.clientX - TIP_W - PAD;
+            var vw   = window.innerWidth;
+            var tipW = vw < 600 ? Math.min(TIP_W, vw - 16) : TIP_W;
+            tip.style.width = tipW + 'px';
+            var x, y;
+            if (vw < 600) {
+                x = Math.max(8, Math.round((vw - tipW) / 2));
+            } else {
+                x = e.clientX + PAD;
+                if (x + tipW > vw) x = e.clientX - tipW - PAD;
+                if (x < 8) x = 8;
+            }
+            y = e.clientY + PAD;
             if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - PAD;
+            if (y < 8) y = 8;
             tip.style.left = x + 'px';
             tip.style.top  = y + 'px';
         }
@@ -6307,7 +6344,7 @@
         function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
 
         function attachTooltips(entries, startYear, endYear) {
-            var tip   = document.getElementById('row-tooltip');
+                var tip   = document.getElementById('row-tooltip');
             var tRank = document.getElementById('rtip-rank');
             var tName = document.getElementById('rtip-name');
             var tSub  = document.getElementById('rtip-subtitle');
@@ -6330,9 +6367,20 @@
                        '<div class="rtip-bar-track"><div class="rtip-bar-fill" style="width:' + Math.min(pct, 100) + '%"></div></div></div>';
             }
             function moveTip(e) {
-                var x = e.clientX + PAD, y = e.clientY + PAD;
-                if (x + TIP_W > window.innerWidth)  x = e.clientX - TIP_W - PAD;
+                var vw   = window.innerWidth;
+                var tipW = vw < 600 ? Math.min(TIP_W, vw - 16) : TIP_W;
+                tip.style.width = tipW + 'px';
+                var x, y;
+                if (vw < 600) {
+                    x = Math.max(8, Math.round((vw - tipW) / 2));
+                } else {
+                    x = e.clientX + PAD;
+                    if (x + tipW > vw) x = e.clientX - tipW - PAD;
+                    if (x < 8) x = 8;
+                }
+                y = e.clientY + PAD;
                 if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - PAD;
+                if (y < 8) y = 8;
                 tip.style.left = x + 'px';
                 tip.style.top  = y + 'px';
             }
