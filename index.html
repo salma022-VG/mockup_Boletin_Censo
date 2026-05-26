@@ -759,11 +759,12 @@
         .map-search {
             position: absolute;
             top: 12px;
-            left: 50%;
+            left: 40%;
             transform: translateX(-50%);
             z-index: 1000;
-            width: 340px;
+            width: 220px;
             max-width: calc(100% - 200px);
+            margin-left: -10px;
         }
 
         .search-box {
@@ -789,12 +790,12 @@
 
         #search-input {
             width: 100%;
-            padding: 10px 14px 10px 38px;
+            padding: 4px 10px 4px 30px;
             background: var(--bg-white);
             border: 1px solid #ddd;
             border-radius: var(--radius-lg);
             color: var(--text-dark);
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-family: inherit;
             outline: none;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
@@ -2627,7 +2628,7 @@
             .map-wrapper { min-height: 380px; }
             #map { min-height: 380px; }
             .about-wrapper { flex: none; padding: 32px 20px; }
-            .map-search { width: calc(100% - 80px); max-width: none; transform: none; left: 8px; }
+            .map-search { width: calc(100% - 80px); max-width: none; transform: none; left: 8px; margin-left: 0; }
             .info-panel { left: 8px; right: 8px; width: auto; bottom: 8px; }
 
             /* Secciones — padding reducido */
