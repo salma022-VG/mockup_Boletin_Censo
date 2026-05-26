@@ -1438,6 +1438,8 @@
         .charts-section-area {
             padding-top: 48px;
             padding-bottom: 60px;
+            padding-left: 0;
+            padding-right: 0;
         }
 
         /* ─── HALLAZGOS SECTION ─────────────────────────────── */
@@ -1909,11 +1911,12 @@
         }
 
         .chart-filter {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 6px;
             font-size: 0.78rem;
             color: var(--text-secondary);
+            flex-wrap: wrap;
         }
 
         .chart-filter label {
@@ -1939,6 +1942,28 @@
         .chart-filter-select:hover {
             border-color: rgba(196, 30, 30, 0.4);
             box-shadow: 0 4px 12px rgba(196, 30, 30, 0.12);
+        }
+
+        .predios-stats-bar {
+            display: flex;
+            gap: 24px;
+            padding: 4px 16px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 600px) {
+            .predios-stats-bar {
+                gap: 10px 16px;
+                font-size: 11px;
+                padding: 6px 12px 8px;
+            }
+            .predios-stats-bar .pstat-total {
+                margin-left: 0;
+                width: 100%;
+            }
         }
 
         /* Tabla resumen por localidad (área construida) */
@@ -2607,6 +2632,7 @@
 
             /* Secciones — padding reducido */
             .charts-section       { padding: 36px 14px 50px; }
+            .charts-section-area  { padding-left: 0; padding-right: 0; }
             .locality-chart-section { padding: 36px 14px 50px; }
             .services-section     { padding: 40px 14px 56px; }
             .property-section     { padding: 40px 14px 56px; }
@@ -2614,7 +2640,7 @@
             /* Charts */
             .charts-row { flex-direction: column; align-items: stretch; }
             .chart-card { max-width: 100%; width: 100%; padding: 16px 14px; }
-            .chart-canvas-wrap { height: 230px; }
+            .chart-canvas-wrap { height: 230px; width: 100%; box-sizing: border-box; }
             .chart-canvas-wide { height: 270px; }
 
             /* Localidades */
@@ -2756,9 +2782,9 @@
 
             /* Charts */
             .chart-card { padding: 12px 10px; }
-            .chart-card-header h3 { font-size: 0.85rem; }
-            .chart-canvas-wrap { height: 190px; }
-            .chart-canvas-wide { height: 210px; }
+            .chart-card-header h3 { font-size: 0.85rem; overflow-wrap: break-word; word-break: break-word; }
+            .chart-canvas-wrap { height: 190px; width: 100%; box-sizing: border-box; }
+            .chart-canvas-wide { height: 260px; }
 
             /* Localidades */
             .locality-chart-canvas-wrap { height: 250px; }
@@ -3311,7 +3337,7 @@
                         </select>
                     </div>
                 </div>
-                <div id="predios-stats-bar" style="display:flex;gap:24px;padding:4px 16px 10px;font-size:12px;font-weight:600;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">
+                <div id="predios-stats-bar" class="predios-stats-bar">
                     <span style="display:flex;align-items:center;gap:6px;">
                         <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:rgba(254,180,0,0.82);flex-shrink:0;"></span>
                         <span style="color:#555;">Urbano:</span>
@@ -3322,7 +3348,7 @@
                         <span style="color:#555;">Rural:</span>
                         <span id="predios-stat-rur" style="color:rgba(227,25,47,1);">–</span>
                     </span>
-                    <span style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+                    <span class="pstat-total" style="display:flex;align-items:center;gap:6px;margin-left:auto;">
                         <span style="color:#888;">Total:</span>
                         <span id="predios-stat-total" style="color:#333;font-weight:700;">–</span>
                     </span>
@@ -3385,7 +3411,7 @@
         <div class="charts-row charts-row-full">
             <div class="chart-card chart-card-wide reveal-scale">
                 <div class="chart-card-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
-                    <h3>Aumentos y reducciones de área construida urbana y rural &nbsp;·&nbsp; 2016–2026 (metros cuadrados)</h3>
+                    <h3 style="width:100%;margin:0;">Aumentos y reducciones de área construida urbana y rural &nbsp;·&nbsp; 2016–2026 (metros cuadrados)</h3>
                     <div class="chart-filter">
                         <label for="var-localidad-select">Localidad</label>
                         <select id="var-localidad-select" class="chart-filter-select">
@@ -5186,9 +5212,9 @@
                                     position: 'top',
                                     align: 'center',
                                     labels: {
-                                        padding: 28,
+                                        padding: window.innerWidth <= 600 ? 14 : 28,
                                         usePointStyle: true,
-                                        font: { size: 12, weight: '500' },
+                                        font: { size: window.innerWidth <= 600 ? 11 : 12, weight: '500' },
                                         color: '#333',
                                         generateLabels: function (chart) {
                                             return [
@@ -6018,7 +6044,7 @@
                                     y: {
                                         stacked: true,
                                         grid: { color: 'rgba(0,0,0,0.06)' },
-                                        title: { display: true, text: 'Metros cuadrados (m²)', font: { size: 11, weight: '600' }, color: '#555' },
+                                        title: { display: true, text: 'Metros cuadrados (m²)', font: { size: 11, weight: '500' }, color: '#555', padding: { top: 5, bottom: 5 } },
                                         ticks: {
                                             color: '#666',
                                             font: { size: 10 },
