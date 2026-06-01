@@ -5241,7 +5241,7 @@
                                             if (ctx.raw === null || ctx.raw === undefined) return null;
                                             var sign = ctx.raw >= 0 ? '+' : '';
                                             if (ctx.datasetIndex === 0) {
-                                                return '  Neto: ' + sign + (ctx.raw / 1000).toFixed(2).replace('.', ',') + ' M m²';
+                                                return '  Neto: ' + sign + (ctx.raw / 1000).toFixed(1).replace('.', ',') + ' M m²';
                                             }
                                             var v = ctx.chart.data.datasets[1].variaciones[ctx.dataIndex];
                                             if (v === null || v === undefined) return null;
@@ -5300,12 +5300,12 @@
                             var clsNet = (netVal === null || isBase) ? '' : (netVal < 0 ? 'val-neg' : 'val-pos');
                             var clsVar = (varVal === null || isBase) ? '' : (varVal < 0 ? 'val-neg' : 'val-pos');
                             var sign   = function (v) { return v !== null && v >= 0 ? '+' : ''; };
-                            var netStr = isBase ? '<em style="color:#999;font-style:normal">Año base</em>' : (netVal === null ? '—' : sign(netVal) + netVal.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' miles m²');
+                            var netStr = isBase ? '<em style="color:#999;font-style:normal">Año base</em>' : (netVal === null ? '—' : sign(netVal) + (netVal / 1000).toFixed(1).replace('.', ',') + ' M m²');
                             var varStr = isBase ? '<em style="color:#999;font-style:normal">—</em>'        : (varVal === null ? '—' : sign(varVal) + varVal.toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%');
                             var isLast = año === '2026';
                             html += '<tr' + (isLast ? ' class="tr-highlight"' : '') + '>'
                                 + '<td>' + año + (isLast ? ' &#9733;' : '') + '</td>'
-                                + '<td class="num">' + s.area[i].toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' miles m²</td>'
+                                + '<td class="num">' + (s.area[i] / 1000).toFixed(1).replace('.', ',') + ' M m²</td>'
                                 + '<td class="num ' + clsNet + '">' + netStr + '</td>'
                                 + '<td class="num ' + clsVar + '">' + varStr + '</td>'
                                 + '</tr>';
@@ -5517,13 +5517,13 @@
 
                     function formatValue(val, metric) {
                         if (metric === 'valor_catastral') {
-                            if (val >= 1e12) return '$' + (val / 1e12).toFixed(1) + 'B';
-                            if (val >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'MM';
-                            if (val >= 1e6) return '$' + (val / 1e6).toFixed(1) + 'M';
+                            if (val >= 1e12) return '$' + (val / 1e12).toFixed(1).replace('.', ',') + 'B';
+                            if (val >= 1e9) return '$' + (val / 1e9).toFixed(1).replace('.', ',') + 'MM';
+                            if (val >= 1e6) return '$' + (val / 1e6).toFixed(1).replace('.', ',') + 'M';
                             return '$' + val.toLocaleString('es-CO');
                         }
-                        if (val >= 1e6) return (val / 1e6).toFixed(1) + 'M';
-                        if (val >= 1e3) return (val / 1e3).toFixed(1) + 'K';
+                        if (val >= 1e6) return (val / 1e6).toFixed(1).replace('.', ',') + 'M';
+                        if (val >= 1e3) return (val / 1e3).toFixed(1).replace('.', ',') + 'M';
                         return val.toLocaleString('es-CO');
                     }
 
