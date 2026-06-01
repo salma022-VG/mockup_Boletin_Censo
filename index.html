@@ -3364,8 +3364,8 @@
                     <div class="chart-filter">
                         <label for="pie-year-select">Año</label>
                         <select id="pie-year-select" class="chart-filter-select">
-                            <option value="2026">2026</option>
-                            <option value="2025" selected>2025</option>
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
                             <option value="2024">2024</option>
                             <option value="2023">2023</option>
                             <option value="2022">2022</option>
@@ -4497,7 +4497,7 @@
                                     order: 2
                                 },
                                 {
-                                    label: 'Participación dentro de Bogotá %',
+                                    label: 'Participación dentro de Bogotá ',
                                     type: 'line',
                                     data: s0.variaciones,
                                     borderColor: 'rgba(44,62,122,1)',
@@ -5241,7 +5241,7 @@
                                             if (ctx.raw === null || ctx.raw === undefined) return null;
                                             var sign = ctx.raw >= 0 ? '+' : '';
                                             if (ctx.datasetIndex === 0) {
-                                                return '  Neto: ' + sign + ctx.raw.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' miles m²';
+                                                return '  Neto: ' + sign + (ctx.raw / 1000).toFixed(2).replace('.', ',') + ' M m²';
                                             }
                                             var v = ctx.chart.data.datasets[1].variaciones[ctx.dataIndex];
                                             if (v === null || v === undefined) return null;
@@ -5253,7 +5253,7 @@
                                             var i   = items[0].dataIndex;
                                             var loc = localidadSelect ? localidadSelect.value : 'Bogotá D.C.';
                                             var s   = buildSeries(loc);
-                                            return ['', '  Área acum.: ' + s.area[i].toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' miles m²'];
+                                            return ['', '  Área acum.: ' + (s.area[i] / 1000).toFixed(1).replace('.', ',') + ' M m²'];
                                         }
                                     }
                                 }
@@ -5278,8 +5278,7 @@
                                         font: { size: 10, weight: '500' },
                                         maxTicksLimit: 6,
                                         callback: function (v) {
-                                            if (Math.abs(v) >= 1000) return (v / 1000).toLocaleString('es-CO', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'K';
-                                            return v.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                                            return (v / 1000).toFixed(1).replace('.', ',') + 'M';
                                         }
                                     }
                                 }
@@ -5385,7 +5384,7 @@
 
                     var metricLabels = {
                         predios: 'Número de Predios',
-                        valor_catastral: 'Valor Catastral (Millones COP)',
+                        valor_catastral: 'Valor Catastral (COP)',
                         area_construida: 'Área Construida (m²)',
                         area_terreno: 'Área Terreno (m²)'
                     };
@@ -5530,9 +5529,12 @@
 
                     function formatTooltipValue(val, metric) {
                         if (metric === 'valor_catastral') {
-                            return '$' + val.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                            if (val >= 1e12) return '$' + (val / 1e12).toFixed(1).replace('.', ',') + ' B';
+                            if (val >= 1e9)  return '$' + (val / 1e9).toFixed(1).replace('.', ',') + ' MM';
+                            if (val >= 1e6)  return '$' + (val / 1e6).toFixed(1).replace('.', ',') + ' M';
+                            return '$' + val.toLocaleString('es-CO');
                         }
-                        return val.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        return val.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
                     }
 
                     function updateChart(result) {
@@ -5595,6 +5597,11 @@
                                     scales: {
                                         x: {
                                             grid: { display: false },
+                                            title: {
+                                                display: true,
+                                                text: 'Localidades',
+                                                font: { size: 11, weight: '600' }
+                                            },
                                             ticks: {
                                                 font: { size: 10, weight: '500' },
                                                 maxRotation: 45,
@@ -5933,7 +5940,7 @@
                     }
 
                     function fmtM2(v) {
-                        return (+v).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                        return (v / 1e6).toFixed(2).replace('.', ',') + ' M';
                     }
 
                     function buildVarChart(byYear) {
@@ -6049,7 +6056,9 @@
                                         ticks: {
                                             color: '#666',
                                             font: { size: 10 },
-                                            callback: function (v) { return v.toLocaleString('es-CO'); }
+                                            callback: function (v) {
+                                                return (v / 1e6).toFixed(1).replace('.', ',') + 'M';
+                                            }
                                         }
                                     }
                                 }
