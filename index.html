@@ -4202,7 +4202,7 @@
             var ABOUT_RURAL = {
                 title: '¿Qué es el Catastro Rural Distrital?',
                 p1: 'El <strong>catastro rural distrital</strong> es el inventario oficial de los predios ubicados en el suelo rural de Bogotá D.C. Registra la ubicación, extensión, uso agropecuario o de conservación y el valor de cada predio para apoyar la planificación territorial, la protección ambiental y la gestión sostenible del suelo no urbanizado.',
-                p2: 'El suelo rural de Bogotá abarca más de <strong>163.000 hectáreas</strong>, concentradas principalmente en la localidad de <strong>Sumapaz</strong> — el páramo urbano más extenso del mundo —, así como en zonas de borde de <strong>Usme</strong>, <strong>Ciudad Bolívar</strong> y <strong>Chapinero</strong>. Los predios rurales son fundamentales para la seguridad hídrica, la biodiversidad y el equilibrio ecológico de la ciudad y la región.'
+                p2: 'El suelo rural de Bogotá abarca más de <strong>1.630.000.000 metros cuadrados</strong>, concentradas principalmente en la localidad de <strong>Sumapaz</strong> — el páramo urbano más extenso del mundo —, así como en zonas de borde de <strong>Usme</strong>, <strong>Ciudad Bolívar</strong> y <strong>Chapinero</strong>. Los predios rurales son fundamentales para la seguridad hídrica, la biodiversidad y el equilibrio ecológico de la ciudad y la región.'
             };
 
             function updateAboutText() {
@@ -5549,7 +5549,7 @@
                                 return barColors[i % barColors.length].replace('0.8', '1');
                             });
                             localityChart.options.scales.y.title.text = metricLabels[currentMetric];
-                            localityChart.update('active');
+                            localityChart.update();
                         } else {
                             localityChart = new Chart(ctx, {
                                 type: 'bar',
@@ -5877,6 +5877,10 @@
                             metricPills.forEach(function (p) { p.classList.remove('active'); });
                             pill.classList.add('active');
                             currentMetric = pill.dataset.metric;
+                            if (localityChart && localityChart.config.type === 'bar') {
+                                localityChart.options.scales.y.title.text = metricLabels[currentMetric];
+                                localityChart.update('none');
+                            }
                             refreshChart();
                         });
                     });
