@@ -3012,20 +3012,73 @@
             background: rgba(255,255,255,0.95);
             border: 1px solid rgba(0,0,0,0.08);
             border-radius: 8px;
-            padding: 6px 12px 6px 10px;
+            padding: 6px 6px 6px 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.10);
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
             color: #222;
             backdrop-filter: blur(4px);
-            pointer-events: none;
         }
-        .inst-logo { color: var(--color-red); display: flex; align-items: center; }
         .inst-text { display: flex; align-items: center; gap: 6px; line-height: 1.2; }
         .inst-text strong { font-weight: 700; }
         .inst-sep { color: #aaa; }
+        .inst-info-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-red);
+            color: #fff;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.18s;
+            flex-shrink: 0;
+        }
+        .inst-info-btn:hover { background: var(--color-red-dark); }
+
+        /* ── Modal Sobre este proyecto ── */
+        .about-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(2px);
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 70px 0 0 16px;
+        }
+        .about-modal-overlay.open { display: flex; }
+        .about-modal {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 28px 20px;
+            width: 340px;
+            max-width: calc(100vw - 32px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            position: relative;
+            font-family: 'Inter', sans-serif;
+        }
+        .about-modal-close {
+            position: absolute; top: 14px; right: 16px;
+            background: none; border: none; font-size: 1.3rem;
+            cursor: pointer; color: #666; line-height: 1;
+            padding: 2px 6px; border-radius: 4px;
+        }
+        .about-modal-close:hover { background: #f0f0f0; }
+        .about-modal-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 10px; color: #111; }
+        .about-modal-desc { font-size: 0.8rem; color: #444; line-height: 1.55; margin: 0; }
+        .about-modal-divider { border: none; border-top: 1px solid #eee; margin: 16px 0; }
+        .about-modal-section-title { font-size: 0.78rem; font-weight: 600; color: #888; margin: 0 0 10px; letter-spacing: 0.02em; }
+        .about-modal-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .about-modal-table tr td { padding: 5px 0; color: #333; vertical-align: top; }
+        .about-modal-table tr td:first-child { color: #555; width: 60%; }
+        .about-modal-table tr td:last-child { text-align: right; font-weight: 600; color: var(--color-red); }
+        .about-modal-footer { font-size: 0.7rem; color: #bbb; margin: 14px 0 0; }
         @media (max-width: 480px) {
-            .inst-badge { top: 8px; left: 8px; font-size: 0.68rem; padding: 4px 8px 4px 8px; gap: 5px; }
+            .inst-badge { top: 8px; left: 8px; font-size: 0.68rem; padding: 4px 4px 4px 8px; gap: 5px; }
+            .about-modal-overlay { padding: 60px 8px 0 8px; }
+            .about-modal { width: 100%; }
         }
 
     </style>
@@ -3035,14 +3088,34 @@
 
     <!-- Badge institucional esquina -->
     <div class="inst-badge">
-        <span class="inst-logo">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </span>
         <span class="inst-text">
             <strong>Alcaldía de Bogotá</strong>
             <span class="inst-sep">|</span>
             Catastro Bogotá
         </span>
+        <button class="inst-info-btn" id="inst-info-btn" aria-label="Sobre este proyecto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </button>
+    </div>
+
+    <!-- Modal: Sobre este proyecto -->
+    <div class="about-modal-overlay" id="about-modal-overlay">
+        <div class="about-modal">
+            <button class="about-modal-close" id="about-modal-close">×</button>
+            <h2 class="about-modal-title">Sobre este proyecto</h2>
+            <p class="about-modal-desc">Visualización interactiva del catastro inmobiliario de Bogotá D.C., construida con datos oficiales del Catastro Bogotá. Cubre <strong>10 años de historia catastral</strong> (2016–2026), con registros de predios, avalúos, áreas construidas y usos del suelo en las <strong>20 localidades</strong> de la ciudad.</p>
+            <hr class="about-modal-divider">
+            <p class="about-modal-section-title">Datos en cifras (2026)</p>
+            <table class="about-modal-table">
+                <tr><td>Predios registrados</td><td>2.966.000</td></tr>
+                <tr><td>Avalúo catastral total</td><td>$945,2 billones COP</td></tr>
+                <tr><td>Área construida total</td><td>312,9 mill m²</td></tr>
+                <tr><td>Crecimiento predios 2016–2026</td><td>+19,5 %</td></tr>
+                <tr><td>Usos del suelo clasificados</td><td>10</td></tr>
+                <tr><td>Fuente</td><td>Catastro Distrital de Bogotá</td></tr>
+            </table>
+            <p class="about-modal-footer">Arcgis · Chart.js · Datos 2016–2026</p>
+        </div>
     </div>
 
     <!-- Superposición de carga -->
@@ -3090,7 +3163,7 @@
             <div class="stats-row-primary">
                 <div class="stat-card reveal-scale" data-delay="0">
                     <span class="stat-card-label">Avalúo Total 2026</span>
-                    <span class="stat-card-value" id="stat-valor_catastral" data-counter="296600000" data-prefix="$"
+                    <span class="stat-card-value" id="stat-valor_catastral" data-counter="945200000000000" data-prefix="$"
                         data-format="currency">$0</span>
                     <span class="stat-trend up">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -3838,7 +3911,7 @@
                 function formatValue(val) {
                     if (format === 'currency') {
                         if (val >= 1e12) {
-                            return prefix + (val / 1e12).toFixed(1).replace('.', ',') + ' B';
+                            return prefix + (val / 1e12).toFixed(1).replace('.', ',') + ' bill';
                         }
                         if (val >= 1e9) {
                             return prefix + (val / 1e9).toFixed(1).replace('.', ',') + ' MM';
@@ -6724,6 +6797,18 @@
             <span>Descargas</span>
         </button>
     </div>
+
+    <script>
+        (function () {
+            var btn = document.getElementById('inst-info-btn');
+            var overlay = document.getElementById('about-modal-overlay');
+            var closeBtn = document.getElementById('about-modal-close');
+            if (!btn || !overlay) return;
+            btn.addEventListener('click', function () { overlay.classList.add('open'); });
+            closeBtn.addEventListener('click', function () { overlay.classList.remove('open'); });
+            overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.classList.remove('open'); });
+        })();
+    </script>
 
 </body>
 
